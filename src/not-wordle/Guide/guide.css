@@ -1,0 +1,27 @@
+
+.guide-icon {
+    position: relative;
+}
+
+.guide-icon::before {
+    content: '';
+    padding: 5px;
+    border-radius: 50%;
+    height: 5px;
+    width: 5px;
+    position: absolute;
+    left: -1.15em;
+    bottom: 0.15em;
+}
+
+.guide-correct::before {
+    background-color: var(--correct);
+}
+
+.guide-almost::before {
+    background-color: var(--almost);
+}
+
+.guide-incorrect::before {
+    background-color: var(--incorrect);
+}

@@ -1,0 +1,113 @@
+/* .answers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+} */
+
+/* .answer-grid {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    width: 350px;
+    height: 420px;
+    gap: 5px;
+    padding: 10px;
+    margin-top: 2em;
+} */
+
+.answer-grid-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+}
+
+.answer-grid-tile {
+    border: 2px solid #3a3a3c;
+    width: 100%;
+    color: var(--text);
+    display: flex;
+    text-transform: uppercase;
+    font-size: 2rem;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition-delay: 0.5s;
+}
+
+.answer-grid-tile.guess {
+    background-color: var(--incorrect);
+}
+
+.answer-grid-tile.correct {
+    background-color: var(--correct);
+}
+
+.answer-grid-tile.close-guess {
+    background-color: var(--almost);
+}
+
+@keyframes pop {
+    50% {
+      transform: scale(1.2);
+    }
+  
+    100% {
+      transform: scale(1);
+    }
+}
+
+@keyframes flip {
+    60% {
+        transform: rotateX(180deg)
+    }
+
+    100% {
+        transform: rotateX(360deg)
+    }
+}
+
+.pop {
+    animation: pop 0.15s linear;
+}
+
+.flip0 {
+    animation: flip 1.2s;
+}
+
+.flip1 {
+    animation: flip 1.2s;
+    animation-delay: 100ms;
+}
+
+.flip2 {
+    animation: flip 1.2s;
+    animation-delay: 200ms;
+}
+
+.flip3 {
+    animation: flip 1.2s;
+    animation-delay: 300ms;
+}
+
+.flip4 {
+    animation: flip 1.2s;
+    animation-delay: 400ms;
+}
+
+@keyframes shake {
+    33% {
+        transform: translateX(2px);
+    }
+
+    66% {
+        transform: translateX(-2px);
+    }
+
+    100% {
+        transform: initial;
+    }
+}
+
+.shake {
+    animation: shake 0.25s linear;
+}

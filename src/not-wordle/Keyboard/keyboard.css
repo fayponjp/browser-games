@@ -1,0 +1,65 @@
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-top: 3em;
+    padding-inline: 0.25em;
+}
+
+.key-rows {
+    display: flex;
+    gap: 0.5em;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 400px) {
+    .key-rows {
+        gap: 0.25em;
+    }
+}
+
+.key {
+    background-color: var(--unused);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1.15;
+    height: 58px;
+    border-radius: 4px;
+    flex: 1;
+    transition-delay: 1200ms;
+}
+
+.key.key-wide {
+    flex: 1.5;
+    font-size: 0.75rem;
+}
+
+.key.key-wide > i {
+    font-size: 1rem;
+}
+
+.half-key {
+    flex: 0.5;
+}
+
+.key.guess {
+    background-color: var(--incorrect);
+}
+
+.key.correct {
+    background-color: var(--correct);
+}
+
+.key.close-guess {
+    background-color: var(--almost);
+}

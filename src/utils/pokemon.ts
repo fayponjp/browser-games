@@ -7,7 +7,7 @@ export async function retrievePkmnCount() {
     if (localCount) return localCount;
 
     try {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon/');
+        const response = await fetch('https://pokeapi.co/api/v2/pokemon-species/?limit=0/');
         const data = await response.json();
         
         saveToCache(storageId, data.count)

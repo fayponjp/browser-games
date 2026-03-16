@@ -10,4 +10,5 @@ export interface WordleGame extends Game {
 
 export interface PkmnGame extends Game {
     guessedLetters: Array<string>;
+    currentPkmn: string | undefined;
 }

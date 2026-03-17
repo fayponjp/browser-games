@@ -63,7 +63,7 @@ export default function Keyboard({
     }
 
     return (
-        <div className='keyboard'>
+        <div className='flex flex-col flex-wrap gap-4 p-1'>
             <div className='key-rows'>{ROWS.first.map(renderKey)}</div>
             <div className='key-rows'>
                 <div className='half-key' />

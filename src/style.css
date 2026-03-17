@@ -2,21 +2,37 @@
 
 :root {
     --text: #f8f8f8;
+    --text-dark: #242424;
     --correct: #538d4e;
     --almost: #b59f3b;
     --incorrect: #3a3a3c;
     --unused: #818384;
-    font-family: 'Libre Franklin', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
     height: 100vh;
-    background-color: var(--color-zinc-900);
-    color: var(--text);
+    background-color: var(--color-slate-200);
+    color: var(--text-dark);
 }
 
 #root {
     height: 100%;
     display: grid;
     grid-template-rows: auto 1fr auto;
+}
+
+@theme {
+    --animate-blink: blink_in_out 1s steps(2, jump-start) infinite;
+
+    @keyframes blink_in_out {
+        from {
+            opacity: 1;
+        }
+    
+        to {
+            opacity: 0;
+        }
+    }
+
 }

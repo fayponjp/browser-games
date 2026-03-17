@@ -1,0 +1,26 @@
+import { useEffect } from 'react';
+
+export function useKeyhandler(
+    arr: Array<any>,
+    handleInput: (letterInput: string) => void,
+    handleEnter: () => void,
+    handleBackspace?: () => void,
+) {
+    const handleKeyDown = (e: KeyboardEvent): void => {
+        const regExp = /^[A-Za-z]$/;
+
+        if (regExp.test(e.key)) {
+            handleInput(e.key);
+        } else if (e.key === 'Enter') {
+            handleEnter();
+        } else if (e.key === 'Backspace' && handleBackspace) {
+            handleBackspace();
+        }
+    }
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [...arr]);
+}

@@ -5,10 +5,11 @@ export interface Game {
 }
 
 export interface WordleGame extends Game {
-    guessRow: number;
+    guessRow: number,
+    currentWord: string[],
 }
 
 export interface PkmnGame extends Game {
-    guessedLetters: Array<string>;
-    currentPkmn: string | undefined;
+    guessedLetters: Array<string>,
+    currentPkmn: string | undefined
 }

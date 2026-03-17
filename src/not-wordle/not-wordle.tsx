@@ -7,14 +7,18 @@ import Keyboard from './Keyboard/Keyboard';
 
 import Guide from './Guide/Guide';
 import Popover from './Popover/Popover';
+import { useKeyhandler } from '../utils/shared';
+import { saveToCache, loadFromCache } from '../utils/caching';
 
 export default function NotWordle() {
-    const initialWord = generate({ minLength: 5, maxLength: 5 });
-    const [word, setWord] = useState(Array.from(initialWord));
-    const [game, setGame] = useState<WordleGame>({
+    const notWordleCacheKey = 'notWordleCurrentGameState';
+    const cachedGame: WordleGame | null = loadFromCache(notWordleCacheKey);
+
+    const [game, setGame] = useState<WordleGame>(cachedGame || {
         guessRow: 0,
         gameOver: false,
         gameWon: false,
+        currentWord: Array.from(generate({ minLength: 5, maxLength: 5 }))
     });
     const [letters, setLetters] = useState<Array<Array<string>>>([[]]);
     const rowRef = useRef<HTMLDivElement>(null);
@@ -52,7 +56,7 @@ export default function NotWordle() {
             return;
         }
 
-        const isCorrect = currentWord === word.join('');
+        const isCorrect = currentWord === game.currentWord.join('');
         const isLastGuess = game.guessRow + 1 === 6;
 
         setLetters((prev) => [...prev, []]);
@@ -64,31 +68,12 @@ export default function NotWordle() {
         }));
     }
 
-    function handleKeyDown(e: KeyboardEvent): void {
-        const rex = /^[A-Za-z]$/;
-        if (rex.test(e.key)) handleInput(e.key);
-
-        if (e.key === 'Enter') {
-            handleEnter();
-        }
-
-        if (e.key === 'Backspace') {
-            handleBackspace();
-        }
-    }
+    useKeyhandler([letters], handleInput, handleEnter, handleBackspace)
 
     function restartGame(): void {
-        setGame({ guessRow: 0, gameOver: false, gameWon: false });
+        setGame({ guessRow: 0, gameOver: false, gameWon: false, currentWord: Array.from(generate({ minLength: 5, maxLength: 5 })) });
         setLetters([[]]);
-        setWord(Array.from(generate({ minLength: 5, maxLength: 5 })));
     }
-
-    useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [letters]);
 
     useEffect(() => {
         if (game.gameOver) {
@@ -96,31 +81,35 @@ export default function NotWordle() {
         }
     }, [game.gameOver]);
 
+    useEffect(() => {
+        saveToCache(notWordleCacheKey, game);
+    }, [game])
+
     return (
         <>
-            <main className='flex flex-col justify-center'>
-                <section className='max-w-125 w-full flex flex-col mx-auto py-4'>
+            <main className='flex flex-col justify-center bg-zinc-800  items-center'>
+                <section className='max-w-125 w-full flex flex-col mx-auto py-4 gap-10'>
                     <AnswerGrid
                         letters={letters}
-                        word={word}
+                        word={game.currentWord}
                         game={game}
                         rowRef={rowRef}
                     />
                     <Keyboard
                         letters={letters}
                         onClick={handleInput}
-                        word={word}
+                        word={game.currentWord}
                         game={game}
                         handleBackspace={handleBackspace}
                         handleEnter={handleEnter}
                     />
-                    <button className='absolute right-10 bg-white p-2 rounded text-black cursor-pointer' onClick={() => restartGame}>Reset</button>
+                    <button className='hover:scale-105 transition ease-in-out bg-white p-2 rounded text-black cursor-pointer' onClick={restartGame}>Reset</button>
                 </section>
                 <Popover
                     popoverRef={popoverRef}
                     game={game}
                     letters={letters}
-                    word={word}
+                    word={game.currentWord}
                 />
             </main>
             <Guide />

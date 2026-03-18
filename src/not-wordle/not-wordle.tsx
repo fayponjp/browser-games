@@ -18,36 +18,41 @@ export default function NotWordle() {
         guessRow: 0,
         gameOver: false,
         gameWon: false,
-        currentWord: Array.from(generate({ minLength: 5, maxLength: 5 }))
+        currentWord: Array.from(generate({ minLength: 5, maxLength: 5 })), 
+        guesses: [[]]
     });
-    const [letters, setLetters] = useState<Array<Array<string>>>([[]]);
+
     const rowRef = useRef<HTMLDivElement>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
 
     function handleInput(letterInput: string): void {
         if (game.gameOver) return;
 
-        setLetters((prev) => {
-            return prev.map((row, index) =>
+        setGame((prev) => {
+            const updatedGuesses = prev.guesses.map((row, index) =>
                 index === game.guessRow && row.length < 5
                     ? [...row, letterInput]
                     : row,
             );
+
+            return {...prev, guesses: updatedGuesses}
         });
     }
 
     function handleBackspace(): void {
-        setLetters((prevLetters) =>
-            prevLetters.map((row, index) =>
+        setGame((prev) => {
+            const updatedGuesses = prev.guesses.map((row, index) =>
                 index === game.guessRow && row.length > 0
                     ? row.slice(0, -1)
                     : row,
-            ),
-        );
+            );
+
+            return {...prev, guesses: updatedGuesses}
+        });
     }
 
     function handleEnter(): void {
-        const currentWord = letters[game.guessRow]?.join('');
+        const currentWord = game.guesses[game.guessRow]?.join('');
         if (!currentWord || currentWord.length < 5) return;
 
         if (!wordExists(currentWord)) {
@@ -59,20 +64,19 @@ export default function NotWordle() {
         const isCorrect = currentWord === game.currentWord.join('');
         const isLastGuess = game.guessRow + 1 === 6;
 
-        setLetters((prev) => [...prev, []]);
         setGame((prev) => ({
             ...prev,
             guessRow: prev.guessRow + 1,
             gameOver: isCorrect || isLastGuess,
             gameWon: isCorrect,
+            guesses: [...prev.guesses, []]
         }));
     }
 
-    useKeyhandler([letters], handleInput, handleEnter, handleBackspace)
+    useKeyhandler([game.guesses], handleInput, handleEnter, handleBackspace)
 
     function restartGame(): void {
-        setGame({ guessRow: 0, gameOver: false, gameWon: false, currentWord: Array.from(generate({ minLength: 5, maxLength: 5 })) });
-        setLetters([[]]);
+        setGame({ guessRow: 0, gameOver: false, gameWon: false, currentWord: Array.from(generate({ minLength: 5, maxLength: 5 })), guesses: [[]] });
     }
 
     useEffect(() => {
@@ -90,13 +94,11 @@ export default function NotWordle() {
             <main className='flex flex-col justify-center bg-zinc-800  items-center'>
                 <section className='max-w-125 w-full flex flex-col mx-auto py-4 gap-10'>
                     <AnswerGrid
-                        letters={letters}
-                        word={game.currentWord}
                         game={game}
                         rowRef={rowRef}
                     />
                     <Keyboard
-                        letters={letters}
+                        letters={game.guesses}
                         onClick={handleInput}
                         word={game.currentWord}
                         game={game}
@@ -108,7 +110,7 @@ export default function NotWordle() {
                 <Popover
                     popoverRef={popoverRef}
                     game={game}
-                    letters={letters}
+                    letters={game.guesses}
                     word={game.currentWord}
                 />
             </main>

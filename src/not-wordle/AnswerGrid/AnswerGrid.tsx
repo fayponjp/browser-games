@@ -3,13 +3,9 @@ import './answergrid.css';
 import clsx from 'clsx';
 import type { WordleGame } from '../../utils/types';
 export default function AnswerGrid({
-    letters,
-    word,
     game,
     rowRef,
 }: {
-    letters: Array<Array<string> | string>;
-    word: Array<string>;
     game: WordleGame;
     rowRef: React.RefObject<null | HTMLDivElement>;
 }) {
@@ -29,7 +25,7 @@ export default function AnswerGrid({
             return safePrevRowElements.map((_, index) => {
                 const wordFrequency: any = {};
 
-                word.forEach(
+                game.currentWord.forEach(
                     (char: string) =>
                         (wordFrequency[char] = (wordFrequency[char] || 0) + 1),
                 );
@@ -39,9 +35,9 @@ export default function AnswerGrid({
                         className='answer-grid-row'
                         key={`row${index}`}
                         ref={
-                            (letters[index] &&
-                                letters[index].length === 5 &&
-                                letters.length - 1 === index &&
+                            (game.guesses[index] &&
+                                game.guesses[index].length === 5 &&
+                                game.guesses.length - 1 === index &&
                                 rowRef) ||
                             null
                         }
@@ -50,13 +46,13 @@ export default function AnswerGrid({
                             .fill(null)
                             .map((_any, i) => {
                                 let colorClass = null;
-                                if (letters[index] && index < game.guessRow) {
-                                    const letter = letters[index][i];
-                                    if (letter === word[i]) {
+                                if (game.guesses[index] && index < game.guessRow) {
+                                    const letter = game.guesses[index][i];
+                                    if (letter === game.currentWord[i]) {
                                         colorClass = 'correct ' + `flip${i}`;
                                         wordFrequency[letter]--;
                                     } else if (
-                                        word.includes(letter) &&
+                                        game.currentWord.includes(letter) &&
                                         wordFrequency[letter] > 0
                                     ) {
                                         colorClass =
@@ -68,8 +64,8 @@ export default function AnswerGrid({
                                 }
 
                                 const popClass =
-                                    letters[index] &&
-                                    letters[index][i] &&
+                                    game.guesses[index] &&
+                                    game.guesses[index][i] &&
                                     'pop';
                                 const classNames = clsx(
                                     'answer-grid-tile',
@@ -84,8 +80,8 @@ export default function AnswerGrid({
                                             transitionDelay: `${i * 100}ms`,
                                         }}
                                     >
-                                        {letters[index]
-                                            ? letters[index][i] || ''
+                                        {game.guesses[index]
+                                            ? game.guesses[index][i] || ''
                                             : ''}
                                     </div>
                                 );
@@ -94,7 +90,7 @@ export default function AnswerGrid({
                 );
             });
         });
-    }, [letters, game]);
+    }, [game]);
 
     return (
         <div className='flex justify-center items-center py-2 '>

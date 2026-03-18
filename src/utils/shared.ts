@@ -7,9 +7,7 @@ export function useKeyhandler(
     handleBackspace?: () => void,
 ) {
     const handleKeyDown = (e: KeyboardEvent): void => {
-        const regExp = /^[A-Za-z]$/;
-
-        if (regExp.test(e.key)) {
+        if (isLetter(e.key)) {
             handleInput(e.key);
         } else if (e.key === 'Enter') {
             handleEnter();
@@ -23,4 +21,10 @@ export function useKeyhandler(
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, [...arr]);
+}
+
+export function isLetter(input: string): boolean {
+    const regExp = /^[A-Za-z]$/;
+
+    return regExp.test(input);
 }

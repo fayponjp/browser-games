@@ -8,11 +8,13 @@
     --incorrect: #3a3a3c;
     --unused: #818384;
     font-family: 'Inter', sans-serif;
+
+    --wordle-bg: #73a26f;
 }
 
 body {
     height: 100vh;
-    background-color: var(--color-slate-200);
+    background-color: var(--color-zinc-100);
     color: var(--text-dark);
 }
 

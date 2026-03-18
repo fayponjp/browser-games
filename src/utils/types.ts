@@ -7,6 +7,7 @@ export interface Game {
 export interface WordleGame extends Game {
     guessRow: number,
     currentWord: string[],
+    guesses: Array<Array<string>>
 }
 
 export interface PkmnGame extends Game {

@@ -1,8 +1,8 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useState } from 'react';
 import { retrievePkmn } from '../utils/pokemon';
 import type { PkmnGame } from '../utils/types';
 import { loadFromCache, saveToCache } from '../utils/caching';
-import { useKeyhandler } from '../utils/shared';
+import { isLetter, useKeyhandler } from '../utils/shared';
 
 const LetterDisplay = ({
     pokemon,
@@ -12,9 +12,11 @@ const LetterDisplay = ({
     guessedLetters: Array<string>;
 }) => {
     const letters = Array.from(pokemon);
+
     const guessElements = letters.map((letter, index) => {
         const isCurrentLetter = guessedLetters.includes(letter);
-        return <div key={index}>{isCurrentLetter ? letter : '_'}</div>;
+        const isALetter = isLetter(letter);
+        return <div key={index}>{!isCurrentLetter && isALetter ? '_': letter}</div>;
     });
 
     const gameBoard = (
@@ -38,11 +40,18 @@ export default function PokeHangman() {
         },
     );
 
-    const strikes = (!game.currentPkmn) ? 0 : game.guessedLetters.filter(
-            (letter) => !game.currentPkmn!.includes(letter),
-        ).length;
-
-    const [letterElements, setLetterElements] = useState<ReactElement>();
+    const strikes = !game.currentPkmn
+        ? 0
+        : game.guessedLetters.filter(
+              (letter) => !game.currentPkmn!.includes(letter),
+          ).length;
+    const isGameWon = game.currentPkmn
+        ? [...game.currentPkmn].every((letter) =>
+              game.guessedLetters.includes(letter),
+          )
+        : false;
+    const isGameLost = strikes >= 5;
+    const isGameOver = isGameWon || isGameLost;
 
     useEffect(() => {
         if (!game.currentPkmn) {
@@ -53,49 +62,36 @@ export default function PokeHangman() {
                         ...prevGame,
                         currentPkmn: data,
                     }));
-
-                    setLetterElements(
-                        <LetterDisplay
-                            pokemon={data}
-                            guessedLetters={game.guessedLetters}
-                        />,
-                    );
-
-                    saveToCache(pkmnGameCacheKey, {
-                        ...game,
-                        currentPkmn: data,
-                    });
                 }
             };
 
             fetchPkmn();
         }
-    }, []);
+    }, [game.currentPkmn]);
 
-    useEffect(() => {
-        if (game.currentPkmn) {
-            setLetterElements(
-                <LetterDisplay
-                    pokemon={game.currentPkmn}
-                    guessedLetters={game.guessedLetters}
-                />,
-            );
-
-            saveToCache(pkmnGameCacheKey, game);
-        }
-    }, [game.guessedLetters]);
+    const letterElements = game.currentPkmn ? (
+        <LetterDisplay
+            pokemon={game.currentPkmn}
+            guessedLetters={game.guessedLetters}
+        />
+    ) : null;
 
     const [currentLetter, setCurrentLetter] = useState<string>();
     function handleInput(letterInput: string) {
-        setCurrentLetter(letterInput);
+        if (letterInput !== currentLetter) setCurrentLetter(letterInput);
     }
 
     function handleEnter() {
-        if (currentLetter && strikes < 5 && !game.guessedLetters.includes(currentLetter)) {
+        if (
+            currentLetter &&
+            strikes < 5 &&
+            !game.guessedLetters.includes(currentLetter)
+        ) {
             updateGame((prevGame) => ({
                 ...prevGame,
                 guessedLetters: [...prevGame.guessedLetters, currentLetter],
             }));
+            setCurrentLetter(undefined);
         }
     }
 
@@ -103,10 +99,23 @@ export default function PokeHangman() {
         setCurrentLetter(undefined);
     }
 
+    function handleRestart() {
+        updateGame({
+            gameOver: false,
+            gameWon: false,
+            guessedLetters: [],
+            currentPkmn: undefined,
+        });
+    }
+
     useKeyhandler([currentLetter], handleInput, handleEnter, handleBackspace);
 
+    useEffect(() => {
+        if (game.currentPkmn) saveToCache(pkmnGameCacheKey, game);
+    }, [game]);
+
     return (
-        <main className='max-w-5xl mx-auto mt-10 flex flex-col gap-32 text-gray-700 text-center py-8'>
+        <main className='max-w-5xl mx-auto mt-10 flex flex-col gap-25 text-gray-700 text-center py-8'>
             {letterElements}
             <div>
                 <div
@@ -129,15 +138,35 @@ export default function PokeHangman() {
                 </div>
             </div>
             <div>
-                {strikes < 5 ? <p>Current Guess:</p> : <p>Game Over!</p>}
-                <p className='uppercase mt-4 text-7xl '>
-                    {currentLetter ? (
-                        currentLetter
-                    ) : (
-                        <span className='animate-blink'>_</span>
-                    )}
-                </p>
+                {!isGameOver ? (
+                    <>
+                        <p>Current Guess:</p>
+                        <p className='uppercase mt-4 text-7xl '>
+                            {currentLetter ? (
+                                currentLetter
+                            ) : (
+                                <span className='animate-blink'>_</span>
+                            )}
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        {isGameWon ? (
+                            <p className='font-bold'>Congratulations, you got it!</p>
+                        ) : (
+                            <p className='font-bold'>
+                                Game Over! The Pokemon was {game.currentPkmn}!
+                            </p>
+                        )}
+                    </>
+                )}
             </div>
+            <button
+                onClick={handleRestart}
+                className='p-4 w-50 mx-auto bg-zinc-600 hover:bg-zinc-400 hover:text-black active:bg-zinc-400 active:text-black transition delay-75 ease-in-out rounded-4xl text-white cursor-pointer'
+            >
+                {isGameOver ? 'New Game' : 'Reset'}
+            </button>
             {game.guessedLetters ? (
                 <div>
                     <p>Previous Guesses:</p>

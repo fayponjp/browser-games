@@ -26,8 +26,10 @@ export async function retrievePkmn() {
         try {
             const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomPkmn}`);
             const data = await response.json();
-            console.log(data);
-            return data.name;
+            const name = data.name;
+            const src = data.sprites.front_default;
+            
+            return {name, src};
         } catch (error) {
             console.error(error);
             return null;

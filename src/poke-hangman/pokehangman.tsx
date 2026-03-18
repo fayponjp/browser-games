@@ -37,6 +37,7 @@ export default function PokeHangman() {
             gameWon: false,
             guessedLetters: [],
             currentPkmn: undefined,
+            currentSprite: undefined
         },
     );
 
@@ -56,11 +57,13 @@ export default function PokeHangman() {
     useEffect(() => {
         if (!game.currentPkmn) {
             const fetchPkmn = async () => {
-                const data = await retrievePkmn();
-                if (data) {
+                const response = await retrievePkmn();
+                if (response) {
+                    const {name, src} = response
                     updateGame((prevGame) => ({
                         ...prevGame,
-                        currentPkmn: data,
+                        currentPkmn: name,
+                        currentSprite: src
                     }));
                 }
             };
@@ -105,6 +108,7 @@ export default function PokeHangman() {
             gameWon: false,
             guessedLetters: [],
             currentPkmn: undefined,
+            currentSprite: undefined,
         });
     }
 
@@ -115,7 +119,7 @@ export default function PokeHangman() {
     }, [game]);
 
     return (
-        <main className='max-w-5xl mx-auto mt-10 flex flex-col gap-25 text-gray-700 text-center py-8'>
+        <main className='max-w-5xl mx-auto mt-10 grid grid-rows-[1fr_1fr_1fr_auto_1fr] text-gray-700 text-center py-8'>
             {letterElements}
             <div>
                 <div
@@ -158,6 +162,7 @@ export default function PokeHangman() {
                                 Game Over! The Pokemon was {game.currentPkmn}!
                             </p>
                         )}
+                            <img className='mx-auto' src={game.currentSprite} />
                     </>
                 )}
             </div>

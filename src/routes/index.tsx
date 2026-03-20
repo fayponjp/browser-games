@@ -1,8 +1,12 @@
 import { createFileRoute, Link, type LinkProps } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
+import LoadingIndicator from '../shared/loadingIndicator';
 
 export const Route = createFileRoute('/')({
     component: () => <Home />,
+    pendingComponent: () => <LoadingIndicator/>,
+    pendingMs: 150,
+    pendingMinMs: 200,
 });
 
 function Card({
@@ -93,8 +97,14 @@ function Home() {
                         }
                         description={
                             <>
-                                <p>A pocket monster-themed twist on the classic word game.</p>
-                                <p>Guess the pokémon's name before the pokéball is fully drawn!</p>
+                                <p>
+                                    A pocket monster-themed twist on the classic
+                                    word game.
+                                </p>
+                                <p>
+                                    Guess the pokémon's name before the pokéball
+                                    is fully drawn!
+                                </p>
                             </>
                         }
                         route='/PokeHangman'

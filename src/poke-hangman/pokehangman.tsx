@@ -16,7 +16,11 @@ const LetterDisplay = ({
     const guessElements = letters.map((letter, index) => {
         const isCurrentLetter = guessedLetters.includes(letter);
         const isALetter = isLetter(letter);
-        return <div key={index}>{!isCurrentLetter && isALetter ? '_': letter}</div>;
+        return (
+            <div key={index}>
+                {!isCurrentLetter && isALetter ? '_' : letter}
+            </div>
+        );
     });
 
     const gameBoard = (
@@ -37,7 +41,7 @@ export default function PokeHangman() {
             gameWon: false,
             guessedLetters: [],
             currentPkmn: undefined,
-            currentSprite: undefined
+            currentSprite: undefined,
         },
     );
 
@@ -59,11 +63,11 @@ export default function PokeHangman() {
             const fetchPkmn = async () => {
                 const response = await retrievePkmn();
                 if (response) {
-                    const {name, src} = response
+                    const { name, src } = response;
                     updateGame((prevGame) => ({
                         ...prevGame,
                         currentPkmn: name,
-                        currentSprite: src
+                        currentSprite: src,
                     }));
                 }
             };
@@ -119,9 +123,8 @@ export default function PokeHangman() {
     }, [game]);
 
     return (
-        <main className='max-w-5xl mx-auto mt-10 grid grid-rows-[1fr_1fr_1fr_auto_1fr] text-gray-700 text-center py-8'>
-            {letterElements}
-            <div>
+        <main className='lg:max-w-5xl mx-auto grid grid-rows-[1fr_auto_1fr_auto_1fr] text-gray-700 text-center py-8'>
+            <div className='my-auto'>
                 <div
                     className={`rounded-[50%] border-4 h-25 w-25 mx-auto flex relative overflow-hidden shadow ${strikes >= 1 ? '' : 'hidden'}`}
                 >
@@ -141,7 +144,8 @@ export default function PokeHangman() {
                     </div>
                 </div>
             </div>
-            <div>
+            {letterElements}
+            <div className='flex flex-col mt-4 justify-between'>
                 {!isGameOver ? (
                     <>
                         <p>Current Guess:</p>
@@ -156,23 +160,42 @@ export default function PokeHangman() {
                 ) : (
                     <>
                         {isGameWon ? (
-                            <p className='font-bold'>Congratulations, you got it!</p>
+                            <p className='font-bold'>
+                                Congratulations, you got it!
+                            </p>
                         ) : (
                             <p className='font-bold'>
                                 Game Over! The Pokemon was {game.currentPkmn}!
                             </p>
                         )}
-                            <img className='mx-auto' src={game.currentSprite} />
+                        <img className='mx-auto' src={game.currentSprite} />
                     </>
                 )}
+                <input
+                    className='text-center block md:hidden text-3xl border w-40 mx-auto rounded-3xl'
+                    placeholder='⌨'
+                    value={currentLetter ?? ''}
+                    autoCapitalize='none'
+                    onChange={(e) => {
+                        const raw = e.target.value;
+                        const letter = raw
+                            .replace(/[^a-zA-Z]/g, '')
+                            .slice(-1)
+                            .toLowerCase()
+
+                        if (letter) setCurrentLetter(letter);
+                    }}
+                    onFocus={(e) => e.target.select()}
+                    maxLength={1}
+                />
             </div>
             <button
                 onClick={handleRestart}
-                className='p-4 w-50 mx-auto bg-zinc-600 hover:bg-zinc-400 hover:text-black active:bg-zinc-400 active:text-black transition delay-75 ease-in-out rounded-4xl text-white cursor-pointer'
+                className='p-2 my-4 w-40 h-10 mx-auto bg-zinc-600 hover:bg-zinc-400 hover:text-black active:bg-zinc-400 active:text-black transition delay-75 ease-in-out rounded-4xl text-white cursor-pointer'
             >
                 {isGameOver ? 'New Game' : 'Reset'}
             </button>
-            {game.guessedLetters ? (
+            {game.guessedLetters.length > 0 ? (
                 <div>
                     <p>Previous Guesses:</p>
                     <p className='uppercase mt-4 text-xl top-[50%]'>

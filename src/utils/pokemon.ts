@@ -32,16 +32,27 @@ export async function retrievePkmnCountGraphQL() {
             }
         }
     `;
-    const response = await fetch('https://graphql.pokeapi.co/v1beta2', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-        },
-        body: JSON.stringify({query}),
-    });
-    const data = await response.json();
-    console.log(data);
+
+    const storageId = 'pkmnCountKey';
+    const localPkmnCount = loadFromCache(storageId);
+
+    if (localPkmnCount) return localPkmnCount;
+
+    try {
+        const response = await fetch('https://graphql.pokeapi.co/v1beta2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({ query }),
+        });
+        const data = await response.json();
+        return data.count;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 }
 
 export async function retrievePkmn() {
@@ -56,9 +67,8 @@ export async function retrievePkmn() {
             const data = await response.json();
             const name = data.name;
             const src = data.sprites.front_default;
-            const id = data.id;
 
-            return { name, src, id };
+            return { name, src };
         } catch (error) {
             console.error(error);
             return null;
@@ -66,7 +76,7 @@ export async function retrievePkmn() {
     }
 }
 
-export async function retrievePkmnByIdGraphQL(id: string) {
+export async function retrievePkmnByIdGraphQL() {
     const query = `
         query GetPkmnById($id: Int!) {
             pokemon(where: {id : {_eq: $id}}) {
@@ -79,15 +89,24 @@ export async function retrievePkmnByIdGraphQL(id: string) {
         }
     `;
 
-    const response = await fetch('https://graphql.pokeapi.co/v1beta2', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-        },
-        body: JSON.stringify({query, variables: {id}}),
-    });
+    const pkmnCount = await retrievePkmnCountGraphQL();
 
-    const data = await response.json();
-    console.log(data)
+    if (pkmnCount) {
+        const randomPkmn = Math.floor(Math.random() * pkmnCount) + 1;
+
+        const response = await fetch('https://graphql.pokeapi.co/v1beta2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({ query, variables: { id: randomPkmn } }),
+        });
+
+        const data = await response.json();
+        const pokemon = data.data.pokemon[0];
+        const name = pokemon.name;
+        const src = pokemon.pokemonsprites[0].sprites.front_default;
+        return {name, src}
+    }
 }

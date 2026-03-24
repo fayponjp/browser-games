@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { retrievePkmn, retrievePkmnByIdGraphQL, retrievePkmnCountGraphQL } from '../utils/pokemon';
+import { retrievePkmnByIdGraphQL } from '../utils/pokemon';
 import type { PkmnGame } from '../utils/types';
 import { loadFromCache, saveToCache } from '../utils/caching';
 import { isLetter, useKeyhandler } from '../utils/shared';
@@ -61,17 +61,17 @@ export default function PokeHangman() {
     useEffect(() => {
         if (!game.currentPkmn) {
             const fetchPkmn = async () => {
-                const response = await retrievePkmn();
-                await retrievePkmnCountGraphQL();
+                const response = await retrievePkmnByIdGraphQL();
+
                 if (response) {
-                    const { name, src, id } = response;
+                    const { name, src } = response;
                     updateGame((prevGame) => ({
                         ...prevGame,
                         currentPkmn: name,
                         currentSprite: src,
                     }));
 
-                    await retrievePkmnByIdGraphQL(id);
+                    
                 }
             };
 
@@ -152,7 +152,7 @@ export default function PokeHangman() {
                 {!isGameOver ? (
                     <>
                         <p>Current Guess:</p>
-                        <p className='uppercase mt-4 text-7xl '>
+                        <p className={`uppercase mt-4 text-7xl ${currentLetter && game.guessedLetters.includes(currentLetter) && 'text-red-700'}`}>
                             {currentLetter ? (
                                 currentLetter
                             ) : (

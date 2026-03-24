@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { retrievePkmn } from '../utils/pokemon';
+import { retrievePkmn, retrievePkmnByIdGraphQL, retrievePkmnCountGraphQL } from '../utils/pokemon';
 import type { PkmnGame } from '../utils/types';
 import { loadFromCache, saveToCache } from '../utils/caching';
 import { isLetter, useKeyhandler } from '../utils/shared';
@@ -62,13 +62,16 @@ export default function PokeHangman() {
         if (!game.currentPkmn) {
             const fetchPkmn = async () => {
                 const response = await retrievePkmn();
+                await retrievePkmnCountGraphQL();
                 if (response) {
-                    const { name, src } = response;
+                    const { name, src, id } = response;
                     updateGame((prevGame) => ({
                         ...prevGame,
                         currentPkmn: name,
                         currentSprite: src,
                     }));
+
+                    await retrievePkmnByIdGraphQL(id);
                 }
             };
 

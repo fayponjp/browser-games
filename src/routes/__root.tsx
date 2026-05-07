@@ -29,12 +29,6 @@ export const Route = createRootRoute({
                         <span className='text-red-700'>Poké</span>
                         <span className='text-neutral-800'>Hangman</span>
                     </Link>
-                    <Link
-                        to='/Game2048'
-                        className='transition ease-in-out px-5 py-2 border-b-3 border-b-white hover:border-b-orange-500 rounded-t [&.active]:border-b-amber-600 [&.active]:font-bold'
-                    >
-                        <span>2048</span>
-                    </Link>
                 </nav>
             </header>
             <Outlet />

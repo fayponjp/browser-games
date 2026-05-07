@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PokeHangmanRouteImport } from './routes/PokeHangman'
 import { Route as NotWordleRouteImport } from './routes/NotWordle'
-import { Route as Game2048RouteImport } from './routes/Game2048'
 import { Route as IndexRouteImport } from './routes/index'
 
 const PokeHangmanRoute = PokeHangmanRouteImport.update({
@@ -24,11 +23,6 @@ const NotWordleRoute = NotWordleRouteImport.update({
   path: '/NotWordle',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Game2048Route = Game2048RouteImport.update({
-  id: '/Game2048',
-  path: '/Game2048',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,34 +31,30 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/Game2048': typeof Game2048Route
   '/NotWordle': typeof NotWordleRoute
   '/PokeHangman': typeof PokeHangmanRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/Game2048': typeof Game2048Route
   '/NotWordle': typeof NotWordleRoute
   '/PokeHangman': typeof PokeHangmanRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/Game2048': typeof Game2048Route
   '/NotWordle': typeof NotWordleRoute
   '/PokeHangman': typeof PokeHangmanRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/Game2048' | '/NotWordle' | '/PokeHangman'
+  fullPaths: '/' | '/NotWordle' | '/PokeHangman'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/Game2048' | '/NotWordle' | '/PokeHangman'
-  id: '__root__' | '/' | '/Game2048' | '/NotWordle' | '/PokeHangman'
+  to: '/' | '/NotWordle' | '/PokeHangman'
+  id: '__root__' | '/' | '/NotWordle' | '/PokeHangman'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  Game2048Route: typeof Game2048Route
   NotWordleRoute: typeof NotWordleRoute
   PokeHangmanRoute: typeof PokeHangmanRoute
 }
@@ -85,13 +75,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotWordleRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/Game2048': {
-      id: '/Game2048'
-      path: '/Game2048'
-      fullPath: '/Game2048'
-      preLoaderRoute: typeof Game2048RouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -104,7 +87,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  Game2048Route: Game2048Route,
   NotWordleRoute: NotWordleRoute,
   PokeHangmanRoute: PokeHangmanRoute,
 }

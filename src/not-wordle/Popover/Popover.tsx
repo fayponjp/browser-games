@@ -1,4 +1,4 @@
-import type { WordleGame } from '../../utils/types';
+import type { WordleGame } from '../../utils/types-interfaces';
 export default function Popover({
     game,
     letters,

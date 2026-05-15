@@ -1,7 +1,7 @@
 import { generate } from 'random-words';
 import { useRef, useState, useEffect } from 'react';
 import wordExists from 'word-exists';
-import type { WordleGame } from '../utils/types';
+import type { WordleGame } from '../utils/types-interfaces';
 import AnswerGrid from './AnswerGrid/AnswerGrid';
 import Keyboard from './Keyboard/Keyboard';
 

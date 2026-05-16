@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './answergrid.css';
 import clsx from 'clsx';
-import type { WordleGame } from '../../utils/types-interfaces';
+import type { WordleGame } from '../../utils/types-interfaces-vars';
 export default function AnswerGrid({
     game,
     rowRef,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { retrievePkmnByIdGraphQL } from '../utils/pokemon';
-import type { PkmnGame } from '../utils/types-interfaces';
+import type { PkmnGame } from '../utils/types-interfaces-vars';
 import { loadFromCache, saveToCache } from '../utils/caching';
 import { isLetter, useKeyhandler } from '../utils/shared';
 

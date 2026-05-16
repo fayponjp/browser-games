@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import './keyboard.css';
 import { useMemo } from 'react';
-import type { WordleGame } from '../../utils/types-interfaces';
+import type { WordleGame } from '../../utils/types-interfaces-vars';
 
 const ROWS = {
     first: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],

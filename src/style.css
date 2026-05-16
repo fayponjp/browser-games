@@ -10,6 +10,22 @@
     font-family: 'Inter', sans-serif;
 
     --wordle-bg: #73a26f;
+
+    --board-bg: #9b8878;
+    --board-card-null: #bdac97;
+    --board-card-2: #eee4da;
+    --board-card-4: #ebd8b6;
+    --board-card-8: #f2ae73;
+    --board-card-16: #f5915d;
+    --board-card-32: #f57657;
+    --board-card-64: #f55a36;
+    --board-card-128: #f2cf55;
+    --board-card-256: #f3cb4a;
+    --board-card-512: #f5c93e;
+    --board-card-1024: #f8cb30;
+    --board-card-2048: #ffc900;
+    /* --board-card-: '';
+    --board-card-: ''; */
 }
 
 body {
@@ -25,6 +41,7 @@ body {
 }
 
 @theme {
+    --board-font: 'Rubik', sans-serif;
     --animate-blink: blink_in_out 1s steps(2, jump-start) infinite;
 
     @keyframes blink_in_out {

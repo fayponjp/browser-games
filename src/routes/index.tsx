@@ -1,6 +1,6 @@
 import { createFileRoute, Link, type LinkProps } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
-import LoadingIndicator from '../shared/loadingIndicator';
+import LoadingIndicator from '../shared-components/loadingIndicator';
 
 export const Route = createFileRoute('/')({
     component: () => <Home />,

@@ -1,14 +1,14 @@
 import { generate } from 'random-words';
 import { useRef, useState, useEffect } from 'react';
 import wordExists from 'word-exists';
-import type { WordleGame } from '../utils/types-interfaces-vars';
+import type { WordleGame } from '../shared-utils/types-interfaces';
 import AnswerGrid from './AnswerGrid/AnswerGrid';
 import Keyboard from './Keyboard/Keyboard';
 
 import Guide from './Guide/Guide';
 import Popover from './Popover/Popover';
-import { useKeyhandler } from '../utils/shared';
-import { saveToCache, loadFromCache } from '../utils/caching';
+import { useKeyhandler } from '../shared-utils/shared';
+import { saveToCache, loadFromCache } from '../shared-utils/caching';
 
 export default function NotWordle() {
     const notWordleCacheKey = 'notWordleCurrentGameState';

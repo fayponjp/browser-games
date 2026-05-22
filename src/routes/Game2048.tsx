@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import Game2048 from '../2048/Game2048';
-import LoadingIndicator from '../shared/loadingIndicator';
+import LoadingIndicator from '../shared-components/loadingIndicator';
 
 export const Route = createFileRoute('/Game2048')({
     component: Game2048,

@@ -1,4 +1,4 @@
-import { loadFromCache, saveToCache } from './caching';
+import { loadFromCache, saveToCache } from '../shared-utils/caching';
 
 export async function retrievePkmnCount() {
     const storageId = 'pkmnCountKey';

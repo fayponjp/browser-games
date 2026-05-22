@@ -26,6 +26,7 @@
     --board-card-2048: #ffc900;
     /* --board-card-: '';
     --board-card-: ''; */
+    
 }
 
 body {
@@ -43,6 +44,8 @@ body {
 @theme {
     --board-font: 'Rubik', sans-serif;
     --animate-blink: blink_in_out 1s steps(2, jump-start) infinite;
+
+    --color-board-brown: #756452;
 
     @keyframes blink_in_out {
         from {

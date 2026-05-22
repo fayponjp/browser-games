@@ -28,3 +28,13 @@ export function isLetter(input: string): boolean {
 
     return regExp.test(input);
 }
+
+export function debounce(callback: (...args: unknown[]) => void, timer: number) {
+    let timeoutId: number | undefined = undefined;
+    return (...args: unknown[]) => {
+        window.clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            callback(...args);
+        }, timer);
+    }
+}

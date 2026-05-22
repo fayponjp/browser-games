@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { retrievePkmnByIdGraphQL } from '../utils/pokemon';
-import type { PkmnGame } from '../utils/types-interfaces-vars';
-import { loadFromCache, saveToCache } from '../utils/caching';
-import { isLetter, useKeyhandler } from '../utils/shared';
+import { retrievePkmnByIdGraphQL } from './pokemon.util';
+import type { PkmnGame } from '../shared-utils/types-interfaces';
+import { loadFromCache, saveToCache } from '../shared-utils/caching';
+import { isLetter, useKeyhandler } from '../shared-utils/shared';
 
 const LetterDisplay = ({
     pokemon,

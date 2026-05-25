@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { tileVariants, valid2048InputsArr } from '../shared-utils/types-interfaces';
+import {
+    tileVariants,
+    valid2048InputsArr,
+} from '../shared-utils/types-interfaces';
 import type { Tile } from '../shared-utils/types-interfaces';
 import { genInitialTiles } from './2048.util';
 
@@ -15,7 +18,7 @@ export default function Game2048() {
         const element = (
             <div
                 key={`tile-${tile.x}-${tile.y}`}
-                className={`h-24 w-24 flex rounded-lg ${tile.value ? `${tileVariants[tile.value]} shadow-sm shadow-black/50` : 'bg-(--board-card-null) inset-shadow-xs inset-shadow-black'}`}
+                className={`h-26 w-26 flex rounded-lg ${tile.value ? `${tileVariants[tile.value]} shadow-sm shadow-black/50` : 'bg-(--board-card-null) inset-shadow-xs inset-shadow-black/75'}`}
             >
                 <span className='m-auto'>{tile.value}</span>
             </div>
@@ -27,7 +30,59 @@ export default function Game2048() {
     // might make this into an async function? returns
     const inputHandler = (directionInput: string): void => {
         if (valid2048InputsArr.includes(directionInput)) {
-            console.log(directionInput);
+            // if LEFT, if RIGHT
+            if (
+                directionInput.toLowerCase() === 'a' ||
+                directionInput === 'ArrowLeft'
+            ) {
+                let tilesRow = 0;
+                let prevTile: Tile | undefined = undefined;
+                let currentTile: Tile | undefined = undefined;
+
+                //if LEFT, 0; 3
+                let initIndex = 0;
+
+                while (tilesRow <= 3) {
+                    const processRow = tiles.filter(
+                        (tile) => tile.x === tilesRow && tile.value
+                    );
+
+                    const emptyRows = tiles.filter(
+                        (tile) => tile.x === tilesRow && !tile.value
+                    )
+                    console.log(emptyRows)
+
+                    for (let i = 0; i <= processRow.length; i++) {
+                        currentTile = processRow[i];
+
+                        // if (prevTile && currentTile.value) {
+                        //     if (
+                        //         prevTile.value === currentTile.value &&
+                        //         !prevTile.merged
+                        //     ) {
+                        //         processRow[i - 1] = {
+                        //             ...currentTile,
+                        //             value: currentTile.value * 2,
+                        //             merged: true,
+                        //         };
+                        //     } else if (!prevTile.value) {
+                        //         processRow[i-1] = currentTile;
+                        //     }
+                        // }
+
+                        prevTile = currentTile;
+
+                        // processRow[i] = {...processRow[i], x: i}
+                    } 
+
+                    tilesRow++;
+                }
+            } else if (
+                directionInput.toLowerCase() === 'd' ||
+                directionInput === 'ArrowRight'
+            ) {
+                console.log('right');
+            }
         }
     };
     // useKeyhandler([], inputHandler);

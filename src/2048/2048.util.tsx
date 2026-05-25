@@ -1,5 +1,8 @@
 
 import type { Tile } from '../shared-utils/types-interfaces';
+
+
+
 const generateCoords = () => {
     function getRandomTile() {
         return Math.floor(Math.random() * 4);
@@ -49,6 +52,7 @@ export const genInitialTiles = () => {
 
             if (rowId === 0 && colId === 0) initValue = 2
             if (rowId === 0 && colId === 1) initValue = 4
+            if (rowId === 1 && colId === 0) initValue = 8
             if (rowId === 1 && colId === 1) initValue = 8
             if (rowId === 1 && colId === 3) initValue = 16
             if (rowId === 2 && colId === 2) initValue = 32

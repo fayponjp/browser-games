@@ -1,7 +1,4 @@
-
 import type { Tile } from '../shared-utils/types-interfaces';
-
-
 
 const generateCoords = () => {
     function getRandomTile() {

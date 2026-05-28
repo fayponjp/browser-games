@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 
 import type { Tile } from '../shared-utils/types-interfaces';
-import { genInitialTiles, handleHorizontal } from './2048.util';
+import { genInitialTiles, handleHorizontal, handleVertical } from './2048.util';
 import {
     processDirection,
     tileVariants,
     valid2048InputsArr,
 } from './types-2048';
+import { useTouchHandler } from '../shared-utils/hooks';
 
 export default function Game2048() {
     const [tiles, setTiles] = useState<Tile[]>(genInitialTiles);
+    const [animationDirection, setanimationDirection] = useState();
 
     let board: React.ReactElement[] = [];
     for (let tile of tiles) {
@@ -26,19 +28,16 @@ export default function Game2048() {
         board.push(element);
     }
 
-    const inputHandler = (directionInput: string): void => {
-        if (valid2048InputsArr.includes(directionInput)) {
-            setTiles((prevTiles) => {
-                const direction = processDirection[directionInput];
-                console.log(direction)
-                if (direction === 'Left' || direction === 'Right') {
-                    return handleHorizontal(prevTiles, direction);
-                } else {
-                    return prevTiles
-                }
-            })
-        }
+    const inputHandler = (direction: string): void => {
+        setTiles((prevTiles) => {
+            if (direction === 'Left' || direction === 'Right') {
+                return handleHorizontal(prevTiles, direction);
+            } else {
+                return handleVertical(prevTiles, direction);
+            }
+        });
     };
+
     const inputHandlerRef = useRef(inputHandler);
     useEffect(() => {
         inputHandlerRef.current = inputHandler;
@@ -46,19 +45,26 @@ export default function Game2048() {
 
     useEffect(() => {
         const handleKeyInput = (e: KeyboardEvent) => {
-            inputHandler(e.key);
+            if (valid2048InputsArr.includes(e.key)) {
+                const direction = processDirection[e.key];
+                inputHandler(direction);
+            }
         };
         document.addEventListener('keydown', handleKeyInput);
 
         return () => document.removeEventListener('keydown', handleKeyInput);
     }, []);
 
-    useEffect(() => {
-        console.log(tiles)
-    }, [tiles])
+    const tileContainer = useRef(null);
+    useTouchHandler(tileContainer);
+
+    // useEffect(() => {
+    //     console.log(tiles)
+    // }, [tiles])
+
     return (
         <div className='font-[Rubik] font-bold h-full w-full flex items-center justify-center bg-gray-800'>
-            <div className='grid grid-cols-4 grid-rows-4 rounded-2xl p-3 gap-3 bg-(--board-bg)'>
+            <div ref={tileContainer} className='grid grid-cols-4 grid-rows-4 rounded-2xl p-3 gap-3 bg-(--board-bg)'>
                 {board}
             </div>
         </div>

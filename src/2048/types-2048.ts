@@ -3,10 +3,12 @@ export const valid2048InputsArr: string[] = [
     's',
     'd',
     'f',
+    'w',
     'ArrowUp',
     'ArrowDown',
     'ArrowLeft',
     'ArrowRight',
+    
 ];
 
 export const tileVariants: Record<string, string> = {

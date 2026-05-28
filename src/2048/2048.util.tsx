@@ -72,14 +72,13 @@ export const genInitialTiles = () => {
 };
 
 export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
-    let tilesRow = 0;
+    let tilesRowIndex = 0;
 
     const newTileGrid: Tile[] = [];
 
-    while (tilesRow <= 3) {
-        // THIS BLOCK COULD BE GROUPING / SPLITTING
-        const processRow = tiles.filter((tile) => tile.x === tilesRow);
-        
+    while (tilesRowIndex <= 3) {
+        const processRow = tiles.filter((tile) => tile.x === tilesRowIndex);
+
         const valuedTilesQty = processRow.filter((tile) => tile.value).length;
         const nullTilesQty = processRow.filter((tile) => !tile.value).length;
         const valuedTiles: Tile[] = [];
@@ -87,13 +86,23 @@ export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
 
         processRow.forEach((tile) => {
             if (tile.value) {
-                valuedTiles.push({ ...tile, y: direction === 'Left' ? valuedTiles.length : nullTilesQty + valuedTiles.length});
+                valuedTiles.push({
+                    ...tile,
+                    y:
+                        direction === 'Left'
+                            ? valuedTiles.length
+                            : nullTilesQty + valuedTiles.length,
+                });
             } else {
-                nullTiles.push({ ...tile, y: direction === 'Left' ? valuedTilesQty + nullTiles.length : nullTiles.length});
+                nullTiles.push({
+                    ...tile,
+                    y:
+                        direction === 'Left'
+                            ? valuedTilesQty + nullTiles.length
+                            : nullTiles.length,
+                });
             }
         });
-
-        // THIS BLOCK IS PROCESSING / COMPARING
 
         if (direction === 'Right') valuedTiles.sort((a, b) => b.y - a.y);
 
@@ -109,7 +118,6 @@ export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
                 const prevMerged = prevTile.merged;
                 const valuesMatch = currVal === prevVal;
 
-                // match, is not newly merged
                 if (valuesMatch && !prevMerged) {
                     valuedTiles[i - 1] = {
                         ...prevTile,
@@ -121,7 +129,6 @@ export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
                         value: undefined,
                         merged: false,
                     };
-                    // don't match, prev is empty so element prior is merged
                 } else if (!valuesMatch && !prevVal) {
                     valuedTiles[i - 1] = {
                         ...prevTile,
@@ -141,9 +148,111 @@ export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
 
         if (direction === 'Right') valuedTiles.sort((a, b) => a.y - b.y);
 
-        const conditionalGrid = (direction === 'Left') ? [...valuedTiles, ...nullTiles] : [...nullTiles, ...valuedTiles]
-        newTileGrid.push(...conditionalGrid)
-        tilesRow++;
+        const conditionalGrid =
+            direction === 'Left'
+                ? [...valuedTiles, ...nullTiles]
+                : [...nullTiles, ...valuedTiles];
+        newTileGrid.push(...conditionalGrid);
+        tilesRowIndex++;
     }
+
+    newTileGrid.forEach((tile) => tile.merged = false)
+    return newTileGrid;
+};
+
+export const handleVertical = (tiles: Tile[], direction: string): Tile[] => {
+    let tilesColumnIndex = 0;
+
+    const newTileGrid: Tile[] = [];
+
+    while (tilesColumnIndex <= 3) {
+        const processColumn = tiles.filter(
+            (tile) => tile.y === tilesColumnIndex,
+        );
+
+        const valuedTilesQty = processColumn.filter(
+            (tile) => tile.value,
+        ).length;
+        const nullTilesQty = processColumn.filter((tile) => !tile.value).length;
+
+        const valuedTiles: Tile[] = [];
+        const nullTiles: Tile[] = [];
+
+        processColumn.forEach((tile) => {
+            if (tile.value) {
+                valuedTiles.push({
+                    ...tile,
+                    x:
+                        direction === 'Up'
+                            ? valuedTiles.length
+                            : nullTilesQty + valuedTiles.length,
+                });
+            } else {
+                nullTiles.push({
+                    ...tile,
+                    x:
+                        direction === 'Up'
+                            ? valuedTilesQty + nullTiles.length
+                            : nullTiles.length,
+                });
+            }
+        });
+
+        if (direction === 'Down') valuedTiles.sort((a, b) => b.x - a.x);
+
+        let prevTile: Tile | undefined = undefined;
+        let currentTile: Tile | undefined = undefined;
+
+        for (let i = 0; i < valuedTiles.length; i++) {
+            currentTile = valuedTiles[i];
+
+            if (prevTile) {
+                const currVal = currentTile.value;
+                const prevVal = prevTile.value;
+                const prevMerged = prevTile.merged;
+                const valuesMatch = currVal === prevVal;
+
+                if (valuesMatch && !prevMerged) {
+                    valuedTiles[i - 1] = {
+                        ...prevTile,
+                        value: prevTile!.value! * 2,
+                        merged: true,
+                    };
+                    valuedTiles[i] = {
+                        ...currentTile,
+                        value: undefined,
+                        merged: false,
+                    };
+                } else if (!valuesMatch && !prevVal) {
+                    valuedTiles[i - 1] = {
+                        ...prevTile,
+                        value: currentTile.value,
+                        merged: true,
+                    };
+                    valuedTiles[i] = {
+                        ...currentTile,
+                        value: undefined,
+                        merged: false,
+                    };
+                }
+            }
+
+            prevTile = valuedTiles[i];
+        }
+
+        if (direction === 'Down') valuedTiles.sort((a, b) => b.x - a.x);
+
+        const conditionalGrid = direction === 'Up'
+                ? [...valuedTiles, ...nullTiles]
+                : [...nullTiles, ...valuedTiles];
+
+        newTileGrid.push(...conditionalGrid);
+
+        tilesColumnIndex++;
+    }
+
+    newTileGrid.sort((a,b) => a.x - b.x || a.y - b.y);
+    newTileGrid.forEach((tile) => tile.merged = false);
+
     return newTileGrid;
 };

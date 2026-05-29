@@ -21,6 +21,7 @@ export interface Tile {
     y: number,
     value: number | undefined,
     merged: boolean,
+    classes: string
 }
 
 export interface Board2048 extends Game {

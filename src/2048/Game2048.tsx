@@ -6,12 +6,14 @@ import {
     processDirection,
     tileVariants,
     valid2048InputsArr,
+    type Direction,
 } from './types-2048';
 import { useTouchHandler } from '../shared-utils/hooks';
 
 export default function Game2048() {
     const [tiles, setTiles] = useState<Tile[]>(genInitialTiles);
-    const [animationDirection, setanimationDirection] = useState();
+
+    const [animationDirection, setAnimationDirection] = useState<Direction | undefined>();
 
     let board: React.ReactElement[] = [];
     for (let tile of tiles) {
@@ -28,7 +30,7 @@ export default function Game2048() {
         board.push(element);
     }
 
-    const inputHandler = (direction: string): void => {
+    const inputHandler = (direction: Direction): void => {
         setTiles((prevTiles) => {
             if (direction === 'Left' || direction === 'Right') {
                 return handleHorizontal(prevTiles, direction);
@@ -47,6 +49,7 @@ export default function Game2048() {
         const handleKeyInput = (e: KeyboardEvent) => {
             if (valid2048InputsArr.includes(e.key)) {
                 const direction = processDirection[e.key];
+                setAnimationDirection(direction);
                 inputHandler(direction);
             }
         };

@@ -25,7 +25,9 @@ export const tileVariants: Record<string, string> = {
     '2048': 'bg-(--board-card-2048) text-white text-2xl',
 };
 
-export const processDirection: Record<string, string> = {
+export type Direction = 'Up' | 'Down' | 'Left' | 'Right'
+
+export const processDirection: Record<string, Direction> = {
     ArrowLeft: 'Left',
     a: 'Left',
     4: 'Left',

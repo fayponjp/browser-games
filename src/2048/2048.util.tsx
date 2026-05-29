@@ -1,4 +1,5 @@
 import type { Tile } from '../shared-utils/types-interfaces';
+import type { Direction } from './types-2048';
 
 const generateCoords = () => {
     function getRandomTile() {
@@ -39,24 +40,24 @@ export const genInitialTiles = () => {
     Array.from(Array(4).keys()).map((rowId) =>
         Array.from(Array(4).keys()).map((colId) => {
             let initValue: number | undefined = undefined;
-            // if (
-            //     (firstSetX === rowId && firstSetY === colId) ||
-            //     (secondSetX === rowId && secondSetY === colId)
-            // ) {
-            //     initValue = generateTileValue();
-            // }
+            if (
+                (firstSetX === rowId && firstSetY === colId) ||
+                (secondSetX === rowId && secondSetY === colId)
+            ) {
+                initValue = generateTileValue();
+            }
 
-            if (rowId === 0 && colId === 0) initValue = 2;
-            if (rowId === 0 && colId === 1) initValue = 4;
-            if (rowId === 1 && colId === 0) initValue = 8;
-            if (rowId === 1 && colId === 1) initValue = 8;
-            if (rowId === 1 && colId === 3) initValue = 16;
-            if (rowId === 2 && colId === 2) initValue = 32;
-            if (rowId === 2 && colId === 3) initValue = 64;
-            if (rowId === 3 && colId === 3) initValue = 128;
-            if (rowId === 3 && colId === 1) initValue = 256;
-            if (rowId === 3 && colId === 0) initValue = 512;
-            if (rowId === 0 && colId === 3) initValue = 1024;
+            // if (rowId === 0 && colId === 0) initValue = 2;
+            // if (rowId === 0 && colId === 1) initValue = 4;
+            // if (rowId === 1 && colId === 0) initValue = 8;
+            // if (rowId === 1 && colId === 1) initValue = 8;
+            // if (rowId === 1 && colId === 3) initValue = 16;
+            // if (rowId === 2 && colId === 2) initValue = 32;
+            // if (rowId === 2 && colId === 3) initValue = 64;
+            // if (rowId === 3 && colId === 3) initValue = 128;
+            // if (rowId === 3 && colId === 1) initValue = 256;
+            // if (rowId === 3 && colId === 0) initValue = 512;
+            // if (rowId === 0 && colId === 3) initValue = 1024;
             // if (rowId === 0 && colId === 3) initValue = 64
 
             initTileBoard.push({
@@ -64,6 +65,7 @@ export const genInitialTiles = () => {
                 y: colId,
                 merged: false,
                 value: initValue,
+                classes: ''
             });
         }),
     );
@@ -71,37 +73,77 @@ export const genInitialTiles = () => {
     return initTileBoard;
 };
 
-export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
+const generateNewTile = (tiles: Tile[]) => {
+    // const rand = Math.random();
+
+    // let chanceScaler = 1 / nullQty;
+    // let ctr = 1;
+
+    // for (let tile of tiles) {
+    //     if (!tile.value) {
+    //         if (chanceScaler > rand) {
+    //             tile.value = generateTileValue();
+    //             break;
+    //         } else {
+    //             chanceScaler = chanceScaler * ctr;
+    //             ctr++;
+    //         }
+    //     }
+    // }
+
+    const arrLength = tiles.length;
+    let isNull = false;
+
+    while (!isNull) {
+        const randomIndex = Math.ceil(Math.random() * (arrLength - 1));
+
+        if (!tiles[randomIndex].value) {
+            tiles[randomIndex].value = generateTileValue();
+            isNull = true;
+        }
+    }
+}
+
+export const handleHorizontal = (tiles: Tile[], direction: Direction): Tile[] => {
     let tilesRowIndex = 0;
 
     const newTileGrid: Tile[] = [];
-
+    let nullTileTotalQty = 0;
+    let didTilesUpdate = false;
     while (tilesRowIndex <= 3) {
         const processRow = tiles.filter((tile) => tile.x === tilesRowIndex);
 
         const valuedTilesQty = processRow.filter((tile) => tile.value).length;
         const nullTilesQty = processRow.filter((tile) => !tile.value).length;
+        nullTileTotalQty += nullTilesQty;
         const valuedTiles: Tile[] = [];
         const nullTiles: Tile[] = [];
 
         processRow.forEach((tile) => {
+            const originalCoord = tile.y;
+            let comparisonCoord;
+            const updatedValueY = direction === 'Left'
+                            ? valuedTiles.length
+                            : nullTilesQty + valuedTiles.length;
+            const updatedNullY = direction === 'Left'
+                            ? valuedTilesQty + nullTiles.length
+                            : nullTiles.length;
             if (tile.value) {
                 valuedTiles.push({
                     ...tile,
-                    y:
-                        direction === 'Left'
-                            ? valuedTiles.length
-                            : nullTilesQty + valuedTiles.length,
+                    y: updatedValueY,
                 });
+
+                comparisonCoord = updatedValueY;
             } else {
                 nullTiles.push({
                     ...tile,
-                    y:
-                        direction === 'Left'
-                            ? valuedTilesQty + nullTiles.length
-                            : nullTiles.length,
+                    y: updatedNullY,
                 });
+                comparisonCoord = updatedNullY;
             }
+
+            if (originalCoord !== comparisonCoord) didTilesUpdate = true;
         });
 
         if (direction === 'Right') valuedTiles.sort((a, b) => b.y - a.y);
@@ -129,6 +171,8 @@ export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
                         value: undefined,
                         merged: false,
                     };
+
+                    didTilesUpdate = true;
                 } else if (!valuesMatch && !prevVal) {
                     valuedTiles[i - 1] = {
                         ...prevTile,
@@ -140,6 +184,10 @@ export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
                         value: undefined,
                         merged: false,
                     };
+
+                    // didTilesUpdate = true;
+                } else {
+                    false;
                 }
             }
 
@@ -156,14 +204,17 @@ export const handleHorizontal = (tiles: Tile[], direction: string): Tile[] => {
         tilesRowIndex++;
     }
 
-    newTileGrid.forEach((tile) => tile.merged = false)
+    newTileGrid.forEach((tile) => tile.merged = false);
+    if (didTilesUpdate) generateNewTile(newTileGrid);
     return newTileGrid;
 };
 
-export const handleVertical = (tiles: Tile[], direction: string): Tile[] => {
+export const handleVertical = (tiles: Tile[], direction: Direction): Tile[] => {
     let tilesColumnIndex = 0;
 
     const newTileGrid: Tile[] = [];
+    let nullTileTotalQty = 0;
+    let didTilesUpdate = false;
 
     while (tilesColumnIndex <= 3) {
         const processColumn = tiles.filter(
@@ -174,28 +225,36 @@ export const handleVertical = (tiles: Tile[], direction: string): Tile[] => {
             (tile) => tile.value,
         ).length;
         const nullTilesQty = processColumn.filter((tile) => !tile.value).length;
-
+        nullTileTotalQty += nullTilesQty;
         const valuedTiles: Tile[] = [];
         const nullTiles: Tile[] = [];
 
         processColumn.forEach((tile) => {
+            const originalCoord = tile.x;
+            let comparisonCoord;
+            const updatedValueX = direction === 'Up'
+                        ? valuedTiles.length
+                        : nullTilesQty + valuedTiles.length;
+            const updatedNullX = direction === 'Up'
+                            ? valuedTilesQty + nullTiles.length
+                            : nullTiles.length;
             if (tile.value) {
                 valuedTiles.push({
                     ...tile,
-                    x:
-                        direction === 'Up'
-                            ? valuedTiles.length
-                            : nullTilesQty + valuedTiles.length,
+                    x: updatedValueX,
                 });
+
+                comparisonCoord = updatedValueX;
             } else {
                 nullTiles.push({
                     ...tile,
-                    x:
-                        direction === 'Up'
-                            ? valuedTilesQty + nullTiles.length
-                            : nullTiles.length,
+                    x: updatedNullX,
                 });
+
+                comparisonCoord = updatedNullX;
             }
+
+            if (originalCoord !== comparisonCoord) didTilesUpdate = true;
         });
 
         if (direction === 'Down') valuedTiles.sort((a, b) => b.x - a.x);
@@ -223,6 +282,8 @@ export const handleVertical = (tiles: Tile[], direction: string): Tile[] => {
                         value: undefined,
                         merged: false,
                     };
+
+                    didTilesUpdate = true;
                 } else if (!valuesMatch && !prevVal) {
                     valuedTiles[i - 1] = {
                         ...prevTile,
@@ -234,6 +295,8 @@ export const handleVertical = (tiles: Tile[], direction: string): Tile[] => {
                         value: undefined,
                         merged: false,
                     };
+
+                    // didTilesUpdate = true;
                 }
             }
 
@@ -253,6 +316,6 @@ export const handleVertical = (tiles: Tile[], direction: string): Tile[] => {
 
     newTileGrid.sort((a,b) => a.x - b.x || a.y - b.y);
     newTileGrid.forEach((tile) => tile.merged = false);
-
+    if (didTilesUpdate) generateNewTile(newTileGrid);
     return newTileGrid;
 };

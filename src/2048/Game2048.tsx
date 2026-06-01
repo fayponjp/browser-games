@@ -8,24 +8,39 @@ import {
     valid2048InputsArr,
     type Direction,
 } from './types-2048';
-import { useTouchHandler } from '../shared-utils/hooks';
+import { useSwipe, useTouchHandler } from '../shared-utils/hooks';
 
 export default function Game2048() {
     const [tiles, setTiles] = useState<Tile[]>(genInitialTiles);
+    // derive score 
+    // check if moves are possible for game over
+    const [animationDirection, setAnimationDirection] = useState<
+        Direction | undefined
+    >();
 
-    const [animationDirection, setAnimationDirection] = useState<Direction | undefined>();
+    let score = 0;
 
     let board: React.ReactElement[] = [];
     for (let tile of tiles) {
         const element = (
             <div
                 key={`tile-${tile.x}-${tile.y}`}
-                className={`h-26 w-26 flex rounded-lg ${tile.value ? `${tileVariants[tile.value]} shadow-sm shadow-black/50` : 'bg-(--board-card-null) inset-shadow-xs inset-shadow-black/75'}`}
+                // ${tile.classes} 
+                className={`h-26 w-26 flex rounded-lg 
+                    transition-colors
+                    duration-100
+                    ease-in-out
+                    ${tile.value ? `${tileVariants[tile.value]} shadow-sm shadow-black/50` 
+                    : 'bg-(--board-card-null) inset-shadow-xs inset-shadow-black/75'}`}
             >
                 <span className='m-auto'>{tile.value}</span>
-                <p className='text-sm absolute'>{tile.x},{tile.y}</p>
+                <p className='text-sm absolute'>
+                    {tile.x},{tile.y}
+                </p>
             </div>
         );
+
+        score += tile.value || 0;
 
         board.push(element);
     }
@@ -59,16 +74,23 @@ export default function Game2048() {
     }, []);
 
     const tileContainer = useRef(null);
-    useTouchHandler(tileContainer);
+    useSwipe(tileContainer, inputHandler);
 
     // useEffect(() => {
     //     console.log(tiles)
     // }, [tiles])
 
     return (
-        <div className='font-[Rubik] font-bold h-full w-full flex items-center justify-center bg-gray-800'>
-            <div ref={tileContainer} className='grid grid-cols-4 grid-rows-4 rounded-2xl p-3 gap-3 bg-(--board-bg)'>
+        <div className='font-[Rubik] font-bold h-full w-full flex flex-col items-center justify-center bg-gray-800'>
+            <div
+                ref={tileContainer}
+                className='grid grid-cols-4 grid-rows-4 rounded-2xl p-3 gap-3 bg-(--board-bg)'
+            >
                 {board}
+            </div>
+
+            <div className='m-4 text-white'>
+                <p>Score: {score}</p>
             </div>
         </div>
     );

@@ -74,22 +74,6 @@ export const genInitialTiles = () => {
 };
 
 const generateNewTile = (tiles: Tile[]) => {
-    // const rand = Math.random();
-
-    // let chanceScaler = 1 / nullQty;
-    // let ctr = 1;
-
-    // for (let tile of tiles) {
-    //     if (!tile.value) {
-    //         if (chanceScaler > rand) {
-    //             tile.value = generateTileValue();
-    //             break;
-    //         } else {
-    //             chanceScaler = chanceScaler * ctr;
-    //             ctr++;
-    //         }
-    //     }
-    // }
 
     const arrLength = tiles.length;
     let isNull = false;
@@ -165,11 +149,13 @@ export const handleHorizontal = (tiles: Tile[], direction: Direction): Tile[] =>
                         ...prevTile,
                         value: prevTile!.value! * 2,
                         merged: true,
+                        classes: 'animate-shrink'
                     };
                     valuedTiles[i] = {
                         ...currentTile,
                         value: undefined,
                         merged: false,
+                        classes: ''
                     };
 
                     didTilesUpdate = true;
@@ -178,16 +164,18 @@ export const handleHorizontal = (tiles: Tile[], direction: Direction): Tile[] =>
                         ...prevTile,
                         value: currentTile.value,
                         merged: true,
+                        classes: 'animate-shrink'
                     };
                     valuedTiles[i] = {
                         ...currentTile,
                         value: undefined,
                         merged: false,
+                        classes: ''
                     };
 
                     // didTilesUpdate = true;
                 } else {
-                    false;
+                    valuedTiles[i].classes = ''
                 }
             }
 

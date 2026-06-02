@@ -1,6 +1,10 @@
 import type { Tile } from '../shared-utils/types-interfaces';
 import type { Direction } from './types-2048';
 
+const generateTileId = (): string => {
+    return `tile-${Date.now()}-${Math.random()}`;
+};
+
 const generateCoords = () => {
     function getRandomTile() {
         return Math.floor(Math.random() * 4);
@@ -61,6 +65,7 @@ export const genInitialTiles = () => {
             // if (rowId === 0 && colId === 3) initValue = 64
 
             initTileBoard.push({
+                id: generateTileId(),
                 x: rowId,
                 y: colId,
                 merged: false,
@@ -82,7 +87,11 @@ const generateNewTile = (tiles: Tile[]) => {
         const randomIndex = Math.ceil(Math.random() * (arrLength - 1));
 
         if (!tiles[randomIndex].value) {
-            tiles[randomIndex].value = generateTileValue();
+            tiles[randomIndex] = {
+                ...tiles[randomIndex],
+                id: generateTileId(),
+                value: generateTileValue()
+            };
             isNull = true;
         }
     }

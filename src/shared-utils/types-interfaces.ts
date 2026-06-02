@@ -17,6 +17,7 @@ export interface PkmnGame extends Game {
 }
 
 export interface Tile {
+    id: string,
     x: number,
     y: number,
     value: number | undefined,

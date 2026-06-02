@@ -41,9 +41,33 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
+@keyframes shrinkOut {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 @theme {
     --board-font: 'Rubik', sans-serif;
     --animate-blink: blink_in_out 1s steps(2, jump-start) infinite;
+    --animate-shrinkOut: shrinkOut 0.15s ease-in-out;
+    --animate-popIn: popIn 0.15s ease-in-out;
 
     --color-board-brown: #756452;
 

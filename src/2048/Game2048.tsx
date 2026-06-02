@@ -8,28 +8,38 @@ import {
     valid2048InputsArr,
     type Direction,
 } from './types-2048';
-import { useSwipe, useTouchHandler } from '../shared-utils/hooks';
+import { useSwipe } from '../shared-utils/hooks';
+
+interface AnimatingTiles {
+    removed: Set<string>;
+    appearing: Set<string>;
+}
 
 export default function Game2048() {
     const [tiles, setTiles] = useState<Tile[]>(genInitialTiles);
-    // derive score 
-    // check if moves are possible for game over
-    const [animationDirection, setAnimationDirection] = useState<
-        Direction | undefined
-    >();
+    const prevTilesRef = useRef<Tile[]>(tiles);
+    const [animatingTiles, setAnimatingTiles] = useState<AnimatingTiles>({
+        removed: new Set(),
+        appearing: new Set(),
+    });
 
     let score = 0;
 
     let board: React.ReactElement[] = [];
     for (let tile of tiles) {
+        const isRemoving = animatingTiles.removed.has(tile.id);
+        const isAppearing = animatingTiles.appearing.has(tile.id);
+        
         const element = (
             <div
-                key={`tile-${tile.x}-${tile.y}`}
+                key={`tile-${tile.id}`}
                 // ${tile.classes} 
                 className={`h-26 w-26 flex rounded-lg 
                     transition-colors
                     duration-100
                     ease-in-out
+                    ${isRemoving ? 'animate-shrinkOut' : ''}
+                    ${isAppearing ? 'animate-popIn' : ''}
                     ${tile.value ? `${tileVariants[tile.value]} shadow-sm shadow-black/50` 
                     : 'bg-(--board-card-null) inset-shadow-xs inset-shadow-black/75'}`}
             >
@@ -44,6 +54,58 @@ export default function Game2048() {
 
         board.push(element);
     }
+
+    // Detect which tiles were removed or appeared
+    useEffect(() => {
+        const prevTileValueMap = new Map(
+            prevTilesRef.current.map((t) => [t.id, t.value])
+        );
+        const currentTileValueMap = new Map(tiles.map((t) => [t.id, t.value]));
+
+        const removedTiles = new Set<string>();
+        const appearingTiles = new Set<string>();
+
+        // Find tiles that became null (were numbered, now null)
+        prevTilesRef.current.forEach((tile) => {
+            if (tile.value !== undefined && tile.value !== null) {
+                const currentValue = currentTileValueMap.get(tile.id);
+                if (currentValue === undefined || currentValue === null) {
+                    removedTiles.add(tile.id);
+                }
+            }
+        });
+
+        // Find tiles that are new or updated
+        tiles.forEach((tile) => {
+            if (tile.value !== undefined && tile.value !== null) {
+                const prevValue = prevTileValueMap.get(tile.id);
+                // New tile or tile that gained a value
+                if (prevValue === undefined || prevValue === null) {
+                    appearingTiles.add(tile.id);
+                } else if (prevValue !== tile.value) {
+                    // Tile value changed (merged), treat as appearing
+                    appearingTiles.add(tile.id);
+                }
+            }
+        });
+
+        if (removedTiles.size > 0 || appearingTiles.size > 0) {
+            setAnimatingTiles({ removed: removedTiles, appearing: appearingTiles });
+        }
+
+        prevTilesRef.current = tiles;
+    }, [tiles]);
+
+    // Clear animation state after duration
+    useEffect(() => {
+        if (animatingTiles.removed.size > 0 || animatingTiles.appearing.size > 0) {
+            const timer = setTimeout(
+                () => setAnimatingTiles({ removed: new Set(), appearing: new Set() }),
+                150
+            );
+            return () => clearTimeout(timer);
+        }
+    }, [animatingTiles]);
 
     const inputHandler = (direction: Direction): void => {
         setTiles((prevTiles) => {
@@ -64,7 +126,6 @@ export default function Game2048() {
         const handleKeyInput = (e: KeyboardEvent) => {
             if (valid2048InputsArr.includes(e.key)) {
                 const direction = processDirection[e.key];
-                setAnimationDirection(direction);
                 inputHandler(direction);
             }
         };

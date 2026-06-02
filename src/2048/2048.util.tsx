@@ -51,19 +51,6 @@ export const genInitialTiles = () => {
                 initValue = generateTileValue();
             }
 
-            // if (rowId === 0 && colId === 0) initValue = 2;
-            // if (rowId === 0 && colId === 1) initValue = 4;
-            // if (rowId === 1 && colId === 0) initValue = 8;
-            // if (rowId === 1 && colId === 1) initValue = 8;
-            // if (rowId === 1 && colId === 3) initValue = 16;
-            // if (rowId === 2 && colId === 2) initValue = 32;
-            // if (rowId === 2 && colId === 3) initValue = 64;
-            // if (rowId === 3 && colId === 3) initValue = 128;
-            // if (rowId === 3 && colId === 1) initValue = 256;
-            // if (rowId === 3 && colId === 0) initValue = 512;
-            // if (rowId === 0 && colId === 3) initValue = 1024;
-            // if (rowId === 0 && colId === 3) initValue = 64
-
             initTileBoard.push({
                 id: generateTileId(),
                 x: rowId,

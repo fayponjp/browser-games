@@ -44,9 +44,6 @@ export default function Game2048() {
                     : 'bg-(--board-card-null) inset-shadow-xs inset-shadow-black/75'}`}
             >
                 <span className='m-auto'>{tile.value}</span>
-                <p className='text-sm absolute'>
-                    {tile.x},{tile.y}
-                </p>
             </div>
         );
 
@@ -55,7 +52,6 @@ export default function Game2048() {
         board.push(element);
     }
 
-    // Detect which tiles were removed or appeared
     useEffect(() => {
         const prevTileValueMap = new Map(
             prevTilesRef.current.map((t) => [t.id, t.value])
@@ -65,7 +61,6 @@ export default function Game2048() {
         const removedTiles = new Set<string>();
         const appearingTiles = new Set<string>();
 
-        // Find tiles that became null (were numbered, now null)
         prevTilesRef.current.forEach((tile) => {
             if (tile.value !== undefined && tile.value !== null) {
                 const currentValue = currentTileValueMap.get(tile.id);
@@ -75,15 +70,12 @@ export default function Game2048() {
             }
         });
 
-        // Find tiles that are new or updated
         tiles.forEach((tile) => {
             if (tile.value !== undefined && tile.value !== null) {
                 const prevValue = prevTileValueMap.get(tile.id);
-                // New tile or tile that gained a value
                 if (prevValue === undefined || prevValue === null) {
                     appearingTiles.add(tile.id);
                 } else if (prevValue !== tile.value) {
-                    // Tile value changed (merged), treat as appearing
                     appearingTiles.add(tile.id);
                 }
             }
@@ -136,10 +128,6 @@ export default function Game2048() {
 
     const tileContainer = useRef(null);
     useSwipe(tileContainer, inputHandler);
-
-    // useEffect(() => {
-    //     console.log(tiles)
-    // }, [tiles])
 
     return (
         <div className='font-[Rubik] font-bold h-full w-full flex flex-col items-center justify-center bg-gray-800'>

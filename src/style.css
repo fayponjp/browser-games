@@ -42,14 +42,14 @@ body {
 }
 
 @keyframes shrinkOut {
-    from {
+    /* from {
         transform: scale(1);
         opacity: 1;
     }
     to {
         transform: scale(0.7);
         opacity: 0;
-    }
+    } */
 }
 
 @keyframes popIn {
@@ -67,7 +67,7 @@ body {
     --board-font: 'Rubik', sans-serif;
     --animate-blink: blink_in_out 1s steps(2, jump-start) infinite;
     --animate-shrinkOut: shrinkOut 0.15s ease-in-out;
-    --animate-popIn: popIn 0.15s ease-in-out;
+    --animate-popIn: popIn 0.15s cubic-bezier(0.18,0.89,0.32,1.27);
 
     --color-board-brown: #756452;
 
@@ -81,7 +81,7 @@ body {
         }
     }
 
-    --animate-shrink: shrink 0.34s cubic-bezier(0.18,0.89,0.32,1.27);;
+    --animate-shrink: shrink 0.34s cubic-bezier(0.18,0.89,0.32,1.27);
 
     @keyframes shrink {
         0% {

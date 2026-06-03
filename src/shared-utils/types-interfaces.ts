@@ -22,13 +22,13 @@ export interface Tile {
     y: number,
     value: number | undefined,
     merged: boolean,
-    classes: string
 }
 
 export interface Board2048 extends Game {
     tiles: Tile[]
 }
 
-// looks like 1024 is a gradient, dark center lightens out
-// go with whatever for colors beyond
-// check logic so if value is > 4, text-white otherwise board brown
+export interface AnimatingTiles {
+    removed: Set<string>;
+    appearing: Set<string>;
+}

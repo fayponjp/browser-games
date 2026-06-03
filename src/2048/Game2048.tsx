@@ -1,29 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-
-import type { Tile } from '../shared-utils/types-interfaces';
-import { genInitialTiles, handleHorizontal, handleVertical } from './2048.util';
+import { useEffect, useRef } from 'react';
+import { handleHorizontal, handleVertical } from './2048.util';
 import {
     processDirection,
     tileVariants,
     valid2048InputsArr,
     type Direction,
 } from './types-2048';
-import { useSwipe } from '../shared-utils/hooks';
-
-interface AnimatingTiles {
-    removed: Set<string>;
-    appearing: Set<string>;
-}
+import { useGroupAnimatingTiles, useClearAnimatingTiles, useSwipe, useCheckForValidMoves } from './hooks-2048';
+import { use2048 } from './hooks-2048';
 
 export default function Game2048() {
-    const [tiles, setTiles] = useState<Tile[]>(genInitialTiles);
-    const prevTilesRef = useRef<Tile[]>(tiles);
-    const [animatingTiles, setAnimatingTiles] = useState<AnimatingTiles>({
-        removed: new Set(),
-        appearing: new Set(),
-    });
-
-    let score = 0;
+    const { tiles, animatingTiles, updateTiles, score, updateScore, gameOver } = use2048();
 
     let board: React.ReactElement[] = [];
     for (let tile of tiles) {
@@ -33,7 +20,6 @@ export default function Game2048() {
         const element = (
             <div
                 key={`tile-${tile.id}`}
-                // ${tile.classes} 
                 className={`h-26 w-26 flex rounded-lg 
                     transition-colors
                     duration-100
@@ -46,73 +32,26 @@ export default function Game2048() {
                 <span className='m-auto'>{tile.value}</span>
             </div>
         );
-
-        score += tile.value || 0;
-
         board.push(element);
     }
 
-    useEffect(() => {
-        const prevTileValueMap = new Map(
-            prevTilesRef.current.map((t) => [t.id, t.value])
-        );
-        const currentTileValueMap = new Map(tiles.map((t) => [t.id, t.value]));
-
-        const removedTiles = new Set<string>();
-        const appearingTiles = new Set<string>();
-
-        prevTilesRef.current.forEach((tile) => {
-            if (tile.value !== undefined && tile.value !== null) {
-                const currentValue = currentTileValueMap.get(tile.id);
-                if (currentValue === undefined || currentValue === null) {
-                    removedTiles.add(tile.id);
-                }
-            }
-        });
-
-        tiles.forEach((tile) => {
-            if (tile.value !== undefined && tile.value !== null) {
-                const prevValue = prevTileValueMap.get(tile.id);
-                if (prevValue === undefined || prevValue === null) {
-                    appearingTiles.add(tile.id);
-                } else if (prevValue !== tile.value) {
-                    appearingTiles.add(tile.id);
-                }
-            }
-        });
-
-        if (removedTiles.size > 0 || appearingTiles.size > 0) {
-            setAnimatingTiles({ removed: removedTiles, appearing: appearingTiles });
-        }
-
-        prevTilesRef.current = tiles;
-    }, [tiles]);
-
-    // Clear animation state after duration
-    useEffect(() => {
-        if (animatingTiles.removed.size > 0 || animatingTiles.appearing.size > 0) {
-            const timer = setTimeout(
-                () => setAnimatingTiles({ removed: new Set(), appearing: new Set() }),
-                150
-            );
-            return () => clearTimeout(timer);
-        }
-    }, [animatingTiles]);
+    useGroupAnimatingTiles();
+    useClearAnimatingTiles();
+    useCheckForValidMoves();
 
     const inputHandler = (direction: Direction): void => {
-        setTiles((prevTiles) => {
+        updateTiles((prevTiles) => {
             if (direction === 'Left' || direction === 'Right') {
-                return handleHorizontal(prevTiles, direction);
+                const {newTileGrid, pointsEarned} = handleHorizontal(prevTiles, direction);
+                updateScore((prev) => prev + pointsEarned);
+                return newTileGrid;
             } else {
-                return handleVertical(prevTiles, direction);
+                const {newTileGrid, pointsEarned} = handleVertical(prevTiles, direction);
+                updateScore((prev) => prev + pointsEarned)
+                return newTileGrid
             }
         });
     };
-
-    const inputHandlerRef = useRef(inputHandler);
-    useEffect(() => {
-        inputHandlerRef.current = inputHandler;
-    });
 
     useEffect(() => {
         const handleKeyInput = (e: KeyboardEvent) => {
@@ -123,8 +62,11 @@ export default function Game2048() {
         };
         document.addEventListener('keydown', handleKeyInput);
 
+        if (gameOver) {
+            document.removeEventListener('keydown', handleKeyInput);
+        }
         return () => document.removeEventListener('keydown', handleKeyInput);
-    }, []);
+    }, [gameOver]);
 
     const tileContainer = useRef(null);
     useSwipe(tileContainer, inputHandler);

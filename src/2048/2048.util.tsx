@@ -57,7 +57,6 @@ export const genInitialTiles = () => {
                 y: colId,
                 merged: false,
                 value: initValue,
-                classes: ''
             });
         }),
     );
@@ -66,7 +65,6 @@ export const genInitialTiles = () => {
 };
 
 const generateNewTile = (tiles: Tile[]) => {
-
     const arrLength = tiles.length;
     let isNull = false;
 
@@ -77,37 +75,43 @@ const generateNewTile = (tiles: Tile[]) => {
             tiles[randomIndex] = {
                 ...tiles[randomIndex],
                 id: generateTileId(),
-                value: generateTileValue()
+                value: generateTileValue(),
             };
             isNull = true;
         }
     }
-}
+};
 
-export const handleHorizontal = (tiles: Tile[], direction: Direction): Tile[] => {
+export const handleHorizontal = (tiles: Tile[], direction: Direction) => {
     let tilesRowIndex = 0;
 
     const newTileGrid: Tile[] = [];
     let nullTileTotalQty = 0;
     let didTilesUpdate = false;
+
+    let pointsEarned = 0;
+
     while (tilesRowIndex <= 3) {
         const processRow = tiles.filter((tile) => tile.x === tilesRowIndex);
 
         const valuedTilesQty = processRow.filter((tile) => tile.value).length;
         const nullTilesQty = processRow.filter((tile) => !tile.value).length;
         nullTileTotalQty += nullTilesQty;
+
         const valuedTiles: Tile[] = [];
         const nullTiles: Tile[] = [];
 
         processRow.forEach((tile) => {
             const originalCoord = tile.y;
             let comparisonCoord;
-            const updatedValueY = direction === 'Left'
-                            ? valuedTiles.length
-                            : nullTilesQty + valuedTiles.length;
-            const updatedNullY = direction === 'Left'
-                            ? valuedTilesQty + nullTiles.length
-                            : nullTiles.length;
+            const updatedValueY =
+                direction === 'Left'
+                    ? valuedTiles.length
+                    : nullTilesQty + valuedTiles.length;
+            const updatedNullY =
+                direction === 'Left'
+                    ? valuedTilesQty + nullTiles.length
+                    : nullTiles.length;
             if (tile.value) {
                 valuedTiles.push({
                     ...tile,
@@ -141,37 +145,31 @@ export const handleHorizontal = (tiles: Tile[], direction: Direction): Tile[] =>
                 const valuesMatch = currVal === prevVal;
 
                 if (valuesMatch && !prevMerged) {
+                    const newValue = valuedTiles[i - 1].value!;
                     valuedTiles[i - 1] = {
                         ...prevTile,
-                        value: prevTile!.value! * 2,
+                        value: prevTile.value! * 2,
                         merged: true,
-                        classes: 'animate-shrink'
                     };
                     valuedTiles[i] = {
                         ...currentTile,
                         value: undefined,
                         merged: false,
-                        classes: ''
                     };
 
                     didTilesUpdate = true;
+                    pointsEarned += newValue * 2;
                 } else if (!valuesMatch && !prevVal) {
                     valuedTiles[i - 1] = {
                         ...prevTile,
                         value: currentTile.value,
                         merged: true,
-                        classes: 'animate-shrink'
                     };
                     valuedTiles[i] = {
                         ...currentTile,
                         value: undefined,
                         merged: false,
-                        classes: ''
                     };
-
-                    // didTilesUpdate = true;
-                } else {
-                    valuedTiles[i].classes = ''
                 }
             }
 
@@ -188,17 +186,18 @@ export const handleHorizontal = (tiles: Tile[], direction: Direction): Tile[] =>
         tilesRowIndex++;
     }
 
-    newTileGrid.forEach((tile) => tile.merged = false);
+    newTileGrid.forEach((tile) => (tile.merged = false));
     if (didTilesUpdate) generateNewTile(newTileGrid);
-    return newTileGrid;
+    return { newTileGrid, pointsEarned };
 };
 
-export const handleVertical = (tiles: Tile[], direction: Direction): Tile[] => {
+export const handleVertical = (tiles: Tile[], direction: Direction) => {
     let tilesColumnIndex = 0;
 
     const newTileGrid: Tile[] = [];
     let nullTileTotalQty = 0;
     let didTilesUpdate = false;
+    let pointsEarned = 0;
 
     while (tilesColumnIndex <= 3) {
         const processColumn = tiles.filter(
@@ -216,12 +215,14 @@ export const handleVertical = (tiles: Tile[], direction: Direction): Tile[] => {
         processColumn.forEach((tile) => {
             const originalCoord = tile.x;
             let comparisonCoord;
-            const updatedValueX = direction === 'Up'
-                        ? valuedTiles.length
-                        : nullTilesQty + valuedTiles.length;
-            const updatedNullX = direction === 'Up'
-                            ? valuedTilesQty + nullTiles.length
-                            : nullTiles.length;
+            const updatedValueX =
+                direction === 'Up'
+                    ? valuedTiles.length
+                    : nullTilesQty + valuedTiles.length;
+            const updatedNullX =
+                direction === 'Up'
+                    ? valuedTilesQty + nullTiles.length
+                    : nullTiles.length;
             if (tile.value) {
                 valuedTiles.push({
                     ...tile,
@@ -256,6 +257,7 @@ export const handleVertical = (tiles: Tile[], direction: Direction): Tile[] => {
                 const valuesMatch = currVal === prevVal;
 
                 if (valuesMatch && !prevMerged) {
+                    const newValue = valuedTiles[i - 1].value!;
                     valuedTiles[i - 1] = {
                         ...prevTile,
                         value: prevTile!.value! * 2,
@@ -268,6 +270,7 @@ export const handleVertical = (tiles: Tile[], direction: Direction): Tile[] => {
                     };
 
                     didTilesUpdate = true;
+                    pointsEarned += newValue * 2;
                 } else if (!valuesMatch && !prevVal) {
                     valuedTiles[i - 1] = {
                         ...prevTile,
@@ -289,7 +292,8 @@ export const handleVertical = (tiles: Tile[], direction: Direction): Tile[] => {
 
         if (direction === 'Down') valuedTiles.sort((a, b) => b.x - a.x);
 
-        const conditionalGrid = direction === 'Up'
+        const conditionalGrid =
+            direction === 'Up'
                 ? [...valuedTiles, ...nullTiles]
                 : [...nullTiles, ...valuedTiles];
 
@@ -298,8 +302,10 @@ export const handleVertical = (tiles: Tile[], direction: Direction): Tile[] => {
         tilesColumnIndex++;
     }
 
-    newTileGrid.sort((a,b) => a.x - b.x || a.y - b.y);
-    newTileGrid.forEach((tile) => tile.merged = false);
+    newTileGrid.sort((a, b) => a.x - b.x || a.y - b.y);
+    newTileGrid.forEach((tile) => (tile.merged = false));
     if (didTilesUpdate) generateNewTile(newTileGrid);
-    return newTileGrid;
+    return { newTileGrid, pointsEarned };
 };
+
+

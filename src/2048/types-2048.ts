@@ -8,7 +8,6 @@ export const valid2048InputsArr: string[] = [
     'ArrowDown',
     'ArrowLeft',
     'ArrowRight',
-    
 ];
 
 export const tileVariants: Record<string, string> = {
@@ -23,6 +22,8 @@ export const tileVariants: Record<string, string> = {
     '512': 'bg-(--board-card-512) text-white text-3xl',
     '1024': 'bg-(--board-card-1024) text-white text-2xl',
     '2048': 'bg-(--board-card-2048) text-white text-2xl',
+    'high': 'bg-gradient-to-b from-violet-400 via-blue-400 to-violet-400',
+    // '8192': 
 };
 
 export type Direction = 'Up' | 'Down' | 'Left' | 'Right'
@@ -42,3 +43,10 @@ export const processDirection: Record<string, Direction> = {
     ArrowUp: 'Up',
     w: 'Up',
 };
+
+export const animateDirection: Record<Direction, string> = {
+    Up: 'animate-up',
+    Down: 'animate-down',
+    Left: 'animate-left',
+    Right: 'animate-right'
+}

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
     --text: #f8f8f8;
@@ -24,9 +24,6 @@
     --board-card-512: #f5c93e;
     --board-card-1024: #f8cb30;
     --board-card-2048: #ffc900;
-    /* --board-card-: '';
-    --board-card-: ''; */
-    
 }
 
 body {
@@ -41,33 +38,15 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
-@keyframes shrinkOut {
-    /* from {
-        transform: scale(1);
-        opacity: 1;
-    }
-    to {
-        transform: scale(0.7);
-        opacity: 0;
-    } */
-}
-
-@keyframes popIn {
-    from {
-        transform: scale(0);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
 @theme {
     --board-font: 'Rubik', sans-serif;
     --animate-blink: blink_in_out 1s steps(2, jump-start) infinite;
-    --animate-shrinkOut: shrinkOut 0.15s ease-in-out;
-    --animate-popIn: popIn 0.15s cubic-bezier(0.18,0.89,0.32,1.27);
+    --animate-popIn: popIn 0.15s cubic-bezier(0.18, 0.89, 0.32, 1.27);
+
+    --animate-down: slidedown 0.15s cubic-bezier(0.18, 0.89, 0.32, 1.27);
+    --animate-up: slideup 0.15s cubic-bezier(0.18, 0.89, 0.32, 1.27);
+    --animate-left: slideleft 0.15s cubic-bezier(0.18, 0.89, 0.32, 1.27);
+    --animate-right: slideright 0.15s cubic-bezier(0.18, 0.89, 0.32, 1.27);
 
     --color-board-brown: #756452;
 
@@ -75,13 +54,69 @@ body {
         from {
             opacity: 1;
         }
-    
+
         to {
             opacity: 0;
         }
     }
 
-    --animate-shrink: shrink 0.34s cubic-bezier(0.18,0.89,0.32,1.27);
+    @keyframes slideup {
+        from {
+            translate: 0 -50px;
+            scale: 0.4;
+            opacity: 0;
+        }
+
+        to {
+            translate: 0 0;
+            scale: 1;
+            opacity: 1;
+        }
+    }
+
+    @keyframes slidedown {
+        from {
+            translate: 0 50px;
+            scale: 0.4;
+            opacity: 0;
+        }
+
+        to {
+            translate: 0 0;
+            scale: 1;
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideleft {
+        from {
+            translate: 50px 0;
+            scale: 0.4;
+            opacity: 0;
+        }
+
+        to {
+            translate: 0 0;
+            scale: 1;
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideright {
+        from {
+            translate: -50px 0;
+            scale: 0.4;
+            opacity: 0;
+        }
+
+        to {
+            translate: 0 0;
+            scale: 1;
+            opacity: 1;
+        }
+    }
+
+    --animate-shrink: shrink 0.34s cubic-bezier(0.18, 0.89, 0.32, 1.27);
 
     @keyframes shrink {
         0% {
@@ -94,5 +129,4 @@ body {
             opacity: 0;
         }
     }
-
 }

@@ -4,28 +4,36 @@ import { genInitialTiles } from './2048.util';
 import { useEffect, useRef } from 'react';
 import type { Direction } from './types-2048';
 import { persist, createJSONStorage } from 'zustand/middleware';
+
 interface Game2048State {
     tiles: Tile[];
     score: number;
     topScore: number;
     gameOver: boolean;
+    currentDirection: Direction | undefined;
     animatingTiles: AnimatingTiles;
     updateTiles: (tilesOrFn: Tile[] | ((prev: Tile[]) => Tile[])) => void;
     updateAnimatingTiles: (animatingTiles: AnimatingTiles) => void;
+    updateDirection: (direction: Direction) => void;
     updateScore: (scoreOrFn: number | ((prev: number) => number)) => void;
-    updateTopScore: (newScore: number) => void;
+    updateTopScore: (newScore: number | ((prev: number) => number)) => void;
     resetGame: () => void;
     setGameOver: (gameState: boolean) => void;
 }
 
+const initialState = {
+    tiles: genInitialTiles(),
+    score: 0,
+    gameOver: false,
+};
+
 export const use2048 = create<Game2048State>()(
     persist(
         (set) => ({
-            tiles: genInitialTiles(),
-            score: 0,
+            ...initialState,
             topScore: 0,
-            gameOver: false,
             animatingTiles: { removed: new Set(), appearing: new Set() },
+            currentDirection: undefined,
             updateTiles: (tilesOrFn) =>
                 set((state) => ({
                     tiles:
@@ -41,16 +49,16 @@ export const use2048 = create<Game2048State>()(
                             ? scoreOrFn(state.score)
                             : scoreOrFn,
                 })),
-            updateTopScore: (topScore) => set(() => ({topScore})),
-            resetGame: () =>
-                set({
-                    tiles: genInitialTiles(),
-                    score: 0,
-                    animatingTiles: {
-                        removed: new Set(),
-                        appearing: new Set(),
-                    },
-                }),
+            updateDirection: (direction) =>
+                set(() => ({ currentDirection: direction })),
+            updateTopScore: (topScore) =>
+                set((state) => ({
+                    topScore:
+                        typeof topScore === 'function'
+                            ? topScore(state.topScore)
+                            : topScore,
+                })),
+            resetGame: () => set(initialState),
             setGameOver: (gameStatus) => set(() => ({ gameOver: gameStatus })),
         }),
         {
@@ -60,7 +68,7 @@ export const use2048 = create<Game2048State>()(
                 score: state.score,
                 topScore: state.topScore,
                 gameOver: state.gameOver,
-            })
+            }),
         },
     ),
 );
@@ -132,6 +140,26 @@ export const useClearAnimatingTiles = () => {
 export const useCheckForValidMoves = () => {
     const { tiles, setGameOver } = use2048();
 
+    const checkForValid = (collection: Tile[]) => {
+        let currentTileValue = 0;
+        let prevTileValue = 0;
+
+        let hasValidMove = false;
+
+        for (let i = 0; i < collection.length; i++) {
+            currentTileValue = collection[i].value!;
+
+            if (currentTileValue === prevTileValue) {
+                hasValidMove = true;
+                break;
+            }
+
+            prevTileValue = currentTileValue;
+        }
+
+        return hasValidMove;
+    };
+
     useEffect(() => {
         let hasValidMove = false;
 
@@ -143,38 +171,31 @@ export const useCheckForValidMoves = () => {
                 const processRow = tiles.filter(
                     (tile) => tile.x === currentIndex,
                 );
-                let currentXTileValue = 0;
-                let prevXTileValue = 0;
 
-                for (let i = 0; i < processRow.length; i++) {
-                    currentXTileValue = processRow[i].value!;
-
-                    if (currentXTileValue === prevXTileValue) {
-                        hasValidMove = true;
-                        break;
-                    }
-
-                    prevXTileValue = currentXTileValue;
-                }
+                hasValidMove = checkForValid(processRow);
                 if (hasValidMove) break;
-                console.log(currentIndex)
+
                 currentIndex++;
             }
 
             if (!hasValidMove) {
-                // setGameOver(true);
-            } else {
                 currentIndex = 0;
-                let currentYValue = 0;
-                let prevYTileValue = 0;
 
                 while (currentIndex <= 3) {
+                    const processColumn = tiles.filter(
+                        (tile) => tile.y === currentIndex,
+                    );
 
+                    hasValidMove = checkForValid(processColumn);
+
+                    if (hasValidMove) break;
                     currentIndex++;
                 }
+
+                if (!hasValidMove) {
+                    setGameOver(true);
+                }
             }
-
-
         }
     }, [tiles]);
 };

@@ -3,36 +3,67 @@ import type { AnimatingTiles, Tile } from '../shared-utils/types-interfaces';
 import { genInitialTiles } from './2048.util';
 import { useEffect, useRef } from 'react';
 import type { Direction } from './types-2048';
-
+import { persist, createJSONStorage } from 'zustand/middleware';
 interface Game2048State {
     tiles: Tile[];
     score: number;
+    topScore: number;
+    gameOver: boolean;
     animatingTiles: AnimatingTiles;
     updateTiles: (tilesOrFn: Tile[] | ((prev: Tile[]) => Tile[])) => void;
     updateAnimatingTiles: (animatingTiles: AnimatingTiles) => void;
     updateScore: (scoreOrFn: number | ((prev: number) => number)) => void;
+    updateTopScore: (newScore: number) => void;
     resetGame: () => void;
-    gameOver: boolean;
     setGameOver: (gameState: boolean) => void;
 }
 
-export const use2048 = create<Game2048State>((set) => ({
-    tiles: genInitialTiles(),
-    score: 0,
-    animatingTiles: { removed: new Set(), appearing: new Set() },
-    updateTiles: (tilesOrFn) => 
-        set((state) => ({ 
-            tiles: typeof tilesOrFn === 'function' ? tilesOrFn(state.tiles) : tilesOrFn 
-        })),
-    updateAnimatingTiles: (animatingTiles) => set({ animatingTiles }),
-    updateScore: (scoreOrFn) => 
-        set((state) => ({ 
-            score: typeof scoreOrFn === 'function' ? scoreOrFn(state.score) : scoreOrFn
-        })),
-    resetGame: () => set({ tiles: [], score: 0, animatingTiles: { removed: new Set(), appearing: new Set() } }),
-    gameOver: false,
-    setGameOver: (gameStatus) => set(() => ({gameOver: gameStatus})),
-}));
+export const use2048 = create<Game2048State>()(
+    persist(
+        (set) => ({
+            tiles: genInitialTiles(),
+            score: 0,
+            topScore: 0,
+            gameOver: false,
+            animatingTiles: { removed: new Set(), appearing: new Set() },
+            updateTiles: (tilesOrFn) =>
+                set((state) => ({
+                    tiles:
+                        typeof tilesOrFn === 'function'
+                            ? tilesOrFn(state.tiles)
+                            : tilesOrFn,
+                })),
+            updateAnimatingTiles: (animatingTiles) => set({ animatingTiles }),
+            updateScore: (scoreOrFn) =>
+                set((state) => ({
+                    score:
+                        typeof scoreOrFn === 'function'
+                            ? scoreOrFn(state.score)
+                            : scoreOrFn,
+                })),
+            updateTopScore: (topScore) => set(() => ({topScore})),
+            resetGame: () =>
+                set({
+                    tiles: genInitialTiles(),
+                    score: 0,
+                    animatingTiles: {
+                        removed: new Set(),
+                        appearing: new Set(),
+                    },
+                }),
+            setGameOver: (gameStatus) => set(() => ({ gameOver: gameStatus })),
+        }),
+        {
+            name: 'game-2048-storage',
+            partialize: (state: Game2048State) => ({
+                tiles: state.tiles,
+                score: state.score,
+                topScore: state.topScore,
+                gameOver: state.gameOver,
+            })
+        },
+    ),
+);
 
 export const useGroupAnimatingTiles = () => {
     const { tiles, updateAnimatingTiles } = use2048();
@@ -78,41 +109,80 @@ export const useGroupAnimatingTiles = () => {
 };
 
 export const useClearAnimatingTiles = () => {
-    const {animatingTiles, updateAnimatingTiles} = use2048();
+    const { animatingTiles, updateAnimatingTiles } = use2048();
 
     useEffect(() => {
-        if (animatingTiles.removed.size > 0 || animatingTiles.appearing.size > 0) {
+        if (
+            animatingTiles.removed.size > 0 ||
+            animatingTiles.appearing.size > 0
+        ) {
             const timer = setTimeout(
-                () => updateAnimatingTiles({ removed: new Set(), appearing: new Set() }),
-                150
+                () =>
+                    updateAnimatingTiles({
+                        removed: new Set(),
+                        appearing: new Set(),
+                    }),
+                150,
             );
             return () => clearTimeout(timer);
         }
     }, [animatingTiles]);
-}
+};
 
 export const useCheckForValidMoves = () => {
-    const {tiles, setGameOver} = use2048();
+    const { tiles, setGameOver } = use2048();
 
     useEffect(() => {
-        let prevTile: Tile | undefined = undefined;
-        let currentTile: Tile = tiles[0];
-    
-        let currentIndex = 0;
-        let hasValidMove = true;
-    
+        let hasValidMove = false;
+
         const hasNull = tiles.filter((tile) => !tile.value).length;
         if (hasNull === 0) {
-            console.log(hasNull)
-            setGameOver(true)
+            let currentIndex = 0;
+
+            while (currentIndex <= 3) {
+                const processRow = tiles.filter(
+                    (tile) => tile.x === currentIndex,
+                );
+                let currentXTileValue = 0;
+                let prevXTileValue = 0;
+
+                for (let i = 0; i < processRow.length; i++) {
+                    currentXTileValue = processRow[i].value!;
+
+                    if (currentXTileValue === prevXTileValue) {
+                        hasValidMove = true;
+                        break;
+                    }
+
+                    prevXTileValue = currentXTileValue;
+                }
+                if (hasValidMove) break;
+                console.log(currentIndex)
+                currentIndex++;
+            }
+
+            if (!hasValidMove) {
+                // setGameOver(true);
+            } else {
+                currentIndex = 0;
+                let currentYValue = 0;
+                let prevYTileValue = 0;
+
+                while (currentIndex <= 3) {
+
+                    currentIndex++;
+                }
+            }
+
+
         }
-    }, [tiles])
-}
+    }, [tiles]);
+};
 
 export const useSwipe = (
     elementRef: React.RefObject<null | HTMLElement>,
     inputHandler: (direction: Direction) => void,
-    threshold: number = 50
+    threshold: number = 50,
 ) => {
     const touchStartRef = useRef({ x: 0, y: 0 });
 

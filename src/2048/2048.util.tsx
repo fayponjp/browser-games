@@ -307,5 +307,3 @@ export const handleVertical = (tiles: Tile[], direction: Direction) => {
     if (didTilesUpdate) generateNewTile(newTileGrid);
     return { newTileGrid, pointsEarned };
 };
-
-

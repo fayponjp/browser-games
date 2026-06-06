@@ -62,7 +62,7 @@ body {
 
     @keyframes slideup {
         from {
-            translate: 0 -50px;
+            translate: 0 -60%;
             scale: 0.4;
             opacity: 0;
         }
@@ -76,7 +76,7 @@ body {
 
     @keyframes slidedown {
         from {
-            translate: 0 50px;
+            translate: 0 60%;
             scale: 0.4;
             opacity: 0;
         }
@@ -90,7 +90,7 @@ body {
 
     @keyframes slideleft {
         from {
-            translate: 50px 0;
+            translate: 60% 0;
             scale: 0.4;
             opacity: 0;
         }
@@ -104,7 +104,7 @@ body {
 
     @keyframes slideright {
         from {
-            translate: -50px 0;
+            translate: -60% 0;
             scale: 0.4;
             opacity: 0;
         }

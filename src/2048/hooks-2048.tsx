@@ -203,13 +203,14 @@ export const useCheckForValidMoves = () => {
 export const useSwipe = (
     elementRef: React.RefObject<null | HTMLElement>,
     inputHandler: (direction: Direction) => void,
-    threshold: number = 50,
+    threshold: number = 30,
 ) => {
     const touchStartRef = useRef({ x: 0, y: 0 });
-
+    const {updateDirection} = use2048();
     useEffect(() => {
         const element = elementRef.current;
         if (!element) return;
+
 
         const handleTouchStart = (e: TouchEvent) => {
             e.preventDefault();
@@ -233,11 +234,16 @@ export const useSwipe = (
             const deltaX = touchEnd.x - touchStartRef.current.x;
             const deltaY = touchEnd.y - touchStartRef.current.y;
             const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
+            let swipeDirection: Direction;
 
             if (isHorizontal && Math.abs(deltaX) > threshold) {
-                inputHandler(deltaX > 0 ? 'Right' : 'Left');
+                swipeDirection = deltaX > 0 ? 'Right' : 'Left'
+                inputHandler(swipeDirection);
+                updateDirection(swipeDirection)
             } else if (!isHorizontal && Math.abs(deltaY) > threshold) {
-                inputHandler(deltaY > 0 ? 'Down' : 'Up');
+                swipeDirection = deltaY > 0 ? 'Down' : 'Up'
+                inputHandler(swipeDirection);
+                updateDirection(swipeDirection)
             }
         };
 

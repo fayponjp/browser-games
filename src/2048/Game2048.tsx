@@ -45,9 +45,6 @@ export default function Game2048() {
             <div
                 key={`tile-${tile.id}`}
                 className={`h-full aspect-square flex rounded-lg 
-                    transition-colors
-                    duration-100
-                    ease-in-out
                     ${isAppearing ? animateDirection[currentDirection!] : ''}
                     ${
                         variantValue
@@ -112,22 +109,32 @@ export default function Game2048() {
     }, [score])
 
     return (
-        <div className='font-[Rubik] font-bold h-full w-full flex flex-col items-center justify-center bg-orange-200/10'>
+        <div className='font-[Rubik] px-2 font-bold h-dvh w-full flex flex-col items-center justify-center bg-orange-200/10'>
+            <h1 className='text-board-brown text-3xl justify-between flex flex-row max-w-lg w-full px-2'>
+                <span className='py-2'>2048</span>
+                <span className='py-2'>
+                    {gameOver ? 'Game Over!' : ''}
+                </span>
+            </h1>
             <div
                 ref={tileContainer}
-                className='grid grid-cols-4 grid-rows-4 rounded-2xl p-3 gap-3 bg-(--board-bg) max-w-lg w-full aspect-square'
+                className='grid grid-cols-4 grid-rows-4 rounded-2xl p-3 gap-3 bg-(--board-bg) max-w-[98%] w-full lg:max-w-lg lg:w-full aspect-square'
             >
                 {board}
             </div>
 
-            <div className='m-4 text-board-brown font-medium flex flex-row justify-between w-full max-w-lg bg-(--board-card-2) p-2 rounded'>
-                <span className='py-2'>Score: {score}</span>
-                <span className='py-2'>Top Score: {topScore}</span>
-                <span className='py-2 font-bold'>
-                    {gameOver ? 'Game Over!' : ''}
-                </span>
+            <div className='m-4 text-board-brown font-medium flex flex-row justify-between w-full lg:w-full max-w-lg bg-(--board-card-2) p-2 rounded'>
+                <dl className='p-2 text-center'>
+                    <dt className='text-sm'>Score:</dt>
+                    <dd className='font-bold'>{score}</dd>
+                </dl>
+                <dl className='p-2 text-center'>
+                    <dt className='text-sm'>Top Score:</dt>
+                    <dd className='font-bold'>{topScore}</dd>
+                </dl>
+
                 <button
-                    className='cursor-pointer text-white bg-amber-950/40 rounded-sm py-2 px-3 hover:bg-amber-950/30'
+                    className='cursor-pointer text-white bg-amber-400/80 rounded-sm py-2 px-3 hover:bg-amber-400/50'
                     onClick={resetGame}
                 >
                     New Game

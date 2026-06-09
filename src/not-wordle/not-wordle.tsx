@@ -91,7 +91,7 @@ export default function NotWordle() {
 
     return (
         <>
-            <main className='flex flex-col justify-center bg-zinc-800  items-center'>
+            <main className='flex flex-col justify-center bg-zinc-800  items-center px-2'>
                 <section className='max-w-125 w-full flex flex-col mx-auto py-4 gap-10'>
                     <AnswerGrid
                         game={game}

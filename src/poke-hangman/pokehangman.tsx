@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { retrievePkmnByIdGraphQL } from './pokemon.util';
+import { retrievePkmn } from './pokemon.util';
 import type { PkmnGame } from '../shared-utils/types-interfaces';
 import { loadFromCache, saveToCache } from '../shared-utils/caching';
 import { isLetter, useKeyhandler } from '../shared-utils/shared';
@@ -61,7 +61,7 @@ export default function PokeHangman() {
     useEffect(() => {
         if (!game.currentPkmn) {
             const fetchPkmn = async () => {
-                const response = await retrievePkmnByIdGraphQL();
+                const response = await retrievePkmn();
 
                 if (response) {
                     const { name, src } = response;
@@ -126,7 +126,7 @@ export default function PokeHangman() {
     }, [game]);
 
     return (
-        <main className='lg:max-w-5xl mx-auto grid grid-rows-[1fr_auto_1fr_auto_1fr] text-gray-700 text-center py-8'>
+        <div className=' bg-gray-100 mx-auto grid grid-rows-[1fr_auto_1fr_auto_1fr] text-gray-700 text-center py-8'>
             <div className='my-auto'>
                 <div
                     className={`rounded-[50%] border-4 h-25 w-25 mx-auto flex relative overflow-hidden shadow ${strikes >= 1 ? '' : 'hidden'}`}
@@ -211,6 +211,6 @@ export default function PokeHangman() {
                     <p>Press enter to confirm your guess</p>
                 </div>
             )}
-        </main>
+        </div>
     );
 }

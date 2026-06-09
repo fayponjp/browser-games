@@ -40,6 +40,10 @@ function Card({
     );
 }
 
+// Make a video game menu style
+// Mouseover highlight
+// clicking just highlights, click the Play button to swap
+// make Play button absolute position
 function Home() {
     return (
         <>
@@ -84,7 +88,7 @@ function Home() {
                             </>
                         }
                         route='/NotWordle'
-                        customClasses='border-(--correct) bg-(--wordle-bg) text-white'
+                        customClasses='border-(--correct)'
                     />
                     <Card
                         title={
@@ -108,11 +112,11 @@ function Home() {
                             </>
                         }
                         route='/PokeHangman'
-                        customClasses='bg-red-700/50'
+                        customClasses=''
                     />
                 </div>
             </main>
-            <footer className='bg-slate-800 text-white flex'>
+            <footer className='bg-(--os-green) text-white flex max-h-30 mt-auto py-2 px-8'>
                 <div className='max-w-5xl mx-auto w-full text-end text-sm py-2'>
                     © GameTryal 2026
                 </div>

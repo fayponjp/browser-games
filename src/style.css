@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 :root {
+    --background-dark: #343434;
     --text: #f8f8f8;
     --text-dark: #242424;
     --correct: #538d4e;
@@ -24,12 +25,14 @@
     --board-card-512: #f5c93e;
     --board-card-1024: #f8cb30;
     --board-card-2048: #ffc900;
+
+    --os-green: #2b5d2a;
 }
 
 body {
     height: 100vh;
-    background-color: var(--color-zinc-100);
-    color: var(--text-dark);
+    background-color: var(--background-dark);
+    color: #fff;
 }
 
 #root {
@@ -62,7 +65,7 @@ body {
 
     @keyframes slideup {
         from {
-            translate: 0 -60%;
+            translate: 0 40%;
             scale: 0.4;
             opacity: 0;
         }
@@ -76,7 +79,7 @@ body {
 
     @keyframes slidedown {
         from {
-            translate: 0 60%;
+            translate: 0 -40%;
             scale: 0.4;
             opacity: 0;
         }
@@ -90,7 +93,7 @@ body {
 
     @keyframes slideleft {
         from {
-            translate: 60% 0;
+            translate: 40% 0;
             scale: 0.4;
             opacity: 0;
         }
@@ -104,7 +107,7 @@ body {
 
     @keyframes slideright {
         from {
-            translate: -60% 0;
+            translate: -40% 0;
             scale: 0.4;
             opacity: 0;
         }

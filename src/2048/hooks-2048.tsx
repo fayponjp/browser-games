@@ -3,7 +3,7 @@ import type { AnimatingTiles, Tile } from '../shared-utils/types-interfaces';
 import { genInitialTiles } from './2048.util';
 import { useEffect, useRef } from 'react';
 import type { Direction } from './types-2048';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
 interface Game2048State {
     tiles: Tile[];

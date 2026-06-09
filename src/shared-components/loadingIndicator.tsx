@@ -1,6 +1,6 @@
 export default function LoadingIndicator() {
     return (
-        <div className='w-full flex flex-row justify-center items-center text-gray-700 text-lg'>
+        <div className='absolute inset-0 flex flex-row justify-center items-center text-gray-700 bg-gray-100/50 text-lg'>
             <svg
                 className='mr-3 -ml-1 size-5 animate-spin text-orange-300'
                 xmlns='http://www.w3.org/2000/svg'

@@ -109,7 +109,7 @@ export default function Game2048() {
     }, [score])
 
     return (
-        <div className='font-[Rubik] px-2 font-bold h-dvh w-full flex flex-col items-center justify-center bg-orange-200/10'>
+        <div className='font-[Rubik] bg-white px-2 font-bold h-lvh w-full flex flex-col items-center justify-center'>
             <h1 className='text-board-brown text-3xl justify-between flex flex-row max-w-lg w-full px-2'>
                 <span className='py-2'>2048</span>
                 <span className='py-2'>
@@ -134,12 +134,13 @@ export default function Game2048() {
                 </dl>
 
                 <button
-                    className='cursor-pointer text-white bg-amber-400/80 rounded-sm py-2 px-3 hover:bg-amber-400/50'
+                    className='cursor-pointer text-white transition-colors ease-in-out bg-amber-400/80 rounded-sm py-2 px-3 hover:bg-amber-300/90 hover:text-gray-500'
                     onClick={resetGame}
                 >
                     New Game
                 </button>
             </div>
+
         </div>
     );
 }

@@ -69,7 +69,7 @@ const generateNewTile = (tiles: Tile[]) => {
     let isNull = false;
 
     while (!isNull) {
-        const randomIndex = Math.ceil(Math.random() * (arrLength - 1));
+        const randomIndex = Math.floor(Math.random() * (arrLength));
 
         if (!tiles[randomIndex].value) {
             tiles[randomIndex] = {

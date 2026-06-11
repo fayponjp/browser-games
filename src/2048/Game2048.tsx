@@ -1,10 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { handleHorizontal, handleVertical } from './2048.util';
 import {
     animateDirection,
-    processDirection,
     tileVariants,
-    valid2048InputsArr,
     type Direction,
 } from './types-2048';
 import {
@@ -12,6 +10,8 @@ import {
     useClearAnimatingTiles,
     useSwipe,
     useCheckForValidMoves,
+    useAttachKeyListener,
+    useUpdateScore,
 } from './hooks-2048';
 import { use2048 } from './hooks-2048';
 
@@ -19,20 +19,17 @@ export default function Game2048() {
     const {
         tiles,
         topScore,
-        updateTopScore,
+        gameOver,
         animatingTiles,
         updateTiles,
         currentDirection,
         score,
         updateScore,
-        updateDirection,
-        gameOver,
         resetGame,
     } = use2048();
 
     let board: React.ReactElement[] = [];
     for (let tile of tiles) {
-        const isRemoving = animatingTiles.removed.has(tile.id);
         const isAppearing = animatingTiles.appearing.has(tile.id);
 
         const variantValue = tile.value
@@ -81,66 +78,39 @@ export default function Game2048() {
             }
         });
     };
-
-    useEffect(() => {
-        const handleKeyInput = (e: KeyboardEvent) => {
-            if (valid2048InputsArr.includes(e.key)) {
-                const direction = processDirection[e.key];
-                updateDirection(direction);
-                inputHandler(direction);
-            }
-        };
-        document.addEventListener('keydown', handleKeyInput);
-
-        if (gameOver) {
-            document.removeEventListener('keydown', handleKeyInput);
-        }
-        return () => document.removeEventListener('keydown', handleKeyInput);
-    }, [gameOver]);
+    useAttachKeyListener(inputHandler);
 
     const tileContainer = useRef(null);
     useSwipe(tileContainer, inputHandler);
 
-    useEffect(() => {
-        updateTopScore((prev) => {
-            if (prev< score) return score;
-            return prev;
-        })
-    }, [score])
+    useUpdateScore();
 
     return (
-        <div className='font-[Rubik] bg-white px-2 font-bold h-lvh w-full flex flex-col items-center justify-center'>
-            <h1 className='text-board-brown text-3xl justify-between flex flex-row max-w-lg w-full px-2'>
-                <span className='py-2'>2048</span>
-                <span className='py-2'>
-                    {gameOver ? 'Game Over!' : ''}
-                </span>
-            </h1>
-            <div
-                ref={tileContainer}
-                className='grid grid-cols-4 grid-rows-4 rounded-2xl p-3 gap-3 bg-(--board-bg) max-w-[98%] w-full lg:max-w-lg lg:w-full aspect-square'
-            >
-                {board}
-            </div>
-
-            <div className='m-4 text-board-brown font-medium flex flex-row justify-between w-full lg:w-full max-w-lg bg-(--board-card-2) p-2 rounded'>
-                <dl className='p-2 text-center'>
+        <div className='font-[Rubik] bg-orange-50 px-4 font-bold h-lvh w-full flex gap-4 lg:flex-col flex-col-reverse justify-end pt-20 lg:items-center lg:justify-center'>
+            <h1 className='text-board-brown font-medium grid grid-cols-[1fr_1fr_1fr] gap-4 w-full lg:w-full max-w-lg bg-(--board-card-null) p-2 rounded-sm'>
+                <dl className='p-2 text-center rounded bg-(--board-card-2)/80'>
                     <dt className='text-sm'>Score:</dt>
                     <dd className='font-bold'>{score}</dd>
                 </dl>
-                <dl className='p-2 text-center'>
+                <dl className='p-2 text-center rounded bg-(--board-card-2)/80'>
                     <dt className='text-sm'>Top Score:</dt>
                     <dd className='font-bold'>{topScore}</dd>
                 </dl>
 
                 <button
-                    className='cursor-pointer text-white transition-colors ease-in-out bg-amber-400/80 rounded-sm py-2 px-3 hover:bg-amber-300/90 hover:text-gray-500'
+                    className='cursor-pointer text-white transition-colors ease-in-out bg-(--board-card-2048) rounded-sm py-2 px-3 hover:brightness-110'
                     onClick={resetGame}
                 >
-                    New Game
+                    New Game <span>&#8634;</span> 
                 </button>
+            </h1>
+            <div
+                ref={tileContainer}
+                className='grid grid-cols-4 grid-rows-4 rounded-2xl p-3 gap-3 bg-(--board-bg) w-full lg:max-w-lg lg:w-full aspect-square'
+            >
+                {board}
             </div>
-
+            <div className={`w-full max-w-lg text-center px-6 py-4 bg-(--board-card-2) text-4xl text-board-brown rounded`}>{gameOver ? 'GAME OVER' : '2048'}</div>
         </div>
     );
 }

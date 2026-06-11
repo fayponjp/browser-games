@@ -1,21 +1,26 @@
 import { NavigationLinks } from './NavigationLink';
-import burger from '../assets/burger.svg';
 
 export const NavigationPopover = () => {
     return (
-        <>
+        <div className='relative m-auto w-full max-w-5xl'>
             <button
                 popoverTarget='navPopover'
-                className='font-mono [anchor-name:--nav-anchor] cursor-pointer absolute top-3 right-3 shadow bg-gray-50 p-2 rounded hover:bg-slate-100 transition-colors ease-in-out'
+                className='font-mono flex-row flex gap-2 [anchor-name:--nav-anchor] cursor-pointer absolute right-2 lg:right-0 top-5 shadow-md bg-gray-50 p-2 rounded hover:bg-slate-100 transition-colors ease-in-out'
             >
-                <img className='h-8' src={burger} />
+                <span className='text-2xl hidden lg:block text-board-brown'>
+                    MENU
+                </span>{' '}
+                <span className='text-board-brown text-3xl'>&#9776;</span>
             </button>
             <div
                 id='navPopover'
                 popover='auto'
-                className='animate-down overflow-visible font-mono [position-anchor:--nav-anchor] [position-area:span-bottom_left] lg:[position-area:bottom_span-left] inset-0 absolute rounded'
+                className='animate-down lg:my-2 lg:mx-0 mx-2 overflow-visible font-mono [position-anchor:--nav-anchor] [position-area:span-bottom_left] lg:[position-area:bottom_span-left] inset-0 absolute rounded'
             >
-                <nav className='flex flex-col text-center overflow-visible max-w-45'>
+                <nav className='flex flex-col gap-0.5 text-center overflow-visible max-w-45'>
+                    <NavigationLinks classes='bg-white' route='/'>
+                        <span>Home</span>
+                    </NavigationLinks>
                     <NavigationLinks
                         classes='bg-black text-white'
                         route='/NotWordle'
@@ -39,6 +44,14 @@ export const NavigationPopover = () => {
                     </NavigationLinks>
                 </nav>
             </div>
-        </>
+        </div>
     );
 };
+
+export const NavigationBar = () => {
+    return (
+        <div>
+            This is the header
+        </div>
+    )
+}

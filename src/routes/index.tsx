@@ -47,7 +47,7 @@ function Card({
 function Home() {
     return (
         <>
-            <main className='grid grid-rows-[auto_1fr] gap-4 p-8'>
+            <main className='grid grid-rows-[auto_1fr] gap-4 p-8 lg:min-w-lg m-auto'>
                 <h2 className='py-8 text-5xl font-mono max-w-5xl w-full mx-auto'>
                     Games
                 </h2>

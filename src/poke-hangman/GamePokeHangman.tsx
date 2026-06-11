@@ -126,14 +126,15 @@ export default function PokeHangman() {
     }, [game]);
 
     return (
-        <div className=' bg-gray-100 mx-auto grid grid-rows-[1fr_auto_1fr_auto_1fr] text-gray-700 text-center py-8'>
-            <div className='my-auto'>
+        <div className=' mx-auto lg:max-w-5xl w-full grid grid-rows-[1fr_auto_1fr_auto_1fr] text-gray-700 bg-white text-center py-8'>
+            <div className='my-auto relative'>
                 <div
                     className={`rounded-[50%] border-4 h-25 w-25 mx-auto flex relative overflow-hidden shadow ${strikes >= 1 ? '' : 'hidden'}`}
                 >
                     <div
                         className={`absolute max-h[50%] top-0 bottom-[50%] bg-red-600 w-full ${strikes >= 4 ? '' : 'hidden'}`}
-                    ></div>
+                    >
+                    </div>
                     <div
                         className={`absolute max-h[50%] top-[50%] bottom-0 bg-white w-full ${strikes >= 3 ? '' : 'hidden'}`}
                     ></div>
@@ -145,6 +146,8 @@ export default function PokeHangman() {
                             className={`border my-auto w-full ${strikes >= 2 ? '' : 'hidden'}`}
                         ></div>
                     </div>
+                </div>
+                <div className='absolute inset-0 h-25 w-25 m-auto rounded-[50%] border-5 bg-gray-100 border-gray-100'>
                 </div>
             </div>
             {letterElements}

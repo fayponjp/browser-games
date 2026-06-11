@@ -2,7 +2,11 @@ import { create } from 'zustand';
 import type { AnimatingTiles, Tile } from '../shared-utils/types-interfaces';
 import { genInitialTiles } from './2048.util';
 import { useEffect, useRef } from 'react';
-import type { Direction } from './types-2048';
+import {
+    processDirection,
+    valid2048InputsArr,
+    type Direction,
+} from './types-2048';
 import { persist } from 'zustand/middleware';
 
 interface Game2048State {
@@ -73,6 +77,7 @@ export const use2048 = create<Game2048State>()(
     ),
 );
 
+// removedTiles array is currently unused, but they are meant for adding animations to a tile's original position
 export const useGroupAnimatingTiles = () => {
     const { tiles, updateAnimatingTiles } = use2048();
     const prevTilesRef = useRef<Tile[]>(tiles);
@@ -206,11 +211,10 @@ export const useSwipe = (
     threshold: number = 30,
 ) => {
     const touchStartRef = useRef({ x: 0, y: 0 });
-    const {updateDirection} = use2048();
+    const { updateDirection } = use2048();
     useEffect(() => {
         const element = elementRef.current;
         if (!element) return;
-
 
         const handleTouchStart = (e: TouchEvent) => {
             e.preventDefault();
@@ -237,13 +241,13 @@ export const useSwipe = (
             let swipeDirection: Direction;
 
             if (isHorizontal && Math.abs(deltaX) > threshold) {
-                swipeDirection = deltaX > 0 ? 'Right' : 'Left'
+                swipeDirection = deltaX > 0 ? 'Right' : 'Left';
                 inputHandler(swipeDirection);
-                updateDirection(swipeDirection)
+                updateDirection(swipeDirection);
             } else if (!isHorizontal && Math.abs(deltaY) > threshold) {
-                swipeDirection = deltaY > 0 ? 'Down' : 'Up'
+                swipeDirection = deltaY > 0 ? 'Down' : 'Up';
                 inputHandler(swipeDirection);
-                updateDirection(swipeDirection)
+                updateDirection(swipeDirection);
             }
         };
 
@@ -257,4 +261,37 @@ export const useSwipe = (
             element.removeEventListener('touchend', handleTouchEnd);
         };
     }, [elementRef, inputHandler, threshold]);
+};
+
+export const useAttachKeyListener = (
+    callback: (direction: Direction) => void,
+) => {
+    const { gameOver, updateDirection } = use2048();
+
+    useEffect(() => {
+        const handleKeyInput = (e: KeyboardEvent) => {
+            if (valid2048InputsArr.includes(e.key)) {
+                const direction = processDirection[e.key];
+                updateDirection(direction);
+                callback(direction);
+            }
+        };
+        document.addEventListener('keydown', handleKeyInput);
+
+        if (gameOver) {
+            document.removeEventListener('keydown', handleKeyInput);
+        }
+        return () => document.removeEventListener('keydown', handleKeyInput);
+    }, [gameOver]);
+};
+
+export const useUpdateScore = () => {
+    const { score, updateTopScore } = use2048();
+
+    useEffect(() => {
+        updateTopScore((prev) => {
+            if (prev < score) return score;
+            return prev;
+        });
+    }, [score]);
 };

@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import PokeHangman from '../poke-hangman/pokehangman';
+import PokeHangman from '../poke-hangman/GamePokeHangman';
 import LoadingIndicator from '../shared-components/loadingIndicator';
 export const Route = createFileRoute('/PokeHangman')({
     component: PokeHangman,

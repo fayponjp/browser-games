@@ -4,8 +4,8 @@ export const NavigationLinks = ({ route, classes, children } : {route: string, c
     return (
         <Link 
             to={route}
-            className={`px-5 py-2 ${classes} hover:-translate-x-3 hover:scale-105 transition ease-in-out rounded`}
-            activeProps={{className: ''}}
+            className={`px-5 py-2 ${classes} hover:scale-105 transition ease-in-out`}
+            activeProps={{className: 'shadow-[inset_0_-2px_0_0_var(--theme-green)] '}}
         >
             {children}
         </Link>

@@ -1,10 +1,10 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { NavigationPopover } from '../navigation/Navigation';
+import { NavigationBar } from '../navigation/Navigation';
 
 export const Route = createRootRoute({
     component: () => (
         <>
-            <NavigationPopover />
+            <NavigationBar />
             <Outlet />
         </>
     ),

@@ -86,7 +86,7 @@ export default function Game2048() {
     useUpdateScore();
 
     return (
-        <div className='font-[Rubik] bg-orange-50 px-4 font-bold h-lvh w-full flex gap-4 lg:flex-col flex-col-reverse justify-end pt-20 lg:items-center lg:justify-center'>
+        <div className='font-[Rubik] bg-orange-50 px-4 font-bold w-full flex gap-4 lg:flex-col flex-col-reverse justify-end lg:justify-start pt-20 lg:items-center'>
             <h1 className='text-board-brown font-medium grid grid-cols-[1fr_1fr_1fr] gap-4 w-full lg:w-full max-w-lg bg-(--board-card-null) p-2 rounded-sm'>
                 <dl className='p-2 text-center rounded bg-(--board-card-2)/80'>
                     <dt className='text-sm'>Score:</dt>

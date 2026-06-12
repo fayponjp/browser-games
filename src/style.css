@@ -26,13 +26,13 @@
     --board-card-1024: #f8cb30;
     --board-card-2048: #ffc900;
 
-    --os-green: #2b5d2a;
+    --theme-green: #2e7f2d;
+    --theme-dark: #1d1e22;
 }
 
 body {
     height: 100vh;
-    background-color: var(--background-dark);
-    color: #fff;
+    background-color: var(--theme-dark);
 }
 
 #root {

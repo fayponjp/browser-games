@@ -90,8 +90,8 @@ export default function NotWordle() {
     }, [game])
 
     return (
-        <>
-            <main className='flex flex-col justify-center bg-zinc-800  items-center px-2'>
+        <div className=' bg-zinc-800'>
+            <main className='flex flex-col justify-center items-center px-2'>
                 <section className='max-w-125 w-full flex flex-col mx-auto py-4 gap-10'>
                     <AnswerGrid
                         game={game}
@@ -115,6 +115,6 @@ export default function NotWordle() {
                 />
             </main>
             <Guide />
-        </>
+        </div>
     );
 }

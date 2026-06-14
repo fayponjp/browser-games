@@ -1,5 +1,5 @@
 import type { Tile } from '../shared-utils/types-interfaces';
-import type { Direction } from './types-2048';
+import type { Direction } from './2048.types';
 
 const generateTileId = (): string => {
     return `tile-${Date.now()}-${Math.random()}`;

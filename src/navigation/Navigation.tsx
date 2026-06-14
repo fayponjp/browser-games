@@ -7,7 +7,7 @@ export const NavigationPopover = () => {
         <div className='relative m-auto w-full max-w-5xl'>
             <button
                 popoverTarget='navPopover'
-                className='font-mono gradient-text text-(--theme-green) flex-row ml-2 lg:ml-0 flex gap-2 [anchor-name:--nav-anchor] cursor-pointer p-2 rounded-xs hover:shadow-[inset_0_-2px_0_0_var(--theme-green)] transition-colors ease-in-out'
+                className='font-mono gradient-text text-(--theme-green) flex-row ml-2 lg:ml-0 flex gap-2 [anchor-name:--nav-anchor] cursor-pointer p-2 hover:shadow-[inset_0_-2px_0_0_var(--theme-green)] transition-colors ease-in-out'
             >
                 <span className='text-2xl hidden lg:block'>
                     MENU
@@ -24,7 +24,7 @@ export const NavigationPopover = () => {
                         <span>Home</span>
                     </NavigationLinks>
                     <NavigationLinks
-                        route='/NotWordle'
+                        route='/GameWordle'
                         classes='text-white'
                     >
                         <span className='p-1 bg-(--correct)'>N</span>
@@ -34,7 +34,7 @@ export const NavigationPopover = () => {
                         </span>{' '}
                         <span className='text-black'>- Wordle</span>
                     </NavigationLinks>
-                    <NavigationLinks route='/PokeHangman'>
+                    <NavigationLinks route='/GamePokemon'>
                         <span className='text-red-700'>Poké</span>
                         <span className='text-neutral-800'>Hangman</span>
                     </NavigationLinks>

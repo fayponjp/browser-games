@@ -105,7 +105,9 @@ export default function NotWordle() {
                         handleBackspace={handleBackspace}
                         handleEnter={handleEnter}
                     />
-                    <button className='hover:scale-105 transition ease-in-out bg-white p-2 rounded text-black cursor-pointer' onClick={restartGame}>Reset</button>
+                    <div className='w-full flex px-2'>
+                        <button className='hover:scale-105 transition m-auto ease-in-out bg-white p-2 rounded text-black cursor-pointer' onClick={restartGame}>New Game</button>
+                    </div>
                 </section>
                 <Popover
                     popoverRef={popoverRef}

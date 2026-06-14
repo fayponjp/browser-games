@@ -1,101 +1,34 @@
-import type { ReactNode } from 'react';
-import { Link, type LinkProps } from '@tanstack/react-router';
-
-const Card = ({
-    title,
-    route,
-    customClasses,
-    description,
-}: {
-    title: string | ReactNode;
-    route: LinkProps['to'];
-    customClasses?: string;
-    description?: string | ReactNode;
-}) => {
-    return (
-        <section
-            className={`${customClasses} grid grid-rows-[1fr_auto] shadow rounded hover:-translate-1 grow max-h-70 transition ease-in-out  lg:max-w-[50%] overflow-hidden`}
-        >
-            <div className='p-4 flex flex-col gap-2 grow'>
-                <h2>{title}</h2>
-                {description}
-            </div>
-            <div className='bg-white px-4 py-1'>
-                <Link
-                    to={route}
-                    className=' w-full cursor-pointer underline text-blue-500'
-                >
-                    Play
-                </Link>
-            </div>
-        </section>
-    );
-};
-
+import { Link } from '@tanstack/react-router';
+import { Card } from './GameCard';
+import { GameRoute } from './landing.types';
+import './landing.css';
+import { useLanding } from './Landing.util';
+import { games } from './games.objects';
 export const Landing = () => {
+    const {activeGame } = useLanding();
+    const activeGameRoute = GameRoute[activeGame];
+
+    const cardComponents = games.map((game) => {
+        return (
+            <Card title = {game.title} description={game.description} name={game.name} />
+        )
+    });
+    
     return (
-        <main className='grid grid-rows-[auto_1fr] gap-4 p-8 lg:min-w-lg m-auto'>
+        <main className='grid grid-rows-[auto_1fr_auto] h-full gap-4 p-8 lg:min-w-lg m-auto'>
             <h2 className='py-8 text-5xl font-mono max-w-5xl w-full mx-auto'>
                 Games
             </h2>
             <div className='flex flex-col lg:flex-row gap-4 max-w-5xl w-full mx-auto'>
-                <Card
-                    title={
-                        <>
-                            <span className='p-1 bg-(--correct) text-white'>
-                                N
-                            </span>
-                            <span className='p-1 bg-(--almost) text-white'>
-                                O
-                            </span>
-                            <span className='p-1 bg-(--incorrect) text-white'>
-                                T
-                            </span>{' '}
-                            - Wordle
-                        </>
-                    }
-                    description={
-                        <>
-                            <p>Guess the randomly-generated 5-letter word!</p>
-                            <p>Only valid words will count as guesses.</p>
-                            <p>
-                                Mechanics and look are based off the NY Times'{' '}
-                                <a
-                                    target='_blank'
-                                    className=' text-orange-600 underline'
-                                    href='https://www.nytimes.com/games/wordle/index.html'
-                                >
-                                    Wordle
-                                </a>{' '}
-                                browser game.
-                            </p>
-                        </>
-                    }
-                    route='/NotWordle'
-                    customClasses='border-(--correct)'
-                />
-                <Card
-                    title={
-                        <>
-                            <span className='text-red-700'>Poké</span>
-                            <span className='text-neutral-800'>Hangman</span>
-                        </>
-                    }
-                    description={
-                        <>
-                            <p>
-                                A pocket monster-themed twist on the classic
-                                word game.
-                            </p>
-                            <p>
-                                Guess the pokémon's name before the pokéball is
-                                fully drawn!
-                            </p>
-                        </>
-                    }
-                    route='/PokeHangman'
-                    customClasses=''
-                />
+                {cardComponents}
+            </div>
+            <div className='fixed m-auto  w-fit h-fit bottom-10 left-10 lg:inset-x-0 lg:bottom-25 z-100'>
+                <Link to={activeGameRoute} className='relative block cursor-pointer'>
+                    <div className='absolute inset-0 bg-linear-to-br from-[#7abd81] to-(--theme-green) translate-x-3 translate-y-2 -skew-x-30' />
+                    <div className='px-6 py-4 bg-(--game-card-bg) relative -skew-x-30 w-fit transition delay-200 shadow-gray-400 shadow-sm lg:shadow-none'>
+                        <span className='skew-x-30 block font-[Rubik] lg:text-3xl text-lg font-bold'>PLAY <span className='lg:text-lg'>{activeGame}</span></span>
+                    </div>
+                </Link>
             </div>
         </main>
     );

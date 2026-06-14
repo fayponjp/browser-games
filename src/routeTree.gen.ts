@@ -9,19 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PokeHangmanRouteImport } from './routes/PokeHangman'
-import { Route as NotWordleRouteImport } from './routes/NotWordle'
+import { Route as GameWordleRouteImport } from './routes/GameWordle'
+import { Route as GamePokemonRouteImport } from './routes/GamePokemon'
 import { Route as Game2048RouteImport } from './routes/Game2048'
 import { Route as IndexRouteImport } from './routes/index'
 
-const PokeHangmanRoute = PokeHangmanRouteImport.update({
-  id: '/PokeHangman',
-  path: '/PokeHangman',
+const GameWordleRoute = GameWordleRouteImport.update({
+  id: '/GameWordle',
+  path: '/GameWordle',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NotWordleRoute = NotWordleRouteImport.update({
-  id: '/NotWordle',
-  path: '/NotWordle',
+const GamePokemonRoute = GamePokemonRouteImport.update({
+  id: '/GamePokemon',
+  path: '/GamePokemon',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Game2048Route = Game2048RouteImport.update({
@@ -38,51 +38,51 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/Game2048': typeof Game2048Route
-  '/NotWordle': typeof NotWordleRoute
-  '/PokeHangman': typeof PokeHangmanRoute
+  '/GamePokemon': typeof GamePokemonRoute
+  '/GameWordle': typeof GameWordleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/Game2048': typeof Game2048Route
-  '/NotWordle': typeof NotWordleRoute
-  '/PokeHangman': typeof PokeHangmanRoute
+  '/GamePokemon': typeof GamePokemonRoute
+  '/GameWordle': typeof GameWordleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/Game2048': typeof Game2048Route
-  '/NotWordle': typeof NotWordleRoute
-  '/PokeHangman': typeof PokeHangmanRoute
+  '/GamePokemon': typeof GamePokemonRoute
+  '/GameWordle': typeof GameWordleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/Game2048' | '/NotWordle' | '/PokeHangman'
+  fullPaths: '/' | '/Game2048' | '/GamePokemon' | '/GameWordle'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/Game2048' | '/NotWordle' | '/PokeHangman'
-  id: '__root__' | '/' | '/Game2048' | '/NotWordle' | '/PokeHangman'
+  to: '/' | '/Game2048' | '/GamePokemon' | '/GameWordle'
+  id: '__root__' | '/' | '/Game2048' | '/GamePokemon' | '/GameWordle'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   Game2048Route: typeof Game2048Route
-  NotWordleRoute: typeof NotWordleRoute
-  PokeHangmanRoute: typeof PokeHangmanRoute
+  GamePokemonRoute: typeof GamePokemonRoute
+  GameWordleRoute: typeof GameWordleRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/PokeHangman': {
-      id: '/PokeHangman'
-      path: '/PokeHangman'
-      fullPath: '/PokeHangman'
-      preLoaderRoute: typeof PokeHangmanRouteImport
+    '/GameWordle': {
+      id: '/GameWordle'
+      path: '/GameWordle'
+      fullPath: '/GameWordle'
+      preLoaderRoute: typeof GameWordleRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/NotWordle': {
-      id: '/NotWordle'
-      path: '/NotWordle'
-      fullPath: '/NotWordle'
-      preLoaderRoute: typeof NotWordleRouteImport
+    '/GamePokemon': {
+      id: '/GamePokemon'
+      path: '/GamePokemon'
+      fullPath: '/GamePokemon'
+      preLoaderRoute: typeof GamePokemonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Game2048': {
@@ -105,8 +105,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   Game2048Route: Game2048Route,
-  NotWordleRoute: NotWordleRoute,
-  PokeHangmanRoute: PokeHangmanRoute,
+  GamePokemonRoute: GamePokemonRoute,
+  GameWordleRoute: GameWordleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

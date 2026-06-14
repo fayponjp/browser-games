@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-import NotWordle from '../not-wordle/GameNotWordle'
+import NotWordle from '../gameWordle/GameWordle'
 import LoadingIndicator from '../shared-components/loadingIndicator'
-export const Route = createFileRoute('/NotWordle')({
+export const Route = createFileRoute('/GameWordle')({
   component: NotWordle,
   pendingComponent: () => <LoadingIndicator/>,
   pendingMs: 150,

@@ -4,7 +4,7 @@ import {
     animateDirection,
     tileVariants,
     type Direction,
-} from './types-2048';
+} from './2048.types';
 import {
     useGroupAnimatingTiles,
     useClearAnimatingTiles,
@@ -12,8 +12,8 @@ import {
     useCheckForValidMoves,
     useAttachKeyListener,
     useUpdateScore,
-} from './hooks-2048';
-import { use2048 } from './hooks-2048';
+} from './2048.hooks';
+import { use2048 } from './2048.hooks';
 
 export default function Game2048() {
     const {

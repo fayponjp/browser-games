@@ -27,7 +27,8 @@
     --board-card-2048: #ffc900;
 
     --theme-green: #2e7f2d;
-    --theme-dark: #1d1e22;
+    --theme-dark: #111214;
+    --game-card-bg: #25272b;
 }
 
 body {

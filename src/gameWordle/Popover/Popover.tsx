@@ -22,7 +22,7 @@ export default function Popover({
                         ? `You've guessed the word in ${
                               letters.length - 1
                           } attempts!`
-                        : `The word was ${word.join('')}!`}
+                        : `The word was ${word.join('').toUpperCase()}!`}
                 </div>
             </div>
         </div>

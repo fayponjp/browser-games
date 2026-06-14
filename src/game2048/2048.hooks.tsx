@@ -6,7 +6,7 @@ import {
     processDirection,
     valid2048InputsArr,
     type Direction,
-} from './types-2048';
+} from './2048.types';
 import { persist } from 'zustand/middleware';
 
 interface Game2048State {

@@ -1,5 +1,5 @@
 import type { GameDetails } from './landing.types';
-import { useLanding } from './Landing.util';
+import { useLanding } from './landing.util';
 
 export const Card = ({
     title,

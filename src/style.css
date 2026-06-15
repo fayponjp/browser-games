@@ -94,7 +94,7 @@ body {
 
     @keyframes slideleft {
         from {
-            translate: 40% 0;
+            translate: 80% 0;
             scale: 0.4;
             opacity: 0;
         }
@@ -108,7 +108,7 @@ body {
 
     @keyframes slideright {
         from {
-            translate: -40% 0;
+            translate: -80% 0;
             scale: 0.4;
             opacity: 0;
         }

@@ -1,13 +1,13 @@
 import { create } from 'zustand';
-
+import type { GameTitles } from './landing.types';
 interface LandingState {
-    activeGame: string,
-    setActiveGame: (setActiveGame: string) => void
+    activeGame: GameTitles,
+    setActiveGame: (setActiveGame: GameTitles) => void
 }
 
 export const useLanding = create<LandingState>()(
     (set) => ({
         activeGame: 'Not Wordle',
-        setActiveGame: (activeGame: string) => set(() => ({activeGame}))
+        setActiveGame: (activeGame: GameTitles) => set(() => ({activeGame}))
     })
 )

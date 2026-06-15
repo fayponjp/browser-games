@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { Card } from './GameCard';
 import { GameRoute } from './landing.types';
 import './landing.css';
-import { useLanding } from './Landing.util';
+import { useLanding } from './landing.util';
 import { games } from './games.objects';
 export const Landing = () => {
     const {activeGame } = useLanding();

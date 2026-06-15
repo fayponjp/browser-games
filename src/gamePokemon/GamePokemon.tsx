@@ -147,8 +147,6 @@ export default function PokeHangman() {
                         ></div>
                     </div>
                 </div>
-                <div className='absolute inset-0 h-25 w-25 m-auto rounded-[50%] border-5 bg-gray-100 border-gray-100'>
-                </div>
             </div>
             {letterElements}
             <div className='flex flex-col mt-4 justify-between'>

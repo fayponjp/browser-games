@@ -33,7 +33,7 @@ export const games: GameDetails[] = [
         title: (
             <>
                 <span className='text-red-700'>Poké</span>
-                <span className='text-neutral-800'>Hangman</span>
+                <span >Hangman</span>
             </>
         ),
         description: (

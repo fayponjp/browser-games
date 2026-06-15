@@ -1,14 +1,14 @@
 import { generate } from 'random-words';
 import { useRef, useState, useEffect } from 'react';
 import wordExists from 'word-exists';
-import type { WordleGame } from '../utils/types';
+import type { WordleGame } from '../shared-utils/types-interfaces';
 import AnswerGrid from './AnswerGrid/AnswerGrid';
 import Keyboard from './Keyboard/Keyboard';
 
 import Guide from './Guide/Guide';
 import Popover from './Popover/Popover';
-import { useKeyhandler } from '../utils/shared';
-import { saveToCache, loadFromCache } from '../utils/caching';
+import { useKeyhandler } from '../shared-utils/shared';
+import { saveToCache, loadFromCache } from '../shared-utils/caching';
 
 export default function NotWordle() {
     const notWordleCacheKey = 'notWordleCurrentGameState';
@@ -90,8 +90,8 @@ export default function NotWordle() {
     }, [game])
 
     return (
-        <>
-            <main className='flex flex-col justify-center bg-zinc-800  items-center'>
+        <div className=' bg-zinc-800'>
+            <main className='flex flex-col justify-center items-center px-2'>
                 <section className='max-w-125 w-full flex flex-col mx-auto py-4 gap-10'>
                     <AnswerGrid
                         game={game}
@@ -105,7 +105,9 @@ export default function NotWordle() {
                         handleBackspace={handleBackspace}
                         handleEnter={handleEnter}
                     />
-                    <button className='hover:scale-105 transition ease-in-out bg-white p-2 rounded text-black cursor-pointer' onClick={restartGame}>Reset</button>
+                    <div className='w-full flex px-2'>
+                        <button className='hover:scale-105 transition m-auto ease-in-out bg-white p-2 rounded text-black cursor-pointer' onClick={restartGame}>New Game</button>
+                    </div>
                 </section>
                 <Popover
                     popoverRef={popoverRef}
@@ -115,6 +117,6 @@ export default function NotWordle() {
                 />
             </main>
             <Guide />
-        </>
+        </div>
     );
 }

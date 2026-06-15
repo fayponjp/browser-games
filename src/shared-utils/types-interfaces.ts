@@ -15,3 +15,20 @@ export interface PkmnGame extends Game {
     currentPkmn: string | undefined,
     currentSprite: string | undefined
 }
+
+export interface Tile {
+    id: string,
+    x: number,
+    y: number,
+    value: number | undefined,
+    merged: boolean,
+}
+
+export interface Board2048 extends Game {
+    tiles: Tile[]
+}
+
+export interface AnimatingTiles {
+    removed: Set<string>;
+    appearing: Set<string>;
+}

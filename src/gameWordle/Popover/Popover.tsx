@@ -1,4 +1,4 @@
-import type { WordleGame } from '../../utils/types';
+import type { WordleGame } from '../../shared-utils/types-interfaces';
 export default function Popover({
     game,
     letters,
@@ -22,7 +22,7 @@ export default function Popover({
                         ? `You've guessed the word in ${
                               letters.length - 1
                           } attempts!`
-                        : `The word was ${word.join('')}!`}
+                        : `The word was ${word.join('').toUpperCase()}!`}
                 </div>
             </div>
         </div>

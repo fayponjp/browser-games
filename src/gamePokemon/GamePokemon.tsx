@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { retrievePkmn, retrievePkmnByIdGraphQL, retrievePkmnCountGraphQL } from '../utils/pokemon';
-import type { PkmnGame } from '../utils/types';
-import { loadFromCache, saveToCache } from '../utils/caching';
-import { isLetter, useKeyhandler } from '../utils/shared';
+import { retrievePkmn } from './pokemon.util';
+import type { PkmnGame } from '../shared-utils/types-interfaces';
+import { loadFromCache, saveToCache } from '../shared-utils/caching';
+import { isLetter, useKeyhandler } from '../shared-utils/shared';
 
 const LetterDisplay = ({
     pokemon,
@@ -62,16 +62,16 @@ export default function PokeHangman() {
         if (!game.currentPkmn) {
             const fetchPkmn = async () => {
                 const response = await retrievePkmn();
-                await retrievePkmnCountGraphQL();
+
                 if (response) {
-                    const { name, src, id } = response;
+                    const { name, src } = response;
                     updateGame((prevGame) => ({
                         ...prevGame,
                         currentPkmn: name,
                         currentSprite: src,
                     }));
 
-                    await retrievePkmnByIdGraphQL(id);
+                    
                 }
             };
 
@@ -126,14 +126,15 @@ export default function PokeHangman() {
     }, [game]);
 
     return (
-        <main className='lg:max-w-5xl mx-auto grid grid-rows-[1fr_auto_1fr_auto_1fr] text-gray-700 text-center py-8'>
-            <div className='my-auto'>
+        <div className=' mx-auto lg:max-w-5xl w-full grid grid-rows-[1fr_auto_1fr_auto_1fr] text-gray-700 bg-white text-center py-8'>
+            <div className='my-auto relative'>
                 <div
                     className={`rounded-[50%] border-4 h-25 w-25 mx-auto flex relative overflow-hidden shadow ${strikes >= 1 ? '' : 'hidden'}`}
                 >
                     <div
                         className={`absolute max-h[50%] top-0 bottom-[50%] bg-red-600 w-full ${strikes >= 4 ? '' : 'hidden'}`}
-                    ></div>
+                    >
+                    </div>
                     <div
                         className={`absolute max-h[50%] top-[50%] bottom-0 bg-white w-full ${strikes >= 3 ? '' : 'hidden'}`}
                     ></div>
@@ -152,7 +153,7 @@ export default function PokeHangman() {
                 {!isGameOver ? (
                     <>
                         <p>Current Guess:</p>
-                        <p className='uppercase mt-4 text-7xl '>
+                        <p className={`uppercase mt-4 text-7xl ${currentLetter && game.guessedLetters.includes(currentLetter) && 'text-red-700'}`}>
                             {currentLetter ? (
                                 currentLetter
                             ) : (
@@ -211,6 +212,6 @@ export default function PokeHangman() {
                     <p>Press enter to confirm your guess</p>
                 </div>
             )}
-        </main>
+        </div>
     );
 }

@@ -6,7 +6,7 @@ import { GameRoute } from '../landing/landing.types';
 import { Link } from '@tanstack/react-router';
 export const NavigationPopover = () => {
     const navigationLinks = games.map((game) => {
-        if (game.name) return <NavigationLink route={GameRoute[game.name]} >{game.title}</NavigationLink>
+        if (game.name) return <NavigationLink key={game.name} route={GameRoute[game.name]} >{game.title}</NavigationLink>
     });
     return (
         <div className='relative m-auto w-full flex flex-row justify-between items-center max-w-5xl px-3 py-1'>

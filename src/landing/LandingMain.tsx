@@ -10,7 +10,7 @@ export const Landing = () => {
 
     const cardComponents = games.map((game) => {
         return (
-            <Card title = {game.title} description={game.description} name={game.name} />
+            <Card key={game.name} title = {game.title} description={game.description} name={game.name} />
         )
     });
     
@@ -23,8 +23,8 @@ export const Landing = () => {
                 {cardComponents}
             </div>
             <div className='fixed m-auto  w-fit h-fit bottom-10 left-10 lg:inset-x-0 lg:bottom-25 z-100'>
-                <Link to={activeGameRoute} className='relative block cursor-pointer'>
-                    <div className='absolute inset-0 bg-linear-to-br from-[#7abd81] to-(--theme-green) translate-x-3 translate-y-2 -skew-x-30' />
+                <Link to={activeGameRoute} className='relative block cursor-pointer hover:scale-110 transition pulse'>
+                    <div className='absolute inset-0 bg-linear-to-r to-[#82db8e] from-(--theme-green) translate-x-3 translate-y-2 -skew-x-30' />
                     <div className='px-6 py-4 bg-(--game-card-bg) relative -skew-x-30 w-fit transition delay-200 shadow-gray-400 shadow-sm lg:shadow-none'>
                         <span className='skew-x-30 block font-[Rubik] lg:text-3xl text-lg font-bold'>PLAY <span className='lg:text-lg'>{activeGame}</span></span>
                     </div>

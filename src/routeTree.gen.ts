@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as GameWordleRouteImport } from './routes/GameWordle'
 import { Route as GamePokemonRouteImport } from './routes/GamePokemon'
+import { Route as GamePkmnRouteImport } from './routes/GamePkmn'
 import { Route as Game2048RouteImport } from './routes/Game2048'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -22,6 +23,11 @@ const GameWordleRoute = GameWordleRouteImport.update({
 const GamePokemonRoute = GamePokemonRouteImport.update({
   id: '/GamePokemon',
   path: '/GamePokemon',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamePkmnRoute = GamePkmnRouteImport.update({
+  id: '/GamePkmn',
+  path: '/GamePkmn',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Game2048Route = Game2048RouteImport.update({
@@ -38,12 +44,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/Game2048': typeof Game2048Route
+  '/GamePkmn': typeof GamePkmnRoute
   '/GamePokemon': typeof GamePokemonRoute
   '/GameWordle': typeof GameWordleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/Game2048': typeof Game2048Route
+  '/GamePkmn': typeof GamePkmnRoute
   '/GamePokemon': typeof GamePokemonRoute
   '/GameWordle': typeof GameWordleRoute
 }
@@ -51,20 +59,28 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/Game2048': typeof Game2048Route
+  '/GamePkmn': typeof GamePkmnRoute
   '/GamePokemon': typeof GamePokemonRoute
   '/GameWordle': typeof GameWordleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/Game2048' | '/GamePokemon' | '/GameWordle'
+  fullPaths: '/' | '/Game2048' | '/GamePkmn' | '/GamePokemon' | '/GameWordle'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/Game2048' | '/GamePokemon' | '/GameWordle'
-  id: '__root__' | '/' | '/Game2048' | '/GamePokemon' | '/GameWordle'
+  to: '/' | '/Game2048' | '/GamePkmn' | '/GamePokemon' | '/GameWordle'
+  id:
+    | '__root__'
+    | '/'
+    | '/Game2048'
+    | '/GamePkmn'
+    | '/GamePokemon'
+    | '/GameWordle'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   Game2048Route: typeof Game2048Route
+  GamePkmnRoute: typeof GamePkmnRoute
   GamePokemonRoute: typeof GamePokemonRoute
   GameWordleRoute: typeof GameWordleRoute
 }
@@ -83,6 +99,13 @@ declare module '@tanstack/react-router' {
       path: '/GamePokemon'
       fullPath: '/GamePokemon'
       preLoaderRoute: typeof GamePokemonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/GamePkmn': {
+      id: '/GamePkmn'
+      path: '/GamePkmn'
+      fullPath: '/GamePkmn'
+      preLoaderRoute: typeof GamePkmnRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Game2048': {
@@ -105,6 +128,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   Game2048Route: Game2048Route,
+  GamePkmnRoute: GamePkmnRoute,
   GamePokemonRoute: GamePokemonRoute,
   GameWordleRoute: GameWordleRoute,
 }

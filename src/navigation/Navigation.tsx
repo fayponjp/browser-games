@@ -12,7 +12,7 @@ export const NavigationPopover = () => {
         <div className='relative m-auto w-full flex flex-row justify-between items-center max-w-5xl px-3 py-1'>
             <button
                 popoverTarget='navPopover'
-                className='font-mono gradient-text text-(--theme-green) flex-row lg:ml-0 flex gap-2 [anchor-name:--nav-anchor] cursor-pointer hover:shadow-[inset_0_-2px_0_0_var(--theme-green)] transition-colors ease-in-out'
+                className='font-mono gradient-text flex-row lg:ml-0 flex gap-2 [anchor-name:--nav-anchor] cursor-pointer hover:shadow-[inset_0_-2px_0_0_var(--theme-color)] transition-colors ease-in-out'
             >
                 <span className='text-2xl hidden lg:block'>
                     MENU
@@ -24,7 +24,7 @@ export const NavigationPopover = () => {
                 popover='auto'
                 className='animate-right bg-transparent backdrop:bg-gray-700/50 lg:backdrop:bg-transparent lg:my-2 lg:mx-0 mx-2 mt-2 lg:mt-0 overflow-visible [position-anchor:--nav-anchor] [position-area:right_span-bottom] lg:[position-area:bottom_span-right] inset-0 absolute'
             >
-                <nav className='flex bg-(--game-card-bg) flex-col gap-2 skew-x-10 shadow-xs shadow-white overflow-hidden max-w-45'>
+                <nav className='flex dark:bg-(--game-card-bg-dark) bg-(--game-card-bg-light) flex-col gap-2 skew-x-10 shadow-xs shadow-white overflow-hidden max-w-45'>
                     {navigationLinks}
                 </nav>
             </div>

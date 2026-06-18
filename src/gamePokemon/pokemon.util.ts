@@ -1,4 +1,12 @@
 import { loadFromCache, saveToCache } from '../shared-utils/caching';
+import { create } from 'zustand';
+
+interface PokemonGuessGame {
+    pokemon: string,
+    setPokemon: (pkmn: string) => void,
+    pokemonSprite: string,
+    setPokemonSprite: (pkmnSprite: string) => void,
+}
 
 export async function retrievePkmnCount() {
     const storageId = 'pkmnCountKey';
@@ -38,7 +46,7 @@ export async function retrievePkmnCountGraphQL() {
             'Content-Type': 'application/json',
             Accept: 'application/json',
         },
-        body: JSON.stringify({query}),
+        body: JSON.stringify({ query }),
     });
     const data = await response.json();
     console.log(data);
@@ -56,9 +64,10 @@ export async function retrievePkmn() {
             const data = await response.json();
             const name = data.name;
             const src = data.sprites.front_default;
+            const sprite = data.sprites.other['official-artwork'].front_default;
             const id = data.id;
 
-            return { name, src, id };
+            return { name, src, id, sprite };
         } catch (error) {
             console.error(error);
             return null;
@@ -85,9 +94,9 @@ export async function retrievePkmnByIdGraphQL(id: string) {
             'Content-Type': 'application/json',
             Accept: 'application/json',
         },
-        body: JSON.stringify({query, variables: {id}}),
+        body: JSON.stringify({ query, variables: { id } }),
     });
 
     const data = await response.json();
-    console.log(data)
+    console.log(data);
 }

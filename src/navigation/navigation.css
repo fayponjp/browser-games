@@ -1,5 +1,5 @@
 .gradient-text {
-  background: linear-gradient(to right, var(--theme-green), #7abd81);
+  background: linear-gradient(to right, var(--theme-color), var(--theme-color-gradient-end));
   
   background-clip: text;
   -webkit-background-clip: text; 

@@ -3,6 +3,7 @@ import { retrievePkmn } from './pokemon.util';
 import type { PkmnGame } from '../shared-utils/types-interfaces';
 import { loadFromCache, saveToCache } from '../shared-utils/caching';
 import { isLetter, useKeyhandler } from '../shared-utils/shared';
+import './gamepkmn.css';
 
 const LetterDisplay = ({
     pokemon,
@@ -70,8 +71,6 @@ export default function PokeHangman() {
                         currentPkmn: name,
                         currentSprite: src,
                     }));
-
-                    
                 }
             };
 
@@ -133,8 +132,7 @@ export default function PokeHangman() {
                 >
                     <div
                         className={`absolute max-h[50%] top-0 bottom-[50%] bg-red-600 w-full ${strikes >= 4 ? '' : 'hidden'}`}
-                    >
-                    </div>
+                    ></div>
                     <div
                         className={`absolute max-h[50%] top-[50%] bottom-0 bg-white w-full ${strikes >= 3 ? '' : 'hidden'}`}
                     ></div>
@@ -153,7 +151,9 @@ export default function PokeHangman() {
                 {!isGameOver ? (
                     <>
                         <p>Current Guess:</p>
-                        <p className={`uppercase mt-4 text-7xl ${currentLetter && game.guessedLetters.includes(currentLetter) && 'text-red-700'}`}>
+                        <p
+                            className={`uppercase mt-4 text-7xl ${currentLetter && game.guessedLetters.includes(currentLetter) && 'text-red-700'}`}
+                        >
                             {currentLetter ? (
                                 currentLetter
                             ) : (
@@ -185,7 +185,7 @@ export default function PokeHangman() {
                         const letter = raw
                             .replace(/[^a-zA-Z]/g, '')
                             .slice(-1)
-                            .toLowerCase()
+                            .toLowerCase();
 
                         if (letter) setCurrentLetter(letter);
                     }}
@@ -215,3 +215,62 @@ export default function PokeHangman() {
         </div>
     );
 }
+
+export const GuessPokemon = () => {
+    const [currentImg, setCurrentImg] = useState<string | undefined>();
+
+    useEffect(() => {
+        const fetchPkmn = async () => {
+            const response = await retrievePkmn();
+
+            if (response) {
+                const { name, src, sprite } = response;
+                setCurrentImg(sprite);
+            }
+        };
+
+        fetchPkmn();
+    }, []);
+    return (
+        <div className='w-full items-center grid grid-rows-[auto_1fr]'>
+            <div className='mx-auto rounded-sm max-w-5xl overflow-hidden w-full mt-auto pkmn-glow steps-bg relative flex font-[Galindo] text-7xl font-bold text-outline-blue text-[#fecb06]'>
+                <img
+                    className='sprite z-10 aspect-square m-auto'
+                    src={currentImg}
+                ></img>
+                <div className='absolute mx-auto inset-x-0 bottom-5 text-center z-10'>
+                    <p>?</p>
+                    <p>POKéMON</p>
+                </div>
+            </div>
+            <div className='flex items-center grow justify-center z-10'>
+                <div className='my-auto relative'>
+                    <div
+                        className={`rounded-[50%] border-4 border-black h-25 w-25 mx-auto flex relative overflow-hidden shadow`}
+                    >
+                        <div
+                            className={`absolute max-h[50%] top-0 bottom-[50%] bg-red-600 w-full`}
+                        ></div>
+                        <div
+                            className={`absolute max-h[50%] top-[50%] bottom-0 bg-white w-full`}
+                        ></div>
+                        <div
+                            className={`rounded-[50%] border-4 border-black flex h-8 w-8 m-auto bg-white z-10`}
+                        >
+                            <div className='rounded-[50%] h-3 w-3 bg-white border z border-black-11 m-auto'></div>
+                        </div>
+                        <div className='absolute flex top-0 bottom-0 w-full'>
+                            <div
+                                className={`border-2 border-black my-auto w-full`}
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+                <input
+                    type='text'
+                    className='bg-white rounded px-4 py-2 shadow shadow-gray-500'
+                />
+            </div>
+        </div>
+    );
+};

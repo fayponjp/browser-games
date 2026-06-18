@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 
 :root {
-    --background-dark: #343434;
+    color-scheme: light dark;
+    /* Wordle-specific colors */
+    /* This project was originally exclusively wordle, and the rest of the variables are added after converting to multiple games  */
     --text: #f8f8f8;
     --text-dark: #242424;
     --correct: #538d4e;
@@ -9,7 +11,6 @@
     --incorrect: #3a3a3c;
     --unused: #818384;
     font-family: 'Inter', sans-serif;
-
     --wordle-bg: #73a26f;
 
     --board-bg: #9b8878;
@@ -26,14 +27,17 @@
     --board-card-1024: #f8cb30;
     --board-card-2048: #ffc900;
 
-    --theme-green: #3a623a;
-    --theme-dark: #242328ec;
-    --game-card-bg: #34343c;
+    --theme-color: oklch(27.783% 0.05041 274.693);
+    --theme-color-gradient-end: oklch(78.672% 0.06231 259.229);
+    --theme-dark: oklch(25.929% 0.00938 294.843 / 0.925);
+    --theme-light: oklch(87.68% 0.02745 288.064);
+    --game-card-bg-dark: oklch(32.821% 0.01406 285.57);
+    --game-card-bg-light: oklch(95.275% 0.02022 282.902);
 }
 
 body {
     height: 100vh;
-    background-color: var(--theme-dark);
+    background-color: light-dark(var(--theme-light), var(--theme-dark));
 }
 
 #root {

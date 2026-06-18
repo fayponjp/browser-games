@@ -69,4 +69,17 @@ export const games: GameDetails[] = [
         ),
         name: '2048',
     },
+    {
+        title: (
+            <div>
+                <span>Who's that pokemon?</span>
+            </div>
+        ),
+        description: (
+            <>
+                <p>A recreation of the eyecatch in the pokemon anime.</p>
+            </>
+        ),
+        name: 'Who\'s that Pokemon?'
+    }
 ];

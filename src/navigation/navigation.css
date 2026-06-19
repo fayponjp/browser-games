@@ -1,9 +1,25 @@
 .gradient-text {
-  background: linear-gradient(to right, var(--theme-color), var(--theme-color-gradient-end));
-  
-  background-clip: text;
-  -webkit-background-clip: text; 
-  
-  color: transparent;
-  -webkit-text-fill-color: transparent; 
+    background: linear-gradient(
+        to right,
+        var(--theme-color),
+        var(--theme-color-gradient-end)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-reverse {
+    background: linear-gradient(
+        to left,
+        var(--theme-color),
+        var(--theme-color-gradient-end)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 }

@@ -4,6 +4,8 @@ import type { PkmnGame } from '../shared-utils/types-interfaces';
 import { loadFromCache, saveToCache } from '../shared-utils/caching';
 import { isLetter, useKeyhandler } from '../shared-utils/shared';
 import './gamepkmn.css';
+import { useGetPkmn, usePkmnGuessing } from './pokemon.hooks';
+import { PlayerUI } from './PlayerUI';
 
 const LetterDisplay = ({
     pokemon,
@@ -217,60 +219,23 @@ export default function PokeHangman() {
 }
 
 export const GuessPokemon = () => {
-    const [currentImg, setCurrentImg] = useState<string | undefined>();
+    const { pokemonSprite } = usePkmnGuessing();
 
-    useEffect(() => {
-        const fetchPkmn = async () => {
-            const response = await retrievePkmn();
+    useGetPkmn();
 
-            if (response) {
-                const { name, src, sprite } = response;
-                setCurrentImg(sprite);
-            }
-        };
-
-        fetchPkmn();
-    }, []);
     return (
-        <div className='w-full items-center grid grid-rows-[auto_1fr]'>
-            <div className='mx-auto rounded-sm max-w-5xl overflow-hidden w-full mt-auto pkmn-glow steps-bg relative flex font-[Galindo] text-7xl font-bold text-outline-blue text-[#fecb06]'>
+        <div className='w-full items-center max-w-3xl mx-auto grid grid-rows-[auto_1fr] px-3 py-3 bg-gray-300 rounded-xl'>
+            <div className='mx-auto rounded-t overflow-hidden w-full mt-auto pkmn-glow steps-bg relative flex font-[Galindo] text-6xl font-bold text-outline-blue text-[#fecb06]'>
                 <img
-                    className='sprite z-10 aspect-square m-auto'
-                    src={currentImg}
+                    className='sprite max-h-80 lg:max-h-full z-10 aspect-square m-auto'
+                    src={pokemonSprite}
                 ></img>
-                <div className='absolute mx-auto inset-x-0 bottom-5 text-center z-10'>
+                <div className='absolute mx-auto inset-x-0 bottom-9 text-center z-10'>
                     <p>?</p>
                     <p>POKéMON</p>
                 </div>
             </div>
-            <div className='flex items-center grow justify-center z-10'>
-                <div className='my-auto relative'>
-                    <div
-                        className={`rounded-[50%] border-4 border-black h-25 w-25 mx-auto flex relative overflow-hidden shadow`}
-                    >
-                        <div
-                            className={`absolute max-h[50%] top-0 bottom-[50%] bg-red-600 w-full`}
-                        ></div>
-                        <div
-                            className={`absolute max-h[50%] top-[50%] bottom-0 bg-white w-full`}
-                        ></div>
-                        <div
-                            className={`rounded-[50%] border-4 border-black flex h-8 w-8 m-auto bg-white z-10`}
-                        >
-                            <div className='rounded-[50%] h-3 w-3 bg-white border z border-black-11 m-auto'></div>
-                        </div>
-                        <div className='absolute flex top-0 bottom-0 w-full'>
-                            <div
-                                className={`border-2 border-black my-auto w-full`}
-                            ></div>
-                        </div>
-                    </div>
-                </div>
-                <input
-                    type='text'
-                    className='bg-white rounded px-4 py-2 shadow shadow-gray-500'
-                />
-            </div>
+            <PlayerUI/>
         </div>
     );
 };

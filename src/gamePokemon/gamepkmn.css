@@ -23,10 +23,14 @@
     position: absolute;
     inset: 0;
     margin: auto;
-    max-width: 350px;
+    max-width: 230px;
     aspect-ratio: 1;
     /* border-radius: 50%; */
     filter: blur(40px);
+
+    @media (min-width: 1024px) {
+        max-width: 330px;
+    }
 }
 
 .pkmn-glow::before {

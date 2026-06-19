@@ -1,12 +1,4 @@
 import { loadFromCache, saveToCache } from '../shared-utils/caching';
-import { create } from 'zustand';
-
-interface PokemonGuessGame {
-    pokemon: string,
-    setPokemon: (pkmn: string) => void,
-    pokemonSprite: string,
-    setPokemonSprite: (pkmnSprite: string) => void,
-}
 
 export async function retrievePkmnCount() {
     const storageId = 'pkmnCountKey';

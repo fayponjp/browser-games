@@ -1,7 +1,36 @@
+import { useEffect, useEffectEvent, useState } from 'react';
 import { usePkmnGuessing } from './pokemon.hooks';
 
 export const PlayerUI = () => {
-    const {pokemon} = usePkmnGuessing();
+    const { pokemon, setPokemon, streak, updateStreak } = usePkmnGuessing();
+    const [currentInput, setCurrentInput] = useState<string>('');
+    const handleInputChange = (input: string) => {
+        const cleanedInput = input.toLowerCase();
+        setCurrentInput(cleanedInput);
+    };
+
+    const handleEnter = useEffectEvent(() => {
+        if (currentInput === pokemon) {
+            updateStreak();
+            setPokemon(undefined);
+        } else {
+            console.log('nope');
+        }
+
+        setCurrentInput('');
+    });
+
+    useEffect(() => {
+        const handleKeydown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+                handleEnter();
+            }
+        };
+        document.addEventListener('keydown', handleKeydown);
+
+        return () => document.removeEventListener('keydown', handleKeydown);
+    }, []);
+
     return (
         <div className='flex flex-col items-center rounded-b grow z-10 bg-[#383636] max-w-5xl w-full h-full mx-auto'>
             <div className='relative -mt-9.5'>
@@ -29,9 +58,21 @@ export const PlayerUI = () => {
             <div className='flex flex-col w-full h-full mx-auto'>
                 <input
                     type='text'
-                    className='bg-white max-w-28 rounded px-4 py-2 shadow shadow-gray-500'
+                    className='bg-white w-fit rounded px-4 py-2 text-(--text-dark) shadow shadow-gray-500'
+                    value={currentInput}
+                    placeholder={'Who\'s that pokemon?'}
+                    onChange={(e) => handleInputChange(e.currentTarget.value)}
                 />
-                <p>{pokemon}</p>
+                <button
+                    onClick={handleEnter}
+                    className={`${ pokemon ? '' : 'hidden'} rounded w-fit px-2 py-1 cursor-pointer bg-white text-(--text-dark)`}
+                >
+                    <div className='flex flex-row'>
+                        Enter <div className='ml-1 rotate-180'>&#10150;</div>
+                    </div>
+                </button>
+                {currentInput}
+                <p>Current Streak: {streak}</p>
             </div>
         </div>
     );

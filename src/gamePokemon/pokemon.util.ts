@@ -58,8 +58,9 @@ export async function retrievePkmn() {
             const src = data.sprites.front_default;
             const sprite = data.sprites.other['official-artwork'].front_default;
             const id = data.id;
+            const type = data.types;
 
-            return { name, src, id, sprite };
+            return { name, src, id, sprite, type };
         } catch (error) {
             console.error(error);
             return null;

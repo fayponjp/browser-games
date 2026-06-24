@@ -224,8 +224,8 @@ export const GuessPokemon = () => {
     useGetPkmn();
 
     return (
-        <div className='w-full items-center shadow max-w-xl mx-auto grid grid-rows-[auto_1fr] px-3 py-3 bg-[#f9f1f1]/40 font-[Rubik] rounded-xl'>
-            <div className='mx-auto rounded-t overflow-hidden w-full h-full mt-auto pkmn-glow steps-bg relative flex text-6xl text-outline-white'>
+        <div className='lg:w-full steps-bg relative items-center shadow shadow-gray-500 max-w-xl w-[calc(100%-1rem)] mx-auto grid grid-rows-[auto_1fr] my-4 font-[Rubik] rounded-2xl overflow-hidden'>
+            <div className='mx-auto overflow-hidden w-full h-full mt-auto pkmn-glow relative flex text-6xl text-outline-white'>
                 <img
                     className='sprite max-h-[60%] z-10 aspect-square m-auto'
                     src={pokemonSprite}

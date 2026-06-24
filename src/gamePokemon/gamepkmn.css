@@ -19,7 +19,7 @@
 }
 
 .text-outline-white {
-    -webkit-text-stroke: 2px #f5f8fe;
+    -webkit-text-stroke: 2px light-dark(#f5f8fe, #292828);
 }
 
 .pkmn-glow::after,
@@ -54,7 +54,7 @@
 
 @keyframes rotation {
     0% {
-        rotate: calc(360deg);
+        rotate: calc(180deg);
         transform: scale(100%);
     }
 
@@ -79,7 +79,7 @@
     }
 
     100% {
-        rotate: calc(360deg);
+        rotate: calc(180deg);
         transform: scale(100%);
     }
 }

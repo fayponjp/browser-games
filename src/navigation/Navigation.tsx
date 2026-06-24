@@ -28,7 +28,7 @@ export const NavigationPopover = () => {
                     {navigationLinks}
                 </nav>
             </div>
-            <Link to='/' className='gradient-text-reverse text-2xl hover:dark:brightness-125 hover:brightness-75 hover:scale-110 transition ease-in-out'>HOME</Link>
+            <Link to='/' className='gradient-text-reverse text-2xl hover:outline rounded-xs p-1 hover:outline-gray-400/60 hover:brightness-75 transition ease-in-out'>HOME</Link>
         </div>
     );
 };

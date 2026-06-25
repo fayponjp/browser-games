@@ -13,6 +13,7 @@ interface PokemonGuessGame {
     setType: (type: PkmnTypes) => void;
     streak: number;
     updateStreak: () => void;
+    resetStreak: () => void;
 }
 
 const initialPkmnState = {
@@ -29,7 +30,8 @@ export const usePkmnGuessing = create<PokemonGuessGame>()(
             setPokemon: (pokemon) => set(() => ({ pokemon })),
             setPokemonSprite: (pokemonSprite) => set(() => ({ pokemonSprite })),
             setType: (pkmnType) => set(() => ({ pkmnType })),
-            updateStreak: () => set((state) => ({streak: state.streak + 1}))
+            updateStreak: () => set((state) => ({streak: state.streak + 1})),
+            resetStreak: () => set(() => ({streak: 0}))
         }),
         {
             name: 'game-pkmn-guessing',

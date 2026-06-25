@@ -83,3 +83,16 @@
         transform: scale(100%);
     }
 }
+
+.option-btn {
+    outline-offset: 4px;
+    background: hsl(226, 67%, 31%);
+
+    &:active .option-facade {
+        transform: translateY(6px);
+    }
+}
+
+.option-facade {
+    background: hsl(230, 60%, 50%)
+}

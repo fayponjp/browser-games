@@ -5,7 +5,7 @@ import { loadFromCache, saveToCache } from '../shared-utils/caching';
 import { isLetter, useKeyhandler } from '../shared-utils/shared';
 import './gamepkmn.css';
 import { useGetPkmn, usePkmnGuessing } from './pokemon.hooks';
-import { PlayerUI } from './PlayerUI';
+import { PlayerUI } from './PlayerUI/PlayerUI';
 
 const LetterDisplay = ({
     pokemon,
@@ -219,7 +219,10 @@ export default function PokeHangman() {
 }
 
 export const GuessPokemon = () => {
-    const { pokemonSprite } = usePkmnGuessing();
+    const { pokemonSprite, options, pkmnType } = usePkmnGuessing();
+    const { Typing, Reveal } = options;
+
+    console.log(pkmnType[0]);
 
     useGetPkmn();
 
@@ -227,13 +230,14 @@ export const GuessPokemon = () => {
         <div className='lg:w-full steps-bg relative items-center text-[#2b2a2a] dark:text-[#f3eded] shadow shadow-gray-500 max-w-xl w-[calc(100%-1rem)] mx-auto grid grid-rows-[auto_1fr] my-4 font-[Rubik] rounded-2xl overflow-hidden'>
             <div className='mx-auto overflow-hidden w-full h-full mt-auto pkmn-glow relative flex text-6xl text-outline-white'>
                 <img
-                    className='sprite max-h-[60%] z-10 aspect-square m-auto'
+                    className={`${Reveal ? '' : 'sprite'} max-h-[60%] z-10 aspect-square m-auto transition ease-in-out`}
                     src={pokemonSprite}
                 ></img>
                 <div className='absolute mx-auto inset-x-0 bottom-9 text-center z-10'>
                     <p>?</p>
                     <p>POKéMON</p>
                 </div>
+                <div className={`absolute ${Typing ? '' : ''}`}></div>
             </div>
             <PlayerUI/>
         </div>

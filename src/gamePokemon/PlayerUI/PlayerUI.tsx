@@ -1,8 +1,13 @@
 import { useEffect, useEffectEvent, useRef, useState } from 'react';
-import { usePkmnGuessing } from './pokemon.hooks';
+import { usePkmnGuessing } from '../pokemon.hooks';
+import { HintButtons } from './PlayerUIButtons';
 
 export const PlayerUI = () => {
-    const { pokemon, setPokemon, streak, updateStreak } = usePkmnGuessing();
+    const { pokemon, setPokemon, streak, updateStreak, resetStreak, options } = usePkmnGuessing();
+    const { Letters } = options;
+
+    let charLengthDisplay = '_'.repeat(pokemon?.length ?? 0);
+
     const inputRef = useRef<HTMLInputElement>(null);
     const [currentInput, setCurrentInput] = useState<string>('');
     const handleInputChange = (input: string) => {
@@ -21,7 +26,9 @@ export const PlayerUI = () => {
             updateStreak();
             setPokemon(undefined);
         } else {
-            console.log('nope');
+            if (currentInput) {
+                resetStreak();
+            }
         }
 
         setCurrentInput('');
@@ -42,7 +49,7 @@ export const PlayerUI = () => {
         <div className='flex flex-col items-center grow z-10 bg-transparent max-w-xl w-full h-full mx-auto'>
             <div className='absolute text-(--text-dark) flex flex-row w-[calc(100%-1.5rem)] px-1 text-xl top-5 justify-between'>
                 <div
-                    className='bg-gray-200/40 w-fit rounded-br-lg rounded-l-xl pr-3 h-fit relative flex flex-row items-center gap-2'
+                    className='bg-gray-200/40 w-fit max-w-67 rounded-br-lg rounded-l-xl pr-3 h-fit relative flex flex-row items-center gap-2'
                     onClick={focusInput}
                 >
                     <div
@@ -69,7 +76,7 @@ export const PlayerUI = () => {
                         {currentInput ? (
                             currentInput.toUpperCase()
                         ) : (
-                            <p className='text-center italic'>-</p>
+                            Letters ? <p>{charLengthDisplay}</p> : <p className='text-center italic'>_</p>
                         )}
                     </span>
                 </div>
@@ -87,6 +94,7 @@ export const PlayerUI = () => {
                         value={currentInput}
                         placeholder={'-'}
                         ref={inputRef}
+                        maxLength={14}
                         onChange={(e) =>
                             handleInputChange(e.currentTarget.value)
                         }
@@ -99,30 +107,20 @@ export const PlayerUI = () => {
                     </button>
                 </div>
                 <div className='grow grid grid-rows-[auto_1fr]'>
-                    <h2 className='text-xl font-bold border-b border-b-blue-200 pb-2'>How to play</h2>
+                    <h2 className='text-xl font-bold border-b border-b-blue-200 pb-2'>
+                        How to play
+                    </h2>
                     <ul className='flex flex-col justify-evenly max-w-[75%] list-disc pl-4 mt-2'>
                         <li>Guess the pokemon by their silhouette.</li>
                         <li>
-                            Enable hints from the buttons on the right if needed.
+                            Enable hints from the buttons on the right if
+                            needed.
                         </li>
                         <li>Enabling a hint will reset your streak.</li>
                         <li>Aim for high streaks!</li>
                     </ul>
-                    <div className='absolute right-1 bottom-20 grid grid-cols-1 text-xs grid-rows-4 rounded'>
-                        {/* <button className='p-1 h-15 cursor-pointer shadow bg-blue-300 dark:bg-blue-500 '>
-                            Type
-                        </button>
-                        <button className='p-1 h-15 cursor-pointer inset-shadow inset-shadow-sm inset-shadow-gray-600/40 shadow bg-blue-300 dark:bg-blue-400 '>
-                            Letter Count
-                        </button>
-                        <button className='p-1 h-15 cursor-pointer shadow bg-blue-300 dark:bg-blue-500 '>
-                            Reveal
-                        </button> */}
-                        <button className='option-btn rounded-xl p-0 cursor-pointer'>
-                            <span className='option-facade text-xl block py-3 px-11 rounded-xl -translate-y-2 text-white'>
-                                Test
-                            </span>
-                        </button>
+                    <div className='absolute right-2 bottom-5 lg:bottom-20 grid grid-cols-1 text-xs grid-rows-4'>
+                        <HintButtons />
                     </div>
                 </div>
             </div>

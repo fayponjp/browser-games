@@ -85,14 +85,15 @@
 }
 
 .option-btn {
-    outline-offset: 4px;
-    background: hsl(226, 67%, 31%);
+    outline-offset: 0.25rem;
+    background: oklch(32.418% 0.08919 267.654 / 0.863);
 
-    &:active .option-facade {
-        transform: translateY(6px);
+    &:active .option-facade, &.active .option-facade {
+        transform: translateY(0.5rem);
+        filter: brightness(1.15);
     }
 }
 
 .option-facade {
-    background: hsl(230, 60%, 50%)
+    background: hsl(230, 52%, 49%);
 }

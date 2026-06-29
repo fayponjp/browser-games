@@ -31,23 +31,6 @@ export const games: GameDetails[] = [
     },
     {
         title: (
-            <>
-                <span className='text-red-700'>Poké</span>
-                <span >Hangman</span>
-            </>
-        ),
-        description: (
-            <>
-                <p>A pocket monster-themed twist on the classic word game.</p>
-                <p>
-                    Guess the pokémon's name before the pokéball is fully drawn!
-                </p>
-            </>
-        ),
-        name: 'PokeHangman',
-    },
-    {
-        title: (
             <div className='bg-(--board-card-128) w-fit px-2 rounded'>
                 <span>2048</span>
             </div>
@@ -72,12 +55,12 @@ export const games: GameDetails[] = [
     {
         title: (
             <div>
-                <span>Who's that pokemon?</span>
+                <span>Who's that pokémon?</span>
             </div>
         ),
         description: (
             <>
-                <p>A recreation of the eyecatch in the pokemon anime.</p>
+                <p>A recreation of the eyecatch in the pokémon anime.</p>
             </>
         ),
         name: 'Who\'s that Pokemon?'

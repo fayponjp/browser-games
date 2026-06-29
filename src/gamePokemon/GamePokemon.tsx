@@ -21,9 +21,9 @@ export const GuessPokemon = () => {
     const { Typing, Reveal } = options;
 
     useGetPkmn();
-    const typeElements = pkmnType.map((typeStr: string) => (
+    const typeElements = pkmnType?.map((typeStr: string) => (
         <TypeDisplay typeValue={typeStr} />
-    ));
+    )) || undefined;
 
     return (
         <div className='lg:w-full steps-bg relative items-center text-[#2b2a2a] dark:text-[#f3eded] shadow shadow-gray-500 max-w-xl w-[calc(100%-1rem)] mx-auto grid grid-rows-[auto_1fr] my-4 font-[Rubik] rounded-2xl overflow-hidden'>
@@ -37,7 +37,7 @@ export const GuessPokemon = () => {
                     <p>POKéMON</p>
                 </div>
                 <div
-                    className={`absolute w-full justify-center font-bold gap-2 mb-1 flex flex-row mx-auto bottom-0 text-sm ${Typing ? '' : 'hidden'}`}
+                    className={`absolute w-full justify-center font-bold gap-2 mb-1 flex flex-row mx-auto bottom-0 transition-discrete  text-sm ${Typing ? '' : 'hidden'}`}
                 >
                     {typeElements}
                 </div>

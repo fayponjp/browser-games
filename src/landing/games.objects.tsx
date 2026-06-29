@@ -54,8 +54,28 @@ export const games: GameDetails[] = [
     },
     {
         title: (
-            <div>
-                <span>Who's that pokémon?</span>
+            <div className='relative flex items-center gap-2'>
+                <div
+                    className={`rounded-[50%] relative border-4 border-(--theme-dark) h-10 aspect-square flex overflow-hidden shadow`}
+                >
+                    <div
+                        className={`absolute max-h[50%] top-0 bottom-[50%] bg-red-600 w-full`}
+                    ></div>
+                    <div
+                        className={`absolute max-h[50%] top-[50%] bottom-0 bg-white w-full`}
+                    ></div>
+                    <div
+                        className={`rounded-[50%] border-3 border-(--theme-dark) flex h-4 aspect-square m-auto bg-white z-10`}
+                    >
+                        <div className='rounded-[50%] h-1 aspect-square bg-white border z border-(--theme-dark) m-auto'></div>
+                    </div>
+                    <div className='absolute flex top-0 bottom-0 w-full'>
+                        <div
+                            className={`border-2 border-(--theme-dark) my-auto w-full`}
+                        ></div>
+                    </div>
+                </div>
+                <span className='text-xs'>Who's that pokémon?</span>
             </div>
         ),
         description: (

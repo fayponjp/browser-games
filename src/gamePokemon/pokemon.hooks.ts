@@ -47,7 +47,7 @@ export const usePkmnGuessing = create<PokemonGuessGame>()(
             updateOptions: (updates) => set((state) => ({ options: { ...state.options, ...updates}}))
         }),
         {
-            name: 'game-pkmn-guessing',
+            name: 'game-guess-pkmn',
             partialize: (state: PokemonGuessGame) => ({
                 pokemon: state.pokemon,
                 pokemonSprite: state.pokemonSprite,
@@ -70,8 +70,6 @@ export const useGetPkmn = () => {
             setPokemon(name);
             setPokemonSprite(sprite);
             setType(type);
-
-            console.log(type)
         }
     }
 

@@ -53,7 +53,8 @@ export const usePkmnGuessing = create<PokemonGuessGame>()(
                 pokemon: state.pokemon,
                 pokemonSprite: state.pokemonSprite,
                 streak: state.streak,
-                options: state.options
+                options: state.options,
+                pkmnType: state.pkmnType
             })
         },
     )

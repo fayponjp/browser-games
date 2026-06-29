@@ -222,7 +222,7 @@ export const GuessPokemon = () => {
     const { pokemonSprite, options, pkmnType } = usePkmnGuessing();
     const { Typing, Reveal } = options;
 
-    console.log(pkmnType[0]);
+    console.log(pkmnType);
 
     useGetPkmn();
 

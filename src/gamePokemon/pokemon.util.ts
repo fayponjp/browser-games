@@ -44,6 +44,26 @@ export async function retrievePkmnCountGraphQL() {
     console.log(data);
 }
 
+interface PokeAPIResponseJSON {
+    id: string;
+    name: string;
+    sprites: {
+        front_default: string;
+        other: {
+            'official-artwork': {
+                front_default: string;
+            }
+        }
+    };
+    types: { 
+        slot: number;
+        type: {
+            name: string;
+            url: string;
+        }
+    }[]
+}
+
 export async function retrievePkmn() {
     const pkmnCount = await retrievePkmnCount();
 
@@ -53,12 +73,16 @@ export async function retrievePkmn() {
             const response = await fetch(
                 `https://pokeapi.co/api/v2/pokemon/${randomPkmn}`,
             );
-            const data = await response.json();
+            const reqData = await response.json();
+            const data: PokeAPIResponseJSON = reqData;
+
             const name = data.name;
             const src = data.sprites.front_default;
             const sprite = data.sprites.other['official-artwork'].front_default;
             const id = data.id;
-            const type = data.types;
+            const type = data.types.map((element) => {
+                return element.type.name;
+            });
 
             return { name, src, id, sprite, type };
         } catch (error) {

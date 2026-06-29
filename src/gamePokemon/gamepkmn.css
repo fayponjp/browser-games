@@ -97,3 +97,7 @@
 .option-facade {
     background: hsl(230, 52%, 49%);
 }
+
+.bug {
+    background-color: var(--type-bug);
+}

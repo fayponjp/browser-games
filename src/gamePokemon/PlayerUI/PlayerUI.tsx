@@ -111,7 +111,7 @@ export const PlayerUI = () => {
                         How to play
                     </h2>
                     <ul className='flex flex-col justify-evenly max-w-[75%] list-disc pl-4 mt-2'>
-                        <li>Guess the pokemon by their silhouette.</li>
+                        <li>Guess the pokemon by their silhouette. Some names will also need the forme included (i.e. Shaymin-Land)</li>
                         <li>
                             Enable hints from the buttons on the right if
                             needed.

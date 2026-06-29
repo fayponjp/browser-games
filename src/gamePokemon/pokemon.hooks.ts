@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { retrievePkmn } from './pokemon.util';
-import type { PkmnTypes } from './pokemon.types';
 
 export type Options = {
     Typing: boolean;

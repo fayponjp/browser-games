@@ -33,6 +33,25 @@
     --theme-light: oklch(87.68% 0.02745 288.064);
     --game-card-bg-dark: oklch(32.821% 0.01406 285.57);
     --game-card-bg-light: oklch(95.275% 0.02022 282.902);
+
+    --type-bug: oklch(56.081% 0.08668 89.288);
+    --type-dark: oklch(28.569% 0.00768 84.572);
+    --type-dragon: oklch(47.33% 0.23153 284.046);
+    --type-electric: oklch(83.442% 0.13176 99.115);
+    --type-fairy: oklch(73.592% 0.18684 334.695);
+    --type-fighting: oklch(50.983% 0.08082 62.298);
+    --type-fire: oklch(63.73% 0.18086 29.356);
+    --type-flying:  oklch(71.205% 0.11218 240.111);
+    --type-ghost: oklch(40.915% 0.09669 284.349);
+    --type-grass: oklch(67.07% 0.17232 145.583);
+    --type-ground: oklch(79.203% 0.12505 89.429);
+    --type-ice: oklch(82.776% 0.08771 217.345);
+    --type-normal: oklch(63.095% 0.00117 13.822);
+    --type-poison: oklch(44.351% 0.11702 295.795);
+    --type-psychic: oklch(64.155% 0.24839 324.908);
+    --type-rock: oklch(45.23% 0.06959 89.88);
+    --type-steel: oklch(83.591% 0.0001 271.152);
+    --type-water: oklch(49.599% 0.26364 269.144);
 }
 
 body {

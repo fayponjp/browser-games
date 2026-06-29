@@ -7,9 +7,14 @@ const PlayerUIButtons = ({
     objKey: string;
     value: boolean;
 }) => {
-    const { updateOptions } = usePkmnGuessing();
+    const { updateOptions, resetStreak } = usePkmnGuessing();
+
     const handleOnClick = () => {
-        updateOptions({ [objKey]: !value})
+        updateOptions({ [objKey]: !value});
+
+        if (!value) {
+            resetStreak();
+        }
     }
     return (
         <button

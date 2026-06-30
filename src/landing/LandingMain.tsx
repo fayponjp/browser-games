@@ -20,24 +20,23 @@ export const Landing = () => {
     });
 
     return (
-        <main className='grid grid-rows-[auto_1fr_auto] font-[Rubik] h-full gap-4 p-8 lg:min-w-lg m-auto'>
+        <main className='grid w-full max-w-5xl relative grid-rows-[auto_1fr_auto] font-[Rubik] h-full gap-4 p-8 m-auto '>
             <h2 className='py-8 text-5xl font-mono max-w-5xl w-full mx-auto'>
                 Games
             </h2>
             <div className='flex flex-col lg:flex-row gap-4 max-w-5xl w-full mx-auto'>
                 {cardComponents}
             </div>
-            <div className='fixed pressable-link rounded m-auto w-fit h-fit bottom-10 left-10 lg:inset-x-0 lg:bottom-25 z-100'>
-                <Link
-                    to={activeGameRoute}
-                    className='link-facade py-4 px-5 block rounded cursor-pointer'
-                >
-                    <div className='font-[Rubik] lg:text-3xl text-lg font-bold'>
-                        PLAY
-                        <span className='lg:text-lg'>{activeGame}</span>
-                    </div>
-                </Link>
-            </div>
+
+            <Link
+                to={activeGameRoute}
+                className='pressable-link fixed shadow-lg shadow-[#46ff56] z-11 bottom-10 left-10 lg:inset-x-0 lg:bottom-25 w-fit mx-auto block rounded cursor-pointer'
+            >
+                <div className='link-facade rounded font-[Rubik] py-4 px-5 lg:text-3xl text-lg font-bold'>
+                    PLAY
+                    {' '}<span className='lg:text-lg'>{activeGame}</span>
+                </div>
+            </Link>
         </main>
     );
 };

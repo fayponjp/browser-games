@@ -5,7 +5,7 @@ import { PlayerUI } from './PlayerUI/PlayerUI';
 const TypeDisplay = ({ typeValue }: { typeValue: string }) => {
     return (
         <div
-            className='p-2 rounded-lg text-white'
+            className='p-2 rounded text-white w-20 text-center'
             style={{
                 backgroundColor: `var(--type-${typeValue})`,
                 color: `contrast-color(var(--type-${typeValue}))`,

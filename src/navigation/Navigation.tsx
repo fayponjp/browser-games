@@ -39,7 +39,7 @@ export const NavigationBar = () => {
     const isHome = location.pathname === '/';
 
     return (
-        <div className={`w-full dark:bg-(--game-card-bg-dark) bg-(--game-card-bg-light) ${isHome ? 'hidden' : ''}`}>
+        <div className={`w-full bg-(--game-card-bg-dark) ${isHome ? 'hidden' : ''}`}>
             <NavigationPopover />
             
         </div>

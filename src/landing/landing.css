@@ -11,7 +11,7 @@
 }
 
 .pressable-link {
-    background: light-dark(oklch(35.502% 0.0379 270.134 / 0.863), oklch(66.574% 0.05256 269.737 / 0.863));
+    background: oklch(58.485% 0.09217 155.608 / 0.863);
 
     &:hover &:not(.active) .link-facade {
         transform: translateY(-0.15rem);
@@ -25,6 +25,6 @@
 }
 
 .link-facade {
-    background: light-dark(var(--game-card-bg-light), var(--game-card-bg-dark));
+    background: #2a2c34;
     transform: translateY(-0.5rem);
 }

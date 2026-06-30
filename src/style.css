@@ -27,12 +27,12 @@
     --board-card-1024: #f8cb30;
     --board-card-2048: #ffc900;
 
-    --theme-color: oklch(41.429% 0.10535 273.499);
-    --theme-color-gradient-end: oklch(81.193% 0.0679 259.656);
+    --theme-color: oklch(77.651% 0.18499 145.059);
+    --theme-color-gradient-end: oklch(83.498% 0.04981 221.24);
     --theme-dark: oklch(25.929% 0.00938 294.843 / 0.925);
     --theme-light: oklch(87.68% 0.02745 288.064);
     --game-card-bg-dark: oklch(32.821% 0.01406 285.57);
-    --game-card-bg-light: oklch(95.275% 0.02022 282.902);
+    --game-card-bg-light: oklch(95.815% 0.00011 271.152);
 
     --type-bug: oklch(56.081% 0.08668 89.288);
     --type-dark: oklch(28.569% 0.00768 84.572);
@@ -56,7 +56,7 @@
 
 body {
     height: 100vh;
-    background-color: light-dark(var(--theme-light), var(--theme-dark));
+    background-color: var(--theme-dark);
 }
 
 #root {

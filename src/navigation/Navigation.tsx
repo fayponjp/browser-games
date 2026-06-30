@@ -22,9 +22,9 @@ export const NavigationPopover = () => {
             <div
                 id='navPopover'
                 popover='auto'
-                className='animate-right bg-transparent backdrop:bg-gray-700/50 lg:backdrop:bg-transparent lg:my-2 lg:mx-0 mx-2 mt-2 lg:mt-0 overflow-visible [position-anchor:--nav-anchor] [position-area:right_span-bottom] lg:[position-area:bottom_span-right] inset-0 absolute'
+                className='nav-drop bg-transparent backdrop:bg-gray-700/50 lg:backdrop:bg-transparent lg:my-2 lg:mx-0 mx-2 mt-2 lg:mt-0 overflow-visible [position-anchor:--nav-anchor] [position-area:right_span-bottom] lg:[position-area:bottom_span-right] inset-0 absolute'
             >
-                <nav className='flex rounded-xs dark:bg-(--game-card-bg-dark) bg-(--game-card-bg-light) flex-col gap-2 skew-x-10 shadow-xs shadow-white overflow-hidden max-w-45'>
+                <nav className='flex rounded-xs dark:bg-(--game-card-bg-dark) bg-(--game-card-bg-light) flex-col gap-2 shadow-xs shadow-gray-500 overflow-hidden max-w-60'>
                     {navigationLinks}
                 </nav>
             </div>

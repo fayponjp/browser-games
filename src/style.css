@@ -27,8 +27,8 @@
     --board-card-1024: #f8cb30;
     --board-card-2048: #ffc900;
 
-    --theme-color: oklch(27.783% 0.05041 274.693);
-    --theme-color-gradient-end: oklch(78.672% 0.06231 259.229);
+    --theme-color: oklch(41.429% 0.10535 273.499);
+    --theme-color-gradient-end: oklch(81.193% 0.0679 259.656);
     --theme-dark: oklch(25.929% 0.00938 294.843 / 0.925);
     --theme-light: oklch(87.68% 0.02745 288.064);
     --game-card-bg-dark: oklch(32.821% 0.01406 285.57);

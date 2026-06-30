@@ -10,29 +10,21 @@
     border-radius: 0.25rem
 }
 
-.pulse::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to right bottom, var(--theme-color-gradient-end), var(--theme-color));
+.pressable-link {
+    background: light-dark(oklch(35.502% 0.0379 270.134 / 0.863), oklch(66.574% 0.05256 269.737 / 0.863));
 
-    border-radius: 5%;
-    animation: pulse 2000ms infinite;
+    &:hover &:not(.active) .link-facade {
+        transform: translateY(-0.15rem);
+        filter: brightness(1.05);
+    }
+
+    &:hover .link-facade {
+        transform: translateY(-0.75rem);
+        filter: brightness(1.15);
+    }
 }
 
-@keyframes pulse {
-    0% {
-        transform: scale(0.9) skewX(-30deg);
-        opacity: 0.6;
-
-    }
-
-    100% {
-        transform: scale(1.3) skewX(-30deg);
-        opacity: 0;
-
-    }
+.link-facade {
+    background: light-dark(var(--game-card-bg-light), var(--game-card-bg-dark));
+    transform: translateY(-0.5rem);
 }

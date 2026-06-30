@@ -80,6 +80,7 @@ export const games: GameDetails[] = [
         ),
         description: (
             <>
+                <p>Identify the pokémon from their silhouette!</p>
                 <p>A recreation of the eyecatch in the pokémon anime.</p>
             </>
         ),

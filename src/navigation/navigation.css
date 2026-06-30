@@ -1,9 +1,41 @@
 .gradient-text {
-  background: linear-gradient(to right, var(--theme-green), #7abd81);
-  
-  background-clip: text;
-  -webkit-background-clip: text; 
-  
-  color: transparent;
-  -webkit-text-fill-color: transparent; 
+    background: linear-gradient(
+        to right,
+        var(--theme-color),
+        var(--theme-color-gradient-end)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-reverse {
+    background: linear-gradient(
+        to left,
+        var(--theme-color),
+        var(--theme-color-gradient-end)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-drop {
+    animation: dropdown 500ms linear(0, 0.002 0.3%, 0.007 0.6%, 0.029 1.3%, 0.065 2%, 0.119 2.8%, 0.237 4.2%, 0.659 8.7%, 0.778 10.2%, 0.871 11.6%, 0.95 13.1%, 1.009 14.6%, 1.033 15.4%, 1.052 16.2%, 1.066 17%, 1.078 17.9%, 1.085 18.8%, 1.088 19.7%, 1.088 20.7%, 1.085 21.7%, 1.074 23.6%, 1.032 28.7%, 1.014 31.4%, 1.006 33%, 1 34.6%, 0.993 38%, 0.992 41.9%, 0.999 51.4%, 1.001 57.6%, 1)
+}
+
+@keyframes dropdown {
+    from {
+        transform: translateY(-50%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
 }

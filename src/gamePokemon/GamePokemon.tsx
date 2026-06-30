@@ -1,217 +1,48 @@
-import { useEffect, useState } from 'react';
-import { retrievePkmn } from './pokemon.util';
-import type { PkmnGame } from '../shared-utils/types-interfaces';
-import { loadFromCache, saveToCache } from '../shared-utils/caching';
-import { isLetter, useKeyhandler } from '../shared-utils/shared';
+import './gamepkmn.css';
+import { useGetPkmn, usePkmnGuessing } from './pokemon.hooks';
+import { PlayerUI } from './PlayerUI/PlayerUI';
 
-const LetterDisplay = ({
-    pokemon,
-    guessedLetters,
-}: {
-    pokemon: string;
-    guessedLetters: Array<string>;
-}) => {
-    const letters = Array.from(pokemon);
-
-    const guessElements = letters.map((letter, index) => {
-        const isCurrentLetter = guessedLetters.includes(letter);
-        const isALetter = isLetter(letter);
-        return (
-            <div key={index}>
-                {!isCurrentLetter && isALetter ? '_' : letter}
-            </div>
-        );
-    });
-
-    const gameBoard = (
-        <div className='tracking-widest uppercase flex flex-row gap-2 text-5xl justify-center'>
-            {guessElements}
+const TypeDisplay = ({ typeValue }: { typeValue: string }) => {
+    return (
+        <div
+            className='p-2 rounded text-white w-20 text-center'
+            style={{
+                backgroundColor: `var(--type-${typeValue})`,
+                color: `contrast-color(var(--type-${typeValue}))`,
+            }}
+        >
+            {typeValue.toUpperCase()}
         </div>
     );
-
-    return gameBoard;
 };
 
-export default function PokeHangman() {
-    const pkmnGameCacheKey = 'pkmnCurrentGameState';
-    const cachedGame: PkmnGame | null = loadFromCache(pkmnGameCacheKey);
-    const [game, updateGame] = useState<PkmnGame>(
-        cachedGame || {
-            gameOver: false,
-            gameWon: false,
-            guessedLetters: [],
-            currentPkmn: undefined,
-            currentSprite: undefined,
-        },
-    );
+export const GuessPokemon = () => {
+    const { pokemonSprite, options, pkmnType } = usePkmnGuessing();
+    const { Typing, Reveal } = options;
 
-    const strikes = !game.currentPkmn
-        ? 0
-        : game.guessedLetters.filter(
-              (letter) => !game.currentPkmn!.includes(letter),
-          ).length;
-    const isGameWon = game.currentPkmn
-        ? [...game.currentPkmn].every((letter) =>
-              game.guessedLetters.includes(letter),
-          )
-        : false;
-    const isGameLost = strikes >= 5;
-    const isGameOver = isGameWon || isGameLost;
-
-    useEffect(() => {
-        if (!game.currentPkmn) {
-            const fetchPkmn = async () => {
-                const response = await retrievePkmn();
-
-                if (response) {
-                    const { name, src } = response;
-                    updateGame((prevGame) => ({
-                        ...prevGame,
-                        currentPkmn: name,
-                        currentSprite: src,
-                    }));
-
-                    
-                }
-            };
-
-            fetchPkmn();
-        }
-    }, [game.currentPkmn]);
-
-    const letterElements = game.currentPkmn ? (
-        <LetterDisplay
-            pokemon={game.currentPkmn}
-            guessedLetters={game.guessedLetters}
-        />
-    ) : null;
-
-    const [currentLetter, setCurrentLetter] = useState<string>();
-    function handleInput(letterInput: string) {
-        if (letterInput !== currentLetter) setCurrentLetter(letterInput);
-    }
-
-    function handleEnter() {
-        if (
-            currentLetter &&
-            strikes < 5 &&
-            !game.guessedLetters.includes(currentLetter)
-        ) {
-            updateGame((prevGame) => ({
-                ...prevGame,
-                guessedLetters: [...prevGame.guessedLetters, currentLetter],
-            }));
-            setCurrentLetter(undefined);
-        }
-    }
-
-    function handleBackspace() {
-        setCurrentLetter(undefined);
-    }
-
-    function handleRestart() {
-        updateGame({
-            gameOver: false,
-            gameWon: false,
-            guessedLetters: [],
-            currentPkmn: undefined,
-            currentSprite: undefined,
-        });
-    }
-
-    useKeyhandler([currentLetter], handleInput, handleEnter, handleBackspace);
-
-    useEffect(() => {
-        if (game.currentPkmn) saveToCache(pkmnGameCacheKey, game);
-    }, [game]);
+    useGetPkmn();
+    const typeElements = pkmnType?.map((typeStr: string) => (
+        <TypeDisplay typeValue={typeStr} />
+    )) || undefined;
 
     return (
-        <div className=' mx-auto lg:max-w-5xl w-full grid grid-rows-[1fr_auto_1fr_auto_1fr] text-gray-700 bg-white text-center py-8'>
-            <div className='my-auto relative'>
-                <div
-                    className={`rounded-[50%] border-4 h-25 w-25 mx-auto flex relative overflow-hidden shadow ${strikes >= 1 ? '' : 'hidden'}`}
-                >
-                    <div
-                        className={`absolute max-h[50%] top-0 bottom-[50%] bg-red-600 w-full ${strikes >= 4 ? '' : 'hidden'}`}
-                    >
-                    </div>
-                    <div
-                        className={`absolute max-h[50%] top-[50%] bottom-0 bg-white w-full ${strikes >= 3 ? '' : 'hidden'}`}
-                    ></div>
-                    <div
-                        className={`rounded-[50%] border-3 h-5 w-5 m-auto bg-white z-10 ${strikes >= 5 ? '' : 'hidden'}`}
-                    ></div>
-                    <div className='absolute flex top-0 bottom-0 w-full'>
-                        <div
-                            className={`border my-auto w-full ${strikes >= 2 ? '' : 'hidden'}`}
-                        ></div>
-                    </div>
-                </div>
-            </div>
-            {letterElements}
-            <div className='flex flex-col mt-4 justify-between'>
-                {!isGameOver ? (
-                    <>
-                        <p>Current Guess:</p>
-                        <p className={`uppercase mt-4 text-7xl ${currentLetter && game.guessedLetters.includes(currentLetter) && 'text-red-700'}`}>
-                            {currentLetter ? (
-                                currentLetter
-                            ) : (
-                                <span className='animate-blink'>_</span>
-                            )}
-                        </p>
-                    </>
-                ) : (
-                    <>
-                        {isGameWon ? (
-                            <p className='font-bold'>
-                                Congratulations, you got it!
-                            </p>
-                        ) : (
-                            <p className='font-bold'>
-                                Game Over! The Pokemon was {game.currentPkmn}!
-                            </p>
-                        )}
-                        <img className='mx-auto' src={game.currentSprite} />
-                    </>
-                )}
-                <input
-                    className='text-center block md:hidden text-3xl border w-40 mx-auto rounded-3xl'
-                    placeholder='⌨'
-                    value={currentLetter ?? ''}
-                    autoCapitalize='none'
-                    onChange={(e) => {
-                        const raw = e.target.value;
-                        const letter = raw
-                            .replace(/[^a-zA-Z]/g, '')
-                            .slice(-1)
-                            .toLowerCase()
-
-                        if (letter) setCurrentLetter(letter);
-                    }}
-                    onFocus={(e) => e.target.select()}
-                    maxLength={1}
+        <div className='lg:w-full steps-bg relative items-center text-[#2b2a2a] dark:text-[#f3eded] shadow shadow-gray-500 max-w-xl w-[calc(100%-1rem)] mx-auto grid grid-rows-[auto_1fr] my-4 font-[Rubik] rounded-2xl overflow-hidden'>
+            <div className='mx-auto overflow-hidden w-full h-full mt-auto pkmn-glow relative flex text-6xl '>
+                <img
+                    className={`${Reveal ? '' : 'sprite'} max-h-[60%] z-10 aspect-square m-auto transition ease-in-out`}
+                    src={pokemonSprite}
                 />
+                <div className=' text-outline-white absolute mx-auto inset-x-0 bottom-9 text-center z-10'>
+                    <p>?</p>
+                    <p>POKéMON</p>
+                </div>
+                <div
+                    className={`absolute w-full justify-center font-bold gap-2 mb-1 flex flex-row mx-auto bottom-0 transition-discrete  text-sm ${Typing ? '' : 'hidden'}`}
+                >
+                    {typeElements}
+                </div>
             </div>
-            <button
-                onClick={handleRestart}
-                className='p-2 my-4 w-40 h-10 mx-auto bg-zinc-600 hover:bg-zinc-400 hover:text-black active:bg-zinc-400 active:text-black transition delay-75 ease-in-out rounded-4xl text-white cursor-pointer'
-            >
-                {isGameOver ? 'New Game' : 'Reset'}
-            </button>
-            {game.guessedLetters.length > 0 ? (
-                <div>
-                    <p>Previous Guesses:</p>
-                    <p className='uppercase mt-4 text-xl top-[50%]'>
-                        {game.guessedLetters.join(', ')}
-                    </p>
-                </div>
-            ) : (
-                <div className='flex mx-auto flex-col '>
-                    <p>Press any letter key to start</p>
-                    <p>Press enter to confirm your guess</p>
-                </div>
-            )}
+            <PlayerUI />
         </div>
     );
-}
+};

@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 
 :root {
-    --background-dark: #343434;
+    color-scheme: light dark;
+    /* Wordle-specific colors */
+    /* This project was originally exclusively wordle, and the rest of the variables are added after converting to multiple games  */
     --text: #f8f8f8;
     --text-dark: #242424;
     --correct: #538d4e;
@@ -9,7 +11,6 @@
     --incorrect: #3a3a3c;
     --unused: #818384;
     font-family: 'Inter', sans-serif;
-
     --wordle-bg: #73a26f;
 
     --board-bg: #9b8878;
@@ -26,9 +27,31 @@
     --board-card-1024: #f8cb30;
     --board-card-2048: #ffc900;
 
-    --theme-green: #3a623a;
-    --theme-dark: #242328ec;
-    --game-card-bg: #34343c;
+    --theme-color: oklch(77.651% 0.18499 145.059);
+    --theme-color-gradient-end: oklch(83.498% 0.04981 221.24);
+    --theme-dark: oklch(25.929% 0.00938 294.843 / 0.925);
+    --theme-light: oklch(87.68% 0.02745 288.064);
+    --game-card-bg-dark: oklch(32.821% 0.01406 285.57);
+    --game-card-bg-light: oklch(95.815% 0.00011 271.152);
+
+    --type-bug: oklch(56.081% 0.08668 89.288);
+    --type-dark: oklch(28.569% 0.00768 84.572);
+    --type-dragon: oklch(47.33% 0.23153 284.046);
+    --type-electric: oklch(83.442% 0.13176 99.115);
+    --type-fairy: oklch(73.592% 0.18684 334.695);
+    --type-fighting: oklch(50.983% 0.08082 62.298);
+    --type-fire: oklch(63.73% 0.18086 29.356);
+    --type-flying:  oklch(71.205% 0.11218 240.111);
+    --type-ghost: oklch(40.915% 0.09669 284.349);
+    --type-grass: oklch(51.647% 0.14155 145.203);
+    --type-ground: oklch(79.203% 0.12505 89.429);
+    --type-ice: oklch(82.776% 0.08771 217.345);
+    --type-normal: oklch(63.095% 0.00117 13.822);
+    --type-poison: oklch(44.351% 0.11702 295.795);
+    --type-psychic: oklch(64.155% 0.24839 324.908);
+    --type-rock: oklch(45.23% 0.06959 89.88);
+    --type-steel: oklch(83.591% 0.0001 271.152);
+    --type-water: oklch(49.599% 0.26364 269.144);
 }
 
 body {

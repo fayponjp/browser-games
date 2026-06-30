@@ -12,10 +12,10 @@ export const Card = ({
     const activeGameMatch = name === activeGame;
     return (
         <section
-            className={`${activeGameMatch ? 'outline-skew transition ease-in-out -translate-x-2  lg:-translate-y-2' : ''} shadow-sm shadow-[#ceffd3] z-10 grid relative grid-rows-[1fr_auto] rounded grow max-h-90  lg:max-w-[50%]`}
+            className={`${activeGameMatch ? ' transition ease-in-out -translate-x-2  lg:-translate-y-2 shadow-[#46ff56]' : ''}  shadow-lg  z-10 grid relative grid-rows-[1fr_auto] max-h-90 rounded grow lg:max-w-[31%]`}
             onClick={() => setActiveGame(name)}
         >
-            <div className='p-4 flex flex-col gap-2 grow z-11 bg-(--game-card-bg)'>
+            <div className='p-4 flex flex-col gap-2 z-11 rounded bg-(--game-card-bg-dark) leading-relaxed'>
                 <h2 className='font-bold'>{title}</h2>
                 {description}
             </div>

@@ -1,7 +1,7 @@
 import './guide.css';
 export default function Guide() {
     return (
-        <footer className='text-white w-full px-6 gap-2 text-xs md:text-sm py-4 border-t max-w-5xl grid grid-cols-2 m-auto border-t-(--theme-green)/10'>
+        <footer className='text-white w-full px-6 gap-2 text-xs md:text-sm py-4 border-t max-w-5xl grid grid-cols-2 m-auto border-t-(--theme-color)/10'>
             <div className='flex flex-col items-center'>
                 <h2 className='font-bold'>Color Reference</h2>
                 <ul className='list-none flex flex-col gap-2'>

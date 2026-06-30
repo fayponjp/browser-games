@@ -1,37 +1,30 @@
 .outline-skew::before {
     content: '';
-    background: linear-gradient(to right, var(--theme-green), #82db8e);
+    background: light-dark(linear-gradient(to right, var(--theme-color-gradient-end), var(--theme-color)), linear-gradient(to right, var(--theme-color), var(--theme-color-gradient-end)));
     height: 100%;
     width: 100%;
     position: absolute;
     bottom: -0.5em;
     right: -0.5em;
     z-index: 9;
+    border-radius: 0.25rem
 }
 
-.pulse::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to right bottom, #64fa73, var(--theme-green));
+.pressable-link {
+    background: oklch(58.485% 0.09217 155.608 / 0.863);
 
-    border-radius: 5%;
-    animation: pulse 2000ms infinite;
+    &:hover &:not(.active) .link-facade {
+        transform: translateY(-0.15rem);
+        filter: brightness(1.05);
+    }
+
+    &:hover .link-facade {
+        transform: translateY(-0.75rem);
+        filter: brightness(1.15);
+    }
 }
 
-@keyframes pulse {
-    0% {
-        transform: scale(0.9) skewX(-30deg);
-        opacity: 0.6;
-
-    }
-
-    100% {
-        transform: scale(1.3) skewX(-30deg);
-        opacity: 0;
-
-    }
+.link-facade {
+    background: #2a2c34;
+    transform: translateY(-0.5rem);
 }

@@ -6,11 +6,12 @@ export type GameDetails = {
     name: GameTitles
 }
 
-export type GameTitles = '2048' | 'Not Wordle' | 'PokeHangman' | 'Home'
+export type GameTitles = '2048' | 'Not Wordle' | 'PokeHangman' | 'Who\'s that Pokemon?' | 'Home'
 
 export const GameRoute: Record<GameTitles, LinkProps['to']> = {
     'Home': '/',
     '2048': '/Game2048',
     'Not Wordle': '/GameWordle',
     'PokeHangman': '/GamePokemon',
+    'Who\'s that Pokemon?': '/GamePkmn'
 }

@@ -24,7 +24,7 @@ export const Landing = () => {
             <h2 className='py-8 text-5xl font-mono max-w-5xl w-full mx-auto'>
                 Games
             </h2>
-            <div className='flex flex-col lg:flex-row gap-4 max-w-5xl w-full mx-auto'>
+            <div className='flex flex-col lg:flex-row gap-4 max-w-5xl w-full mx-auto justify-between'>
                 {cardComponents}
             </div>
 

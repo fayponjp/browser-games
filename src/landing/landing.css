@@ -1,3 +1,7 @@
+.bg-dark-gradient {
+    background: linear-gradient(to bottom right, oklch(65.207% 0.14142 153.156 / 0.863), oklch(25.186% 0.01254 160.449 / 0.863), var(--theme-dark))
+}
+
 .outline-skew::before {
     content: '';
     background: light-dark(linear-gradient(to right, var(--theme-color-gradient-end), var(--theme-color)), linear-gradient(to right, var(--theme-color), var(--theme-color-gradient-end)));
